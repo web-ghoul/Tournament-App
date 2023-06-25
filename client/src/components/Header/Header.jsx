@@ -15,6 +15,7 @@ const Header = () => {
           <Logo/>
           <FlexStack gap={5}>
             <HeaderTypo variant="h6" onClick={()=>navigate("/")}>Home</HeaderTypo>
+            <HeaderTypo variant="h6" onClick={()=>navigate("#tournaments")}>Tournaments</HeaderTypo>
             <HeaderTypo variant="h6" onClick={()=>navigate("/about")}>About Us</HeaderTypo>
             <HeaderTypo variant="h6" onClick={()=>navigate("/profile")}>Profile</HeaderTypo>
           </FlexStack>

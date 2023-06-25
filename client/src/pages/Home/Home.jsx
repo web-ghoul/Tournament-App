@@ -1,10 +1,14 @@
 import React from 'react'
+import MainSection from '../../components/MainSection/MainSection'
+import Tournaments from '../../components/Tournaments/Tournaments'
+import { Box } from '@mui/material'
 
 const Home = () => {
   return (
-    <div>
-      Home
-    </div>
+    <Box>
+      <MainSection/>
+      <Tournaments/>
+    </Box>
   )
 }
 

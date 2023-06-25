@@ -6,8 +6,10 @@
 
 :root{
   --body-font: 'Roboto', sans-serif;
-  --body-alt-font:  'Anton', sans-serif;
-  --linearGradient:linear-gradient(351.09deg, #F029A0 4.36%, #F0B000 117.5%);
+  --body-alt-font: 'Chakra Petch', sans-serif;
+  --linear_gradient:linear-gradient(351.09deg, #F029A0 4.36%, #F0B000 117.5%);
+  --linear_gradient_hover:linear-gradient(351.09deg, #F0B000 4.36%, #F029A0 117.5%);
+  --trans: all 0.5s ease;
   --body-color: #fff;
   --para-color: #64BE56;
   --para-alt-color: #00FADF;
@@ -39,6 +41,7 @@ body{
   font-family:var(--body-font);
   background-color: var(--body-bg);
   color: var(--white);
+  scroll-behavior: smooth;
 }
 
 .text-center{
@@ -58,7 +61,7 @@ body{
 }
 
 .grid-center{
-  display: grid;
+  display: grid !important;
   align-items: center;
-  justify-content: center;
+  justify-content: center !important;
 }
