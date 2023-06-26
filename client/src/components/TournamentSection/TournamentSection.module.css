@@ -1,0 +1,13 @@
+.tournament_section{
+    background-image: url('../../static/images/tournaments-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.para{
+    width: 60%;
+}
+
+.tournaments{
+    gap: 30px;
+    padding: 40px 0 0 0 ;
+}
