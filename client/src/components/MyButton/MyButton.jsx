@@ -14,6 +14,7 @@ export const MyButton = styled(Button)(({theme})=>({
     borderRadius:"30px",
     overflow:"hidden",
     zIndex: 0,
+    padding:"10px 20px !important",
     "&:hover":{
         background:"var(--linear_gradient_hover)"
     },
@@ -33,9 +34,11 @@ export const MyButton = styled(Button)(({theme})=>({
         transform:"translateY(-50%) translateX(0%)",
     },
     [theme.breakpoints.down("md")]:{
-       fontSize:"16px"
+       fontSize:"16px",
+        padding:"8px 15px !important"
     },
     [theme.breakpoints.down("sm")]:{
+        padding:"5px 10px !important",
         fontSize:"14px"
     }
 }))

@@ -1,5 +1,6 @@
 button{
     color: var(--white) !important;
+    padding: 0 !important;
 }
 
 .title{

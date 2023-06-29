@@ -74,6 +74,12 @@ body{
   justify-content: flex-start;
 }
 
+.flex-stretch{
+  display: flex !important;
+  align-items: center;
+  justify-content: stretch !important;
+}
+
 .grid-center{
   display: grid !important;
   align-items: center;

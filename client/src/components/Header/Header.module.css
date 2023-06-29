@@ -36,6 +36,7 @@
     font-weight: 600;
     margin: 0;
     background-color: var(--primary);
+    padding: 2px 20px !important;
 }
 
 @media (max-width:1200px) {

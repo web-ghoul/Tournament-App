@@ -15,10 +15,8 @@ import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 const Header = () => {
   const [open , setOpen] = useState(false)
   const [openMenu , setOpenMenu] = useState(false)
-  const theme = useTheme()
-  console.log(theme)
-  const lgSize = useMediaQuery(theme.breakpoints.down("lg"))
-  const mdSize = useMediaQuery(theme.breakpoints.down("md"))
+  const lgSize = useMediaQuery("(max-width:1200px)")
+  const mdSize = useMediaQuery("(max-width:992px)")
   const navigate = useNavigate()
   const [sign , setSign] = useState(false)
   const [headerClass , setHeaderClass] = useState(true)
@@ -37,7 +35,50 @@ const Header = () => {
           {
             mdSize ?
             (
-              <>
+              !sign ? 
+              (
+                <>
+                  <IconButton onClick={()=>setOpenMenu(true)}>
+                    <MenuRoundedIcon/>
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    open={openMenu}
+                    onClose={()=>setOpenMenu(false)}
+                    anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                    }}
+                  >
+                    <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
+                      <HouseRoundedIcon/>
+                      <Typography variant='h5'>Home</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={()=>navigate("#tournaments")}>
+                      <EmojiEventsRoundedIcon/>
+                      <Typography variant='h5'>Tournaments</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>
+                      <InfoRoundedIcon/>
+                      <Typography variant='h5'>About Us</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={()=>navigate("/profile")}>
+                      <AccountCircleRounded/>
+                      <Typography variant='h5'>Profile</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <Typography variant='h5'>Log In</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <Typography variant='h5'>Sign Up</Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ):(<>
                 <IconButton onClick={()=>setOpenMenu(true)}>
                   <MenuRoundedIcon/>
                 </IconButton>
@@ -54,7 +95,7 @@ const Header = () => {
                   horizontal: 'right',
                   }}
                 >
-                  <MenuItem onClick={()=>navigate("/")} gap={2}>
+                  <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
                     <HouseRoundedIcon/>
                     <Typography variant='h5'>Home</Typography>
                   </MenuItem>
@@ -62,7 +103,7 @@ const Header = () => {
                     <EmojiEventsRoundedIcon/>
                     <Typography variant='h5'>Tournaments</Typography>
                   </MenuItem>
-                  <MenuItem onClick={()=>navigate("/about")}>
+                  <MenuItem onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>
                     <InfoRoundedIcon/>
                     <Typography variant='h5'>About Us</Typography>
                   </MenuItem>
@@ -71,14 +112,14 @@ const Header = () => {
                     <Typography variant='h5'>Profile</Typography>
                   </MenuItem>
                 </Menu>
-              </>
+              </>)
             ):
             (
               <>
                 <FlexStack className={styles.pages}>
-                  <HeaderTypo variant="h5" onClick={()=>navigate("/")}>Home</HeaderTypo>
+                  <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)}>Home</HeaderTypo>
                   <HeaderTypo variant="h5" onClick={()=>navigate("#tournaments")}>Tournaments</HeaderTypo>
-                  <HeaderTypo variant="h5" onClick={()=>navigate("/about")}>About Us</HeaderTypo>
+                  <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>About Us</HeaderTypo>
                   <HeaderTypo variant="h5" onClick={()=>navigate("/profile")}>Profile</HeaderTypo>
                 </FlexStack>
                 {
@@ -108,15 +149,15 @@ const Header = () => {
                               horizontal: 'right',
                               }}
                             >
-                              <MenuItem onClick={()=>navigate("/login")}>Login</MenuItem>
-                              <MenuItem onClick={()=>navigate("/signup")}>Sing Up</MenuItem>
+                              <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Login</MenuItem>
+                              <MenuItem onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Sing Up</MenuItem>
                             </Menu>
                           </>
                         ) :
                         (
                           <Box className={`flex-end ${styles.btns}`}>
-                            <Button>Log in</Button>
-                            <Button>Sign Up</Button>
+                            <Button onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Log in</Button>
+                            <Button onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Sign Up</Button>
                           </Box>
                         )
                       )

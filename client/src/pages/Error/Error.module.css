@@ -2,12 +2,13 @@
     padding-top: 100px;
     padding-bottom: 100px;
     position: relative;
+    height: 100vh;
 }
 .error_section::before{
     content: "";
     position: absolute;
     left: 50%;
-    top: 60%;
+    top: 50%;
     z-index: -1;
     transform: translate(-50% , -50%);
     width: 500px;

@@ -47,7 +47,7 @@ const Tournament = () => {
       </Box>
       <Box className={`flex-center ${styles.btn}`}>
           <MyButton className='text-upper'>View Tournament</MyButton>
-        </Box>
+      </Box>
     </Box>
   )
 }
