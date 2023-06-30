@@ -14,7 +14,7 @@ const MainSection = () => {
         <Typography variant='h4'  className='game-font text-upper'>Play Unlimited</Typography>
         <Typography variant='h1' className='game-font text-upper'>Tournaments</Typography>
         <Box className="flex-center" sx={{zIndex:"1000" , position:"relative"}}>
-            <MyButton  onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Get Started</MyButton>
+            <MyButton  onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Get Started</MyButton>
         </Box>
         <Box className="flex-center image">
           <Box component="img" className={styles.image} alt="banner" src={verseImg}/>

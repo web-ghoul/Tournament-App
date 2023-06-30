@@ -16,7 +16,7 @@ export const router= createBrowserRouter([
                 element:<Home/>
             },
             {
-                path:"profile/:id",
+                path:process.env.REACT_APP_PROFILE_PAGE,
                 element:<Profile/>
             },
             {
@@ -26,6 +26,14 @@ export const router= createBrowserRouter([
             {
                 path:process.env.REACT_APP_SIGNUP_PAGE,
                 element:<Authentication formType="register"/>
+            },
+            {
+                path:process.env.REACT_APP_FORGOT_PASS_PAGE,
+                element:<Authentication formType="forgot_pass"/>
+            },
+            {
+                path:process.env.REACT_APP_RESET_PASS_PAGE,
+                element:<Authentication formType="reset_pass"/>
             },
             {
                 path:"*",

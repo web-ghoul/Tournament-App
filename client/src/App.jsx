@@ -11,9 +11,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box component={"main"}>
-          {(location.pathname === "/login" || location.pathname === "/signup" ) ? <></> : <Header/>}
+          {(location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/forgot_password" ||location.pathname === "/reset_password") ? <></> : <Header/>}
           <Outlet/>
-          {(location.pathname === "/login" || location.pathname === "/signup" ) ? <></> : <Footer/>}
+          {(location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/forgot_password" ||location.pathname === "/reset_password" ) ? <></> : <Footer/>}
       </Box>
     </ThemeProvider>
   );

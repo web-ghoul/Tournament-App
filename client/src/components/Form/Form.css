@@ -14,7 +14,7 @@
     font-size: 20px;
 }
 
-.email label ,.username label, .pass label{
+.form .email label ,.form .username label,.form .pass label{
     color: var(--body-color);
     font-size: 18px;
 }
@@ -40,7 +40,7 @@
     color: #00FADF !important;
 }
 
-.btn button{
+.form .btn button{
     width: 100%;
     border-radius: 12px;
 }
@@ -155,11 +155,12 @@
     
     .form input {
         border-radius: 5px !important;
-        font-size: 16px;
+        font-size: 10px;
+        padding: 15px;
     }
     
     .email label ,.username label, .pass label{
-        font-size: 12px;
+        font-size: 10px;
     }
     
     .form fieldset{
@@ -167,7 +168,7 @@
     }
     
     .form p{
-        font-size: 14px;
+        font-size: 12px;
     }
     
     .have_acc,.forgot{

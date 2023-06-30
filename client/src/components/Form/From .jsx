@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from "./Form.module.css"
+import "./Form.css"
 import Box from '@mui/material/Box'
 import { Button, Container, IconButton, InputLabel, TextField, Typography, FormControlLabel, Radio } from '@mui/material'
 import Logo from "../../components/Logo/Logo"
@@ -9,7 +9,10 @@ import {Formik , Field} from "formik"
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import * as Yup from "yup"
-import { useNavigate } from 'react-router-dom'
+import LoginForm from '../LoginForm/LoginForm'
+import SignUpForm from '../SignUpForm/SignUpForm'
+import ForgotPasswordForm from '../ForgotPasswordForm/ForgotPasswordForm'
+import ResetPasswordForm from '../ResetPasswordForm/ResetPasswordForm'
 
 const registerSchema = Yup.object().shape({
     email:Yup.string().email().required(),
@@ -22,6 +25,13 @@ const loginSchema = Yup.object().shape({
     password:Yup.string().required(),
 })
 
+const resetPasswordSchema = Yup.object().shape({
+    old_password:Yup.string().required().min(8),
+    new_password:Yup.string().required().min(8).when("old_password", (old_password , field)=>old_password ? field.required() : field),
+    confirm_password:Yup.string().required().min(8).when("new_password", (new_password , field)=> new_password ? field.required().oneOf([Yup.ref("new_password")]) : field),
+})
+
+
 const initialLoginValues = {
     email:"",
     password:""
@@ -33,64 +43,35 @@ const initialRegisterValues = {
     password:""
 }
 
+const initialOResetPasswordValues = {
+    old_password:"",
+    new_password:"",
+    confirm_password:"",
+}
+
 const handleSubmitForm = (values, onSubmitProps)=>{
     alert(JSON.stringify(values))
     onSubmitProps.resetForm()
 }
 
 const From  = (props) => {
-    const navigate = useNavigate() 
     const isLogin = props.formType === "login"
     const isRegister = props.formType === "register"
+    const isForgot_pass = props.formType === "forgot_pass"
+    const isReset_pass = props.formType === "reset_pass"
     return (
         <Formik
-            initialValues={isLogin ? initialLoginValues : initialRegisterValues}
-            validationSchema={isLogin ? loginSchema : registerSchema}
+            initialValues={isLogin ? initialLoginValues : isRegister ? initialRegisterValues : isReset_pass && initialOResetPasswordValues}
+            validationSchema={isLogin ? loginSchema : isRegister ? registerSchema : isReset_pass && resetPasswordSchema}
             className={`flex-center`}
             onSubmit={handleSubmitForm}
         >
             {({values,errors, touched , handleSubmit , handleBlur,handleChange,isSubmitting, resetForm})=>(
-            <form component="form" className={`grid-stretch ${styles.form}`} onSubmit={handleSubmit}>
-                {
-                    isLogin ? (
-                        <Typography variant='h3' className={`text-center game-font flex-center`}>Welcome To Tournament</Typography>
-                    ):(
-                        <Typography variant='h3' className={`text-center game-font flex-center`}>Let's get started</Typography>
-                    )
-                }
-                <TextField className={`grid-stretch ${styles.email}`} label="Email" name='email' value={values.email} onChange={handleChange} id="email" error={Boolean(touched.email) && Boolean(errors.email)} helperText={touched.email && errors.email} onBlur={handleBlur}/>
-                {
-                    isRegister && (
-                        <TextField className={`grid-stretch ${styles.username}`} label="Username" value={values.username} error={Boolean(touched.username) && Boolean(errors.username)} name='username' type="username" onChange={handleChange} id="username" helperText={touched.username && errors.username} onBlur={handleBlur}/>
-                    )
-                }
-                <TextField className={`grid-stretch ${styles.pass}`} label="Password" error={Boolean(touched.password) && Boolean(errors.password)} name='password' type="password" value={values.password} onChange={handleChange} id="password" helperText={touched.password && errors.password} onBlur={handleBlur}/>
-                {
-                    isLogin && (
-                        <Box className={`flex-start ${styles.forgot}`}>
-                            <Typography variant='h6'>Forgot your password?</Typography>
-                            {/*onClick Wait Till End*/}
-                            <Button>Recover Password</Button>
-                        </Box>
-                    )
-                }
-                <Box className={`flex-center ${styles.btn}`}>
-                    {/*onClick Wait Till End*/}
-                    <MyButton type="submit">{isRegister ? "Sign Up" : "Sign In"}</MyButton>
-                </Box>
-                {
-                    isLogin ? (
-                        <Box className={`flex-center ${styles.have_acc}`}>
-                            <Typography variant='h5'>Don't have an account?</Typography>
-                            <Button onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Sign Up Here</Button>
-                        </Box>
-                    ):(
-                        <Box className={`flex-center ${styles.have_acc}`}>
-                            <Typography variant='h5'>Already have an account?</Typography>
-                            <Button onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Sign In</Button>
-                        </Box>
-                    )
-                }
+            <form component="form" className={`grid-stretch form`} onSubmit={handleSubmit}>
+                {isLogin && <LoginForm values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/> }
+                {isRegister && <SignUpForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/> }
+                {isForgot_pass && <ForgotPasswordForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/>} 
+                {isReset_pass && <ResetPasswordForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/>} 
             </form>
             )}
         </Formik>

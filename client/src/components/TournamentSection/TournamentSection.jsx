@@ -7,7 +7,7 @@ import {MyBox} from "../MyBox/MyBox"
 
 const TournamentSection = () => {
   return (
-    <MyBox className={styles.tournament_section}>
+    <MyBox className={styles.tournament_section} id="tournaments">
       <Container className={`grid-stretch ${styles.contain}`}>
         <Box className="grid-center">
           <Typography variant="h2" className='text-center game-font text-upper'>BROWSE TOURNAMENTS</Typography>
