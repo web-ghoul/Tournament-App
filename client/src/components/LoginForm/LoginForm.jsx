@@ -8,7 +8,7 @@ const LoginForm = ({values , touched, errors , handleBlur, handleChange}) => {
     return (
         <>
             <Typography variant='h3' className={`text-center game-font flex-center`}>Welcome To Tournament</Typography>
-            <TextField className={`grid-stretch email`} label="Email" name='email' value={values.email} onChange={handleChange} id="email" error={Boolean(touched.email) && Boolean(errors.email)} helperText={touched.email && errors.email} onBlur={handleBlur}/>
+            <TextField className={`grid-stretch email`} label="Username" name='username' value={values.username} onChange={handleChange} id="username" error={Boolean(touched.username) && Boolean(errors.username)} helperText={touched.username && errors.username} onBlur={handleBlur}/>
             <TextField className={`grid-stretch pass`} label="Password" error={Boolean(touched.password) && Boolean(errors.password)} name='password' type="password" value={values.password} onChange={handleChange} id="password" helperText={touched.password && errors.password} onBlur={handleBlur}/>
             <Box className={`flex-start forgot`}>
                 <Typography variant='h5'>Forgot your password?</Typography>

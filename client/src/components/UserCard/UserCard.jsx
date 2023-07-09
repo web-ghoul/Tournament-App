@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box,Container, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Typography } from '@mui/material'
 import {MyButton} from "../MyButton/MyButton"
 import styles from "./UserCard.module.css"
 import userImg from "../../static/images/profile-logo.png"

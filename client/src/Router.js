@@ -5,7 +5,6 @@ import Error  from "./pages/Error/Error.jsx"
 import App from "./App.jsx" 
 import Authentication from "./pages/Authentication/Authentication.jsx"
 
-
 export const router= createBrowserRouter([
     {
         path:process.env.REACT_APP_HOME_PAGE,

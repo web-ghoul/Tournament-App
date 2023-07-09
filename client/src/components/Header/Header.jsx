@@ -1,4 +1,4 @@
-import { AppBar, Container, Toolbar, IconButton, Box, Button, useTheme, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
+import { AppBar, Container, Toolbar, IconButton, Box, Button, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
 import {AccountCircleRounded} from "@mui/icons-material"
 import React, { useState } from 'react'
 import {useNavigate} from "react-router-dom"
@@ -11,22 +11,38 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import HouseRoundedIcon from '@mui/icons-material/HouseRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
+import { useDispatch, useSelector } from 'react-redux'
+import {logout} from "../../store/authSlice"
+import Cookie from "js-cookie"
+import {showing , hiding} from "../../store/scrollSlice"
 
 const Header = () => {
   const [open , setOpen] = useState(false)
   const [openMenu , setOpenMenu] = useState(false)
   const lgSize = useMediaQuery("(max-width:1200px)")
-  const mdSize = useMediaQuery("(max-width:992px)")
   const navigate = useNavigate()
-  const [sign , setSign] = useState(true)
   const [headerClass , setHeaderClass] = useState(true)
+  const dispatch = useDispatch()
+  const username = useSelector((state)=>state.auth.username)
+  const [sign , setSign] = useState(Boolean(username))
+
   window.onscroll = ()=>{
     if(window.scrollY === 0){
       setHeaderClass(true)
+      dispatch(hiding())
     }else{
       setHeaderClass(false)
+      dispatch(showing())
     }
   }
+
+  const handleLogout = ()=>{
+    Cookie.remove("user_data")
+    setSign(false)
+    navigate(process.env.REACT_APP_LOGIN_PAGE)
+    dispatch(logout())
+  }
+
   return (
     <AppBar className={ headerClass ? styles.header : styles.header_active}>
       <Container>
@@ -42,7 +58,7 @@ const Header = () => {
                       <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)}>Home</HeaderTypo>
                       <HeaderTypo variant="h5" onClick={()=>navigate("#tournaments")}>Tournaments</HeaderTypo>
                       <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>About Us</HeaderTypo>
-                      <HeaderTypo variant="h5" onClick={()=>navigate("/profile")}>Profile</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)}>Profile</HeaderTypo>
                     </FlexStack>
                     <IconButton onClick={()=>setOpen(true)}>
                       <AccountCircleRounded sx={{color:'white'}} fontSize='large'/>
@@ -60,12 +76,12 @@ const Header = () => {
                       horizontal: 'right',
                       }}
                     >
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
+                      <MenuItem  onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)} gap={2}>
                         <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>webGhoul</Typography>
+                        <Typography variant='h5'>{username}</Typography>
                       </MenuItem>
                       <Divider/>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <MenuItem onClick={()=>handleLogout()}>
                         <LoginIcon/>
                         <Typography variant='h5'>Log Out</Typography>
                       </MenuItem>
@@ -90,9 +106,9 @@ const Header = () => {
                       horizontal: 'right',
                       }}
                     >
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
+                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)} gap={2}>
                         <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>webGhoul</Typography>
+                        <Typography variant='h5'>{username}</Typography>
                       </MenuItem>
                       <Divider/>
                       <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
@@ -107,11 +123,11 @@ const Header = () => {
                         <InfoRoundedIcon/>
                         <Typography variant='h5'>About Us</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate("/profile")}>
+                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)}>
                         <AccountCircleRounded/>
                         <Typography variant='h5'>Profile</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <MenuItem onClick={()=>handleLogout()}>
                         <LoginIcon/>
                         <Typography variant='h5'>Log Out</Typography>
                       </MenuItem>

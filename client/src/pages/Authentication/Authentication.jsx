@@ -1,9 +1,8 @@
 import React from 'react'
 import { Box,Button, Container, Typography } from '@mui/material'
-import Logo from "../../components/Logo/Logo"
 import {MyBox} from "../../components/MyBox/MyBox"
 import styles from "./Authentication.module.css"
-import Form from  "../../components/Form/From "
+import Form from  "../../components/Form/Form "
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import { useNavigate } from 'react-router-dom'
 

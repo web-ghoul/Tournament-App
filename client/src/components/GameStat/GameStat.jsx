@@ -6,7 +6,6 @@ import ThumbsUpDownRoundedIcon from '@mui/icons-material/ThumbsUpDownRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 
 const GameStat = ({perfs, count}) => {
-    console.log(perfs,count)
     const [statType , setStatType] = useState("blitz")
     return (
         <Box className={`grid-stretch ${styles.game_stat}`}>
@@ -17,9 +16,8 @@ const GameStat = ({perfs, count}) => {
             <Box className={`grid-stretch ${styles.stat}`}>
                 <Box className={`flex-start ${styles.types}`}>
                     {
-                        perfs && Object.keys(perfs).map((k)=>{
-                            console.log(k.toLowerCase())
-                            return (<Button onClick={()=>setStatType(k.toLowerCase())} className= {`text-upper ${k.toLowerCase() === statType ? styles.active : styles.colored}`}>{k}</Button>)
+                        perfs && Object.keys(perfs).map((k,i)=>{
+                            return (<Button key={i} onClick={()=>setStatType(k.toLowerCase())} className= {`text-upper ${k.toLowerCase() === statType ? styles.active : styles.colored}`}>{k}</Button>)
                         })
                     }
                 </Box>
