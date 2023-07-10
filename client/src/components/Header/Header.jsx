@@ -164,7 +164,7 @@ const Header = () => {
                       <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
                         <Typography variant='h5'>Log In</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>
                         <Typography variant='h5'>Sign Up</Typography>
                       </MenuItem>
                     </Menu>

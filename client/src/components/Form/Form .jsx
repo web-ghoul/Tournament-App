@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Form.css"
 import {Formik} from "formik"
 import * as Yup from "yup"
@@ -8,7 +8,7 @@ import ForgotPasswordForm from '../ForgotPasswordForm/ForgotPasswordForm'
 import ResetPasswordForm from '../ResetPasswordForm/ResetPasswordForm'
 import axios from "axios"
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {setUserData} from "../../store/authSlice"
 import Cookies from 'js-cookie';
@@ -52,7 +52,6 @@ const initialForgotPassValues = {
 
 
 const initialResetPasswordValues = {
-    old_password:"",
     new_password:"",
     confirm_password:"",
 }
@@ -64,11 +63,29 @@ const From  = (props) => {
     const isReset_pass = props.formType === "reset_pass"
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {id,unique} = useParams()
+    const [sent , setSent] = useState(false)
+
+    if(isReset_pass){
+        axios.get(`http://localhost:3000/user/resetPassword/${id}/${unique}`)
+        .then((res)=>{
+            Cookies.set("user_id",JSON.stringify(res.data.user_id))
+        }).catch((err)=>{
+            swal({
+                title: "Error",
+                text: "Error ",
+                icon: "error",
+                dangerMode: true,
+            })
+        })
+    }
 
     const handleRegister = async(values , onSubmitProps)=>{
+        console.log(1)
         await axios.post("http://localhost:3000/register",{
             ...values
         }).then((res)=>{
+            console.log(1)
             swal({
                 title: "Congratulation!",
                 text: res.data.message,
@@ -78,6 +95,7 @@ const From  = (props) => {
             navigate("/login")
             onSubmitProps.resetForm()
         }).catch((err)=>{
+            console.log(1)
             swal({
                 title: "Error",
                 text: err.response.data.message,
@@ -117,7 +135,7 @@ const From  = (props) => {
             ...values
         }).then((res)=>{
             Cookies.set('Forgot_Password_Username',values.forgot_pass_username , { expires: 1 });
-            navigate(process.env.REACT_APP_RESET_PASS_PAGE)
+            setSent(true)
             onSubmitProps.resetForm()
         }).catch((err)=>{
             swal({
@@ -130,6 +148,9 @@ const From  = (props) => {
     }
 
     const handleResetPassword = async(values , onSubmitProps)=>{
+        let user_id = Cookies.get('user_id')
+        user_id = JSON.parse(user_id)
+        values={...values,user_id}
         await axios.post("http://localhost:3000/ResetPassword",{
             ...values
         }).then((res)=>{
@@ -153,11 +174,11 @@ const From  = (props) => {
             className={`flex-center`}
             onSubmit={isRegister ? handleRegister : isLogin ?  handleLogin : isForgot_pass ? handleForgotPassword : handleResetPassword}
         >
-            {({values,errors, touched , handleSubmit , handleBlur,handleChange,isSubmitting, resetForm})=>(
+            {({values,errors, touched , handleSubmit , handleBlur,handleChange})=>(
             <form className={`grid-stretch form`} onSubmit={handleSubmit}>
                 {isLogin && <LoginForm values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/> }
                 {isRegister && <SignUpForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/> }
-                {isForgot_pass && <ForgotPasswordForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/>} 
+                {isForgot_pass && <ForgotPasswordForm sent={sent} values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/>} 
                 {isReset_pass && <ResetPasswordForm  values={values} errors={errors} touched = {touched} handleBlur = {handleBlur} handleChange = {handleChange}/>} 
             </form>
             )}

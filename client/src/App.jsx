@@ -1,5 +1,5 @@
 import {Box} from '@mui/material'
-import {Outlet, useLocation} from "react-router-dom"
+import {Outlet, useLocation, useParams} from "react-router-dom"
 import Header from "./components/Header/Header"
 import Footer from "./components/Footer/Footer.jsx"
 import { ThemeProvider } from '@emotion/react';
@@ -14,6 +14,7 @@ function App() {
   const location = useLocation()
   const dispatch = useDispatch()
   let userData = Cookies.get('user_data')
+  const {id, unique} = useParams()
   if(userData){
     userData = JSON.parse(userData)
     dispatch(setUserData(userData))
@@ -21,10 +22,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box component={"main"}>
-          {(location.pathname === process.env.REACT_APP_LOGIN_PAGE || location.pathname === process.env.REACT_APP_SIGNUP_PAGE || location.pathname === process.env.REACT_APP_FORGOT_PASS_PAGE ||location.pathname === process.env.REACT_APP_RESET_PASS_PAGE) ? <></> : <Header/>}
+          {(location.pathname === process.env.REACT_APP_LOGIN_PAGE || location.pathname === process.env.REACT_APP_SIGNUP_PAGE || location.pathname === process.env.REACT_APP_FORGOT_PASS_PAGE ||location.pathname === `/reset_password/${id}/${unique}`) ? <></> : <Header/>}
           <Outlet/>
           <ScrollUp/>
-          {(location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/forgot_password" ||location.pathname === "/reset_password" ) ? <></> : <Footer/>}
+          {(location.pathname === process.env.REACT_APP_LOGIN_PAGE || location.pathname === process.env.REACT_APP_SIGNUP_PAGE  || location.pathname === process.env.REACT_APP_FORGOT_PASS_PAGE || location.pathname === `/reset_password/${id}/${unique}` ) ? <></> : <Footer/>}
       </Box>
     </ThemeProvider>
   );
