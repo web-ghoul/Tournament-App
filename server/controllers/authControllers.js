@@ -623,10 +623,7 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
             })
             .catch((err) => {
               console.log(err);
-              res.json({
-                status: "failed",
-                message: "verification email failed",
-              });
+              
             });
         })
         .catch((err) => {
@@ -913,7 +910,7 @@ const resetEmail = (req, res, next) => {
 };
 
 const resetPassword = (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.body.user_id;
   console.log(userId);
   const newPassword = req.body.new_password;
 
