@@ -139,6 +139,7 @@ const gameEnds = async (req, res, next) => {
                     "users",
                     `${result.userName1},${winnerName}`
                   );
+                  formData.append("clock.increment", 0);
                   try {
                     let response = await axios.post(
                       "https://lichess.org/api/challenge/open",
