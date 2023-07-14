@@ -26,7 +26,6 @@ const addTournament = (req, res, nxt) => {
 
     const Tourn = new Tournament({
       Name: name,
-      Type: type,
       Time: time,
       Max: max,
       Description: description,

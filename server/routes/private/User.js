@@ -3,6 +3,7 @@ const router = express.Router();
 const authControllers = require("../../controllers/authControllers");
 const authenticateMidd = require("../../middleware/authenticate");
 const userControllers = require("../../controllers/userControllers");
+const tournamentControllers = require("../../controllers/tournamentControllers");
 const axios = require("axios");
 
 router.get("/login", (req, res) => {
@@ -47,7 +48,7 @@ router.post(
 router.post(
   "/EnterTournament/:id",
   authenticateMidd,
-  userControllers.EnterTournament
+  userControllers.EnterTournament , tournamentControllers.displayTour
 );
 
 router.post("/ForgotPassword" , authControllers.forgetPassword );
@@ -55,12 +56,15 @@ router.post("/ForgotPassword" , authControllers.forgetPassword );
 router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEmail , (req,res) => {
   //res.render("reset Password Page")
   req.session.userId= req.params.userId ;
-  res.send("reset Password Page")
+  res.status(200).json({user_id :req.params.userId })
+
 }
 )
 
 router.post("/ResetPassword" , authControllers.resetPassword ) ;
 
+router.get("/Tournament/:id" , tournamentControllers.displayTour) ;
 
+router.post("/Node/:game_id/:node_id" , authenticateMidd , tournamentControllers.gameEnds) ;
 
 module.exports = router;

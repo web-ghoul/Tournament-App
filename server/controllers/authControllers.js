@@ -623,10 +623,7 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
             })
             .catch((err) => {
               console.log(err);
-              res.json({
-                status: "failed",
-                message: "verification email failed",
-              });
+              
             });
         })
         .catch((err) => {

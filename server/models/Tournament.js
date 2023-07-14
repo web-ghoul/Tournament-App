@@ -12,7 +12,6 @@ const TournamentSchema = Schema({
   Type : {
     type : String ,
     enum : ['normal' , 'crazy' ] ,
-    required : true
   }
   ,
   Time : {
@@ -28,9 +27,15 @@ const TournamentSchema = Schema({
   ,
   Description : String
   ,
-  Max : Number
+  Max : {
+    type : Number ,
+    required : true 
+  }
   ,
-  StartsAt : Date 
+  StartsAt : {
+    type : Date ,
+    required : true 
+  } 
 
 
 })

@@ -26,11 +26,15 @@ const EnterTournament = (req, res, next) => {
     console.log(result);
     //checking if the user registered for this tournament
     if (result.Players.includes(req.userName)) {
-      const tournamentTime = result.Time;
+      const tournamentTime = result.StartsAt;
       //checking time
-      if (tournamentTime > Date.now()) {
+      console.log(tournamentTime)
+        console.log(Date.now())
+      if (tournamentTime < Date.now()) {
         //res.redirect("/Bracket/:Tourid")
-        res.send("tournament bracket");
+        
+        res.status(200);
+        next() ;
       } else {
         res.send("Not yet");
       }

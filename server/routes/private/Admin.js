@@ -11,9 +11,9 @@ router.get("/AdminPage" , authenticateMidd ,(req,res,nxt) => {
  )
 
 
-router.post("/addAdmin" , adminControllers.addAdmin)
+router.post("/addAdmin" ,authenticateMidd ,adminControllers.addAdmin)
 
-router.post("/addTournament" , adminControllers.addTournament)
+router.post("/addTournament" , authenticateMidd , adminControllers.addTournament)
 
 
 
