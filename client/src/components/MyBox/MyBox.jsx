@@ -3,15 +3,15 @@ import { Box } from '@mui/material'
 
 export const MyBox = styled(Box)(({theme})=>(
     {
-        paddingBottom:"40px",
-        paddingTop:"40px",
+        paddingBottom:"50px",
+        paddingTop:"50px",
         [theme.breakpoints.down("md")]:{
-            paddingBottom:"30px",
-            paddingTop:"30px",
+            paddingBottom:"75px",
+            paddingTop:"75px",
         },
         [theme.breakpoints.down("sm")]:{
-            paddingBottom:"20px",
-            paddingTop:"20px",
+            paddingBottom:"100px",
+            paddingTop:"50px",
         }
     }
 ))

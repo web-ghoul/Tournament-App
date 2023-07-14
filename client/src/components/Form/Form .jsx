@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import "./Form.css"
 import {Formik} from "formik"
 import * as Yup from "yup"
 import LoginForm from '../LoginForm/LoginForm'
@@ -7,11 +6,14 @@ import SignUpForm from '../SignUpForm/SignUpForm'
 import ForgotPasswordForm from '../ForgotPasswordForm/ForgotPasswordForm'
 import ResetPasswordForm from '../ResetPasswordForm/ResetPasswordForm'
 import axios from "axios"
-import swal from 'sweetalert';
+import swal from "sweetalert2";
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {setUserData} from "../../store/authSlice"
 import Cookies from 'js-cookie';
+import { Box } from '@mui/material'
+import { MyButton } from '../MyButton/MyButton'
+import "./Form.css"
 
 
 const registerSchema = Yup.object().shape({
@@ -30,9 +32,8 @@ const forgotPassSchema = Yup.object().shape({
 })
 
 const resetPasswordSchema = Yup.object().shape({
-    old_password:Yup.string().required().min(8),
-    new_password:Yup.string().required().min(8).when("old_password", (old_password , field)=>old_password ? field.required() : field),
-    confirm_password:Yup.string().required().min(8).when("new_password", (new_password , field)=> new_password ? field.required().oneOf([Yup.ref("new_password")]) : field),
+    new_password:Yup.string().required().min(8),
+    confirm_password:Yup.string().required().min(8).when("new_password", (new_password , field)=> new_password ? field.required("Password isn't Matched").oneOf([Yup.ref("new_password")]) : field),
 })
 
 const initialLoginValues = {
@@ -61,88 +62,89 @@ const From  = (props) => {
     const isRegister = props.formType === "register"
     const isForgot_pass = props.formType === "forgot_pass"
     const isReset_pass = props.formType === "reset_pass"
+    const isVerify = props.formType === "verify"
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {id,unique} = useParams()
     const [sent , setSent] = useState(false)
 
-    if(isReset_pass){
-        axios.get(`http://localhost:3000/user/resetPassword/${id}/${unique}`)
+    const handleResetPasswordData = async()=>{
+        await axios.get(process.env.REACT_APP_SERVER_URL+`/user/resetPassword/${id}/${unique}`)
         .then((res)=>{
             Cookies.set("user_id",JSON.stringify(res.data.user_id))
         }).catch((err)=>{
-            swal({
+            swal.fire({
                 title: "Error",
-                text: "Error ",
+                text: "Error",
                 icon: "error",
-                dangerMode: true,
             })
         })
     }
 
+    if(isReset_pass){
+        handleResetPasswordData()
+    }
+
     const handleRegister = async(values , onSubmitProps)=>{
-        console.log(1)
-        await axios.post("http://localhost:3000/register",{
+        await axios.post(process.env.REACT_APP_SERVER_URL+"/register",{
             ...values
         }).then((res)=>{
-            console.log(1)
-            swal({
+            swal.fire({
                 title: "Congratulation!",
                 text: res.data.message,
                 icon: "success",
-                dangerMode: false,
             })
             navigate("/login")
             onSubmitProps.resetForm()
         }).catch((err)=>{
-            console.log(1)
-            swal({
+            swal.fire({
                 title: "Error",
                 text: err.response.data.message,
                 icon: "error",
-                dangerMode: true,
             })
         })
     }
 
     const handleLogin = async(values , onSubmitProps)=>{
-        await axios.post("http://localhost:3000/login",{
+        await axios.post(process.env.REACT_APP_SERVER_URL+"/login",{
             ...values
         }).then((res)=>{
-            swal({
+            swal.fire({
                 title: `Welcome ${values.username}`,
                 text: res.data.message,
                 icon: "success",
-                dangerMode: false,
             })
             const userData = {username:values.username , token:res.data.token}
             Cookies.set('user_data',JSON.stringify(userData) , { expires: 7 });
+            Cookies.set('token',res.data.token , { expires: 7 });
             dispatch(setUserData(userData))
             navigate("/")
             onSubmitProps.resetForm()
         }).catch((err)=>{
-            swal({
+            swal.fire({
                 title: "Error",
                 text: err.response.data.message,
                 icon: "error",
-                dangerMode: true,
             })
         })
     }
 
     const handleForgotPassword = async(values , onSubmitProps)=>{
-        await axios.post("http://localhost:3000/ForgotPassword",{
+        await axios.post(process.env.REACT_APP_SERVER_URL+"/ForgotPassword",{
             ...values
         }).then((res)=>{
-            Cookies.set('Forgot_Password_Username',values.forgot_pass_username , { expires: 1 });
             setSent(true)
             onSubmitProps.resetForm()
+            swal.fire({
+                title: "Success",
+                text: "Check your Mail",
+                icon: "success",
+            })
         }).catch((err)=>{
-            swal({
+            swal.fire({
                 title: "Error",
                 text: err.response.data.message,
                 icon: "error",
-                dangerMode: true,
             })
         })
     }
@@ -151,20 +153,49 @@ const From  = (props) => {
         let user_id = Cookies.get('user_id')
         user_id = JSON.parse(user_id)
         values={...values,user_id}
-        await axios.post("http://localhost:3000/ResetPassword",{
+        await axios.post(process.env.REACT_APP_SERVER_URL+`/ResetPassword`,{
             ...values
         }).then((res)=>{
             Cookies.remove('Forgot_Password_Username');
             navigate(process.env.REACT_APP_LOGIN_PAGE)
             onSubmitProps.resetForm()
+            swal.fire({
+                title: "Success",
+                text: res.data.message,
+                icon: "success",
+            })
         }).catch((err)=>{
-            swal({
+            swal.fire({
                 title: "Error",
                 text: err.response.data.message,
                 icon: "error",
-                dangerMode: true,
             })
         })
+    }
+
+    const handleVerify = async()=>{
+        await axios.get(process.env.REACT_APP_SERVER_URL+`/user/verify/${id}/${unique}`).then((res)=>{
+            navigate(process.env.REACT_APP_LOGIN_PAGE)
+            swal.fire({
+                title: "Success",
+                text: "Verify Successfully",
+                icon: "success",
+            })
+        }).catch((err)=>{
+            swal.fire({
+                title: "Error",
+                text: "Error Exist",
+                icon: "error",
+            })
+        })
+    }
+
+    if(isVerify){
+        return(
+            <Box className={`verify flex-center`}>
+                <MyButton onClick={()=>handleVerify()}>Activate Account</MyButton>
+            </Box>
+        )
     }
 
     return (

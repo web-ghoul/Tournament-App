@@ -4,6 +4,9 @@ import Profile from "./pages/Profile/Profile.jsx"
 import Error  from "./pages/Error/Error.jsx"
 import App from "./App.jsx" 
 import Authentication from "./pages/Authentication/Authentication.jsx"
+import Graph from "./pages/Graph/Graph.jsx"
+import Tournaments from "./pages/Tournaments/Tournaments.jsx"
+import About from "./pages/About/About.jsx"
 
 export const router= createBrowserRouter([
     {
@@ -31,8 +34,24 @@ export const router= createBrowserRouter([
                 element:<Authentication formType="forgot_pass"/>
             },
             {
+                path:process.env.REACT_APP_VERIFY_PAGE,
+                element:<Authentication formType="verify"/>
+            },
+            {
                 path:process.env.REACT_APP_RESET_PASS_PAGE,
                 element:<Authentication formType="reset_pass"/>
+            },
+            {
+                path:process.env.REACT_APP_TOURNAMENTS_PAGE,
+                element:<Tournaments/>
+            },
+            {
+                path:process.env.REACT_APP_ABOUT_PAGE,
+                element:<About/>
+            },
+            {
+                path:"/graph",
+                element:<Graph members={8}/>
             },
             {
                 path:"*",

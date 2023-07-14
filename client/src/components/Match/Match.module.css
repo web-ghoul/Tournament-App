@@ -1,0 +1,9 @@
+.match{
+    gap: 5px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.match div:last-child{
+    background-color: var(--gray);
+}

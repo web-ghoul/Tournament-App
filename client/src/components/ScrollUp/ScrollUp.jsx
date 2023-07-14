@@ -16,7 +16,7 @@ const ScrollUp = () => {
     }
 
     return (
-        <Box onClick={()=>handleScroll()} className={hide ? `flex-center ${styles.scroll_up.hide}`: `flex-center ${styles.scroll_up}`}>
+        <Box onClick={()=>handleScroll()} className={hide ? `flex-center ${styles.scroll_up} ${styles.hide}`: `flex-center ${styles.scroll_up}`}>
             <KeyboardDoubleArrowUpRoundedIcon/>
         </Box>
     )

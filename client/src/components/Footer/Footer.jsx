@@ -19,7 +19,7 @@ const Footer = () => {
           <Logo/>
           <FlexStack className={styles.pages}>
             <HeaderTypo variant='h6' onClick={()=>navigate("/")}>Home</HeaderTypo>
-            <HeaderTypo variant='h6' onClick={()=>navigate("#tournaments")}>Tournament</HeaderTypo>
+            <HeaderTypo variant='h6' onClick={()=>navigate("/tournaments")}>Tournament</HeaderTypo>
             <HeaderTypo variant='h6' onClick={()=>navigate("/about")}>About Us</HeaderTypo>
           </FlexStack>
           <Box className={styles.icons}>

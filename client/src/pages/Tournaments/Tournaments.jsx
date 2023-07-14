@@ -1,16 +1,15 @@
+import { Box, Container, Typography } from '@mui/material'
 import React from 'react'
-import Box from '@mui/material/Box'
-import Tournament from "../Tournament/Tournament"
-import styles from "./TournamentSection.module.css"
-import { Container, Typography } from '@mui/material'
-import {MyBox} from "../MyBox/MyBox"
+import {MyBox} from "../../components/MyBox/MyBox"
+import Tournament from '../../components/Tournament/Tournament'
+import styles from "./Tournaments.module.css"
 
-const TournamentSection = () => {
+const Tournaments = () => {
   return (
     <MyBox className={styles.tournament_section} id="tournaments">
       <Container className={`grid-stretch ${styles.contain}`}>
         <Box className="grid-center">
-          <Typography variant="h2" className='text-center game-font text-upper'>BROWSE TOURNAMENTS</Typography>
+          <Typography variant="h2" className='text-center game-font text-upper'>TOURNAMENTS</Typography>
           <Typography className={`text-center el-center-x ${styles.para}`} variant="subtitle1">Find the perfect tournaments for you. Head to head matches where you pick the game, rules and prize.</Typography>
         </Box>
         <Box className={`grid-center ${styles.tournaments}`}>
@@ -23,4 +22,4 @@ const TournamentSection = () => {
   )
 }
 
-export default TournamentSection
+export default Tournaments

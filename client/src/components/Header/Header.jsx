@@ -1,6 +1,6 @@
 import { AppBar, Container, Toolbar, IconButton, Box, Button, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
-import {AccountCircleRounded} from "@mui/icons-material"
-import React, { useState } from 'react'
+import {AccountCircleRounded, Troubleshoot} from "@mui/icons-material"
+import React, { useEffect, useState } from 'react'
 import {useNavigate} from "react-router-dom"
 import {FlexStack} from "../FlexStack/FlexStack"
 import Logo from '../Logo/Logo'
@@ -15,17 +15,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import {logout} from "../../store/authSlice"
 import Cookie from "js-cookie"
 import {showing , hiding} from "../../store/scrollSlice"
+import AddIcon from '@mui/icons-material/Add';
+import AdminModal from '../AdminModal/AdminModal'
+import Cookies from 'js-cookie'
 
 const Header = () => {
-  const [open , setOpen] = useState(false)
-  const [openMenu , setOpenMenu] = useState(false)
-  const lgSize = useMediaQuery("(max-width:1200px)")
-  const navigate = useNavigate()
-  const [headerClass , setHeaderClass] = useState(true)
   const dispatch = useDispatch()
-  const username = useSelector((state)=>state.auth.username)
-  const [sign , setSign] = useState(Boolean(username))
-
+  const navigate = useNavigate()
+  const lgSize = useMediaQuery("(max-width:1200px)")
+  const [isAdmin,setIsAdmin] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
+  const [headerClass , setHeaderClass] = useState(true)
+  const [add, setAdd] =useState(null)
+  const [sign , setSign] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  let userData = Cookies.get('user_data')
+  const open = Boolean(anchorEl);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setAdd(null)
+  }
   window.onscroll = ()=>{
     if(window.scrollY === 0){
       setHeaderClass(true)
@@ -35,16 +45,29 @@ const Header = () => {
       dispatch(showing())
     }
   }
-
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
   const handleLogout = ()=>{
     Cookie.remove("user_data")
     setSign(false)
     navigate(process.env.REACT_APP_LOGIN_PAGE)
     dispatch(logout())
+    handleClose()
   }
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  useEffect(()=>{
+    if(userData){
+        setSign(true)
+    }
+  },[userData,sign])
   return (
     <AppBar className={ headerClass ? styles.header : styles.header_active}>
+      {add === "admin" ? <AdminModal handleCloseModal={handleCloseModal} openModal={openModal} state="admin"/> : add === "tournament" ? <AdminModal openModal={openModal} handleCloseModal={handleCloseModal} state="tournament"/>:<AdminModal openModal={openModal}  handleCloseModal={handleCloseModal} setAdd={setAdd}/>}
       <Container>
         <Toolbar className={`flex-between ${ headerClass ? styles.header_contain : styles.header_contain_active}`}>
           <Logo/>
@@ -55,18 +78,18 @@ const Header = () => {
                 (
                   <>
                     <FlexStack className={styles.pages}>
-                      <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)}>Home</HeaderTypo>
-                      <HeaderTypo variant="h5" onClick={()=>navigate("#tournaments")}>Tournaments</HeaderTypo>
-                      <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>About Us</HeaderTypo>
-                      <HeaderTypo variant="h5" onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)}>Profile</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_HOME_PAGE) ; handleClose()}}>Home</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>{navigate("/tournaments") ; handleClose()}}>Tournaments</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_ABOUT_PAGE) ; handleClose()}}>About Us</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}}>Profile</HeaderTypo>
                     </FlexStack>
-                    <IconButton onClick={()=>setOpen(true)}>
+                    <IconButton onClick={handleClick}>
                       <AccountCircleRounded sx={{color:'white'}} fontSize='large'/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
+                      anchorEl={anchorEl}
                       open={open}
-                      onClose={()=>setOpen(false)}
                       anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'right',
@@ -75,10 +98,21 @@ const Header = () => {
                       vertical: 'top',
                       horizontal: 'right',
                       }}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
                     >
-                      <MenuItem  onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)} gap={2}>
+                      <MenuItem className={`flex-center`} onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}} gap={2}>
                         <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>{username}</Typography>
+                        <Typography variant='h5'>{userData.username}</Typography>
+                      </MenuItem>
+                      <Divider/>
+                      <MenuItem onClick={()=>{
+                        handleOpenModal();
+                        handleClose();
+                      }} className={`flex-center`}>
+                        <AddIcon fontSize='large'/> 
                       </MenuItem>
                       <Divider/>
                       <MenuItem onClick={()=>handleLogout()}>
@@ -90,13 +124,14 @@ const Header = () => {
                 ):
                 (
                   <>
-                    <IconButton onClick={()=>setOpenMenu(true)}>
+                    <IconButton   onClick={handleClick}>
                       <MenuRoundedIcon/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
-                      open={openMenu}
-                      onClose={()=>setOpenMenu(false)}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
                       anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'right',
@@ -106,26 +141,32 @@ const Header = () => {
                       horizontal: 'right',
                       }}
                     >
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)} gap={2}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}} gap={2}>
                         <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>{username}</Typography>
+                        <Typography variant='h5'>{userData.username}</Typography>
                       </MenuItem>
                       <Divider/>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_HOME_PAGE)} gap={2}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_HOME_PAGE) ; handleClose()}} gap={2}>
                         <HouseRoundedIcon/>
                         <Typography variant='h5'>Home</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate("/#tournaments")}>
+                      <MenuItem onClick={()=>{navigate("/tournaments") ; handleClose()}}>
                         <EmojiEventsRoundedIcon/>
                         <Typography variant='h5'>Tournaments</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_ABOUT_PAGE) ; handleClose()}}>
                         <InfoRoundedIcon/>
                         <Typography variant='h5'>About Us</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_PROFILE_PAGE)}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}}>
                         <AccountCircleRounded/>
                         <Typography variant='h5'>Profile</Typography>
+                      </MenuItem>
+                      <MenuItem onClick={()=>{
+                        handleOpenModal();
+                        handleClose();
+                      }} className={`flex-center`}>
+                        <AddIcon fontSize='large'/> 
                       </MenuItem>
                       <MenuItem onClick={()=>handleLogout()}>
                         <LoginIcon/>
@@ -139,19 +180,20 @@ const Header = () => {
                 !lgSize?
                 (
                   <Box className={`flex-end ${styles.btns}`}>
-                    <Button onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Log in</Button>
-                    <Button onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Sign Up</Button>
+                    <Button onClick={()=>{navigate(process.env.REACT_APP_LOGIN_PAGE) ; handleClose()}}>Log in</Button>
+                    <Button onClick={()=>{navigate(process.env.REACT_APP_SIGNUP_PAGE) ; handleClose()}}>Sign Up</Button>
                   </Box>
                 ):
                 (
                   <>
-                    <IconButton onClick={()=>setOpenMenu(true)}>
+                    <IconButton  onClick={handleClick}>
                       <LoginIcon/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
-                      open={openMenu}
-                      onClose={()=>setOpenMenu(false)}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
                       anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'right',
@@ -161,10 +203,10 @@ const Header = () => {
                       horizontal: 'right',
                       }}
                     >
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_LOGIN_PAGE) ; handleClose()}}>
                         <Typography variant='h5'>Log In</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>
+                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_SIGNUP_PAGE) ; handleClose()}}>
                         <Typography variant='h5'>Sign Up</Typography>
                       </MenuItem>
                     </Menu>

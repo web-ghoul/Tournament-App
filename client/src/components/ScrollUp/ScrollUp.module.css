@@ -21,6 +21,7 @@
 
 .hide{
     visibility: hidden;
+    display: none !important;
 }
 
 @media (max-width:1200px) {
