@@ -68,7 +68,7 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
     console.log(values)
     await axios.post(process.env.REACT_APP_SERVER_URL+"/Admin/addAdmin",{
         ...values
-    }).then((res)=>{
+    }, {withCredentials: true}).then((res)=>{
         console.log(res)
         swal.fire({
             title:"Success",

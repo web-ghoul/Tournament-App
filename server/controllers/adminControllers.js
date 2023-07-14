@@ -3,7 +3,7 @@ const Tournament = require("../models/Tournament");
 
 const addAdmin = (req, res, nxt) => {
   if (req.role == "Admin") {
-    const name = req.body.name;
+    const name = req.body.username;
 
     User.findOneAndUpdate({ Name: name }, { role: "Admin" }, { new: true })
       .then((result) => {

@@ -213,4 +213,5 @@ const gameEnds = async (req, res, next) => {
   }
 };
 
+
 module.exports = { displayTour, gameEnds };

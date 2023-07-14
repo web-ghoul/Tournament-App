@@ -116,7 +116,7 @@ const From  = (props) => {
             })
             const userData = {username:values.username , token:res.data.token}
             Cookies.set('user_data',JSON.stringify(userData) , { expires: 7 });
-            Cookies.set('token',res.data.token , { expires: 7 });
+            //Cookies.set('token',JSON.stringify(res.data.token) , { expires: 7 });
             dispatch(setUserData(userData))
             navigate("/")
             onSubmitProps.resetForm()
