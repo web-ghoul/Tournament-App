@@ -50,7 +50,7 @@ export const router= createBrowserRouter([
                 element:<About/>
             },
             {
-                path:"/graph",
+                path:"/graph/:id",
                 element:<Graph members={8}/>
             },
             {

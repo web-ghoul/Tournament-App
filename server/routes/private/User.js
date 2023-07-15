@@ -54,11 +54,9 @@ router.post(
 router.post("/ForgotPassword" , authControllers.forgetPassword );
 
 router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEmail , (req,res) => {
-  //res.render("reset Password Page")
-  req.session.userId= req.params.userId ;
-  res.status(200).json({user_id :req.params.userId })
-
-}
+    req.session.userId= req.params.userId ;
+    res.status(200).json({user_id :req.params.userId })
+  }
 )
 
 router.post("/ResetPassword" , authControllers.resetPassword ) ;

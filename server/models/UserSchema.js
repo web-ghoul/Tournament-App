@@ -30,10 +30,8 @@ const UserSchema = Schema({
           const response = await axios.get(
             `https://lichess.org/api/user/${val}`
           );
-          console.log(response.data);
           return true;
         } catch (error) {
-          console.log(error.response.data);
           return false;
         }
       },

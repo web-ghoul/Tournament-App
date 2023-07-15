@@ -82,8 +82,6 @@ const displayTour = (req, res, next) => {
     });
 };
 
-
-
 const gameEnds = async (req, res, next) => {
   const game_Id = req.params.game_id;
   const node_Id = req.params.node_id;

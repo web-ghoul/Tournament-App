@@ -18,13 +18,13 @@ import "./Form.css"
 
 const registerSchema = Yup.object().shape({
     email:Yup.string().email().required(),
-    username:Yup.string().required(),
-    password:Yup.string().required(),
+    username_reg:Yup.string().required("Username is Required"),
+    password_reg:Yup.string().required("Password is Required"),
 })
 
 const loginSchema = Yup.object().shape({
-    username:Yup.string().required(),
-    password:Yup.string().required(),
+    username_log:Yup.string().required("Username is Required"),
+    password_log:Yup.string().required("Password is Required"),
 })
 
 const forgotPassSchema = Yup.object().shape({
@@ -37,14 +37,14 @@ const resetPasswordSchema = Yup.object().shape({
 })
 
 const initialLoginValues = {
-    username:"",
-    password:""
+    username_log:"",
+    password_log:""
 }
 
 const initialRegisterValues = {
     email:"",
-    username:"",
-    password:""
+    username_reg:"",
+    password_reg:""
 }
 
 const initialForgotPassValues = {
@@ -119,6 +119,7 @@ const From  = (props) => {
             Cookies.set('token',res.data.token , { expires: 7 });
             dispatch(setUserData(userData))
             navigate("/")
+            Cookies.remove("user_id")
             onSubmitProps.resetForm()
         }).catch((err)=>{
             swal.fire({

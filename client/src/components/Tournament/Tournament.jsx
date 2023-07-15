@@ -6,8 +6,9 @@ import HourglassFullOutlinedIcon from '@mui/icons-material/HourglassFullOutlined
 import React from 'react'
 import {useNavigate} from "react-router-dom"
 
-const Tournament = () => {
+const Tournament = ({props}) => {
   const navigate= useNavigate()
+  
   return (
     <Box className={`flex-center ${styles.tournament}`}>
       <Box component="img" alt="tournament" src={gameImg}/>
@@ -44,7 +45,7 @@ const Tournament = () => {
         </Box>
       </Box>
       <Box className={`flex-center ${styles.btn}`}>
-          <MyButton className='text-upper' onClick={()=>navigate("/graph")}>View Tournament</MyButton>
+          <MyButton className='text-upper' onClick={()=>navigate(`/graph/${props.id}`)}>View Tournament</MyButton>
       </Box>
     </Box>
   )

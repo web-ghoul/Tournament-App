@@ -3,7 +3,6 @@ const Tournament = require("../models/Tournament");
 
 const joinTournament = (req, res, next) => {
   const tournamentId = req.params.id;
-
   Tournament.findOneAndUpdate(
     { _id: tournamentId },
     { $push: { Players: req.userName } },
@@ -43,9 +42,5 @@ const EnterTournament = (req, res, next) => {
     }
   });
 };
-
-
-
-
 
 module.exports = {EnterTournament , joinTournament}

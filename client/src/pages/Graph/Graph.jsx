@@ -4,6 +4,8 @@ import { Box, Container, Typography } from '@mui/material'
 import styles from "./Graph.module.css"
 // import Match from '../../components/Match/Match'
 import {Bracket} from "react-tournament-bracket";
+import axios from "axios"
+
 const Graph = ({members}) => {
     const num = new Array(Math.log2(members)).fill(0)
     let c = members/2
@@ -32,6 +34,10 @@ const Graph = ({members}) => {
             }
         }
     };
+
+    const handleJoin= async()=>{
+        await axios.post(process.env.REACT_APP_SERVER_URL+"/JoinTournament")
+    }
     return (
         <MyBox>
             <Container className={`grid-stretch ${styles.graph_contain}`}>

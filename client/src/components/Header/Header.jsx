@@ -13,7 +13,6 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from "../../store/authSlice"
-import Cookie from "js-cookie"
 import {showing , hiding} from "../../store/scrollSlice"
 import AddIcon from '@mui/icons-material/Add';
 import AdminModal from '../AdminModal/AdminModal'
@@ -49,7 +48,7 @@ const Header = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleLogout = ()=>{
-    Cookie.remove("user_data")
+    Cookies.remove("user_data")
     setSign(false)
     navigate(process.env.REACT_APP_LOGIN_PAGE)
     dispatch(logout())
