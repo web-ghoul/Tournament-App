@@ -21,7 +21,7 @@ function App() {
     let userData = Cookies.get('user_data')
     if(userData){
       userData = JSON.parse(userData)
-      dispatch(setUserData({username:userData.username , token:userData.token}))
+      dispatch(setUserData({username:userData.username}))
     }else{
       if(location.pathname === process.env.REACT_APP_TOURNAMENTS_PAGE || location.pathname === process.env.REACT_APP_PROFILE_PAGE ||location.pathname === process.env.REACT_APP_ABOUT_PAGE){
         navigate("/")

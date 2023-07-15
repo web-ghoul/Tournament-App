@@ -8,17 +8,13 @@ const SignUpForm = ({values , touched, errors , handleBlur, handleChange}) => {
     return (
         <>
             <Typography variant='h3' className={`text-center game-font flex-center`}>Let's get started</Typography>
-            <TextField className={`grid-stretch username`} label="Username" value={values.username_reg} error={Boolean(touched.username_reg) && Boolean(errors.username_reg)} name='username_reg' type="username" onChange={handleChange} id="username_reg" helperText={touched.username_reg && errors.username_reg} onBlur={handleBlur}/>
-
+            <TextField className={`grid-stretch username`} label="Username" value={values.username} error={Boolean(touched.username) && Boolean(errors.username)} name='username' type="username" onChange={handleChange} id="username" helperText={touched.username && errors.username} onBlur={handleBlur}/>
             <TextField className={`grid-stretch email`} label="Email" name='email' value={values.email} onChange={handleChange} id="email" error={Boolean(touched.email) && Boolean(errors.email)} helperText={touched.email && errors.email} onBlur={handleBlur}/>
-
-            <TextField className={`grid-stretch pass`} label="Password" error={Boolean(touched.password_reg) && Boolean(errors.password_reg)} name='password_reg' type="password" value={values.password_reg} onChange={handleChange} id="password_reg" helperText={touched.password_reg && errors.password_reg} onBlur={handleBlur}/>
-
+            <TextField className={`grid-stretch pass`} label="Password" error={Boolean(touched.password) && Boolean(errors.password)} name='password' type="password" value={values.password} onChange={handleChange} id="password" helperText={touched.password && errors.password} onBlur={handleBlur}/>
             <Box className={`flex-center btn`}>
                 {/*onClick Wait Till End*/}
                 <MyButton type="submit">Sign Up</MyButton>
             </Box>
-            
             <Box className={`flex-center have_acc`}>
                 <Typography variant='h5'>Already have an account?</Typography>
                 <Button onClick={()=>navigate(process.env.REACT_APP_LOGIN_PAGE)}>Sign In</Button>

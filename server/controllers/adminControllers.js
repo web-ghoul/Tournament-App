@@ -1,42 +1,45 @@
 const User = require("../models/UserSchema");
 const Tournament = require("../models/Tournament");
 
-const addAdmin = (req, res, next) => {
+const addAdmin = (req, res, nxt) => {
   if (req.role == "Admin") {
-    const name = req.body.username;
+    const name = req.body.name;
+
     User.findOneAndUpdate({ Name: name }, { role: "Admin" }, { new: true })
       .then((result) => {
-        if (result) res.status(200).json({message:"admin Added"});
-        else res.status(404).json({message:"user not found !"});
+        console.log(result);
+        if (result) res.send("admin Added");
+        else res.send("user not found !");
       })
       .catch((err) => {
-        res.status(403).json({message:err});
+        console.log(err);
+        res.send(err);
       });
   } else {
-    res.status(403).json({message:"You are not authorized"});
+    res.send("You are not authorized");
   }
 };
- 
-const addTournament = (req, res, next) => { 
+
+const addTournament = (req, res, nxt) => {
   if (req.role == "Admin") {
-    const { name, type, game_time, max, description, startsAt } = req.body;
+    const { name, type, time, max, description, startsAt } = req.body;
+
     const Tourn = new Tournament({
       Name: name,
-      Time: game_time,
-      Max: +max,
+      Time: time,
+      Max: max,
       Description: description,
       StartsAt: startsAt,
     });
     Tourn.save()
       .then((result) => {
-        res.status(200).json({message:"Tournament added Successfully!!"});
+        res.send("Tournament saved !!");
       })
       .catch((err) => {
-        console.log(err)
-        res.status(403).json({message:"Error"});
+        console.log(err);
       });
   } else {
-    res.status(403).json({message:"You are not authorized"});
+    res.send("You are not authorized");
   }
 };
 

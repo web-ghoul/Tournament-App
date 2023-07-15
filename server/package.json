@@ -2,10 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Chess tournament APi",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon start"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Amr006",
   "license": "ISC",

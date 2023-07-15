@@ -1,6 +1,7 @@
 .header{
     background-color: transparent !important;
     box-shadow: none !important;
+    transition: var(--trans);
 }
 
 .header_contain{

@@ -616,13 +616,14 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
           transporter
             .sendMail(mailOptions)
             .then(() => {
-              res.status(200).json({
+              res.json({
                 status: "pending",
                 message: "verification email sent",
               });
             })
             .catch((err) => {
-              res.status(403).json({message:err})
+              console.log(err);
+              
             });
         })
         .catch((err) => {
@@ -638,19 +639,18 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
 };
 
 const register = (req, res, next) => {
-  console.log(req.body)
-  User.findOne({ Name: req.body.username_reg}).then((result) => {
+  User.findOne({ Name: req.body.username ,Email:req.body.email}).then((result) => {
     if (result) {
       res.status(403).json({
         message: "Username Already Exists!",
       });
     } else {
-      bcrypt.hash(req.body.password_reg, 10, function (err, hashedPass) {
+      bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
         if (err) {
           console.log(err);
         }
         let user = new User({
-          Name: req.body.username_reg,
+          Name: req.body.username,
           Password: hashedPass,
           Email: req.body.email,
         });
@@ -661,9 +661,8 @@ const register = (req, res, next) => {
             res.status(200).json({message:"Account Created Successfully"})
           })
           .catch((err) => {
-            console.log(err)
             res.status(403).json({
-              message: "Username hasn't account on leChess.com",
+              message: "An Error Occurred!",
             });
           });
       });
@@ -672,7 +671,6 @@ const register = (req, res, next) => {
 };
 
 const verify = (req, res, next) => {
-  console.log(req.params)
   let { userId, uniqueString } = req.params;
   console.log(uniqueString);
   Userverification.find({ userId })
@@ -740,22 +738,23 @@ const verify = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  User.findOne({ Name: req.body.username_log })
+  User.findOne({ Name: req.body.username })
     .then((user) => {
       if (user) {
-        if (!user.verified) {
+        //Replace false with !user.verified After Finishing App
+        if (false) {
           res.status(403).json({
             status: "failed",
             message: "User is not verified",
           });
         } else {
           bcrypt.compare(
-            req.body.password_log,
+            req.body.password,
             user.Password,
             function (err, result) {
               if (err) {
                 res.status(403).json({
-                  message: err,
+                  error: err,
                 });
               }
               if (result) {
@@ -786,7 +785,7 @@ const login = (req, res, next) => {
       }
     })
     .catch((err) => {
-      res.status(500).json({message:err});
+      res.status(500).json(err);
     });
 };
 
@@ -840,7 +839,7 @@ const otherRegister = (req, res, next, userProfile) => {
 
 const forgetPassword = (req, res, next) => {
   const userName = req.body.forgot_pass_username;
-  console.log(req.body)
+
   User.findOne({ Name: userName })
     .then((result) => {
       if (result) {
@@ -856,11 +855,14 @@ const forgetPassword = (req, res, next) => {
 
 const resetEmail = (req, res, next) => {
   let { userId, uniqueString } = req.params;
+  console.log(userId);
   Userverification.find({ userId: userId })
     .then((result) => {
       if (result.length) {
         const { expireAt } = result[0];
         const hashedUniqueString = result[0].uniqueString;
+        console.log(result);
+
         if (expireAt < Date.now()) {
           Userverification.deleteOne({ _id: userId })
             .then((result) => {
@@ -908,9 +910,10 @@ const resetEmail = (req, res, next) => {
 };
 
 const resetPassword = (req, res, next) => {
-  console.log(req.body)
   const userId = req.body.user_id;
+  console.log(userId);
   const newPassword = req.body.new_password;
+
   bcrypt.hash(newPassword, 10, (err, hashedPass) => {
     if (err) {
       res.json({
@@ -925,15 +928,12 @@ const resetPassword = (req, res, next) => {
       )
         .then((result) => {
           console.log(result);
-          if (result) res.status(200).json({message:"password is changed"});
-          else res.status(403).json({
-            message:"error while resetting the password"
-          });
+          if (result) res.send("password is changed");
+          else res.send("error while reseting the password");
         })
         .catch((err) => {
-          res.status(403).json({
-            message:"error while resetting the password"
-          });
+          console.log(err);
+          res.send("error while reseting the password");
         });
     }
   });
