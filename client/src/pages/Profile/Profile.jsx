@@ -18,8 +18,17 @@ const Profile = () => {
       console.log(username)
       axios.get(`https://lichess.org/api/user/${username}`)
       .then((res)=>{
+        console.log(res)
         if(res.data && res.data.id !== "null"){
           setUserData(res.data)
+        }else
+        {
+          swal({
+            title: "Error",
+            text: "User doesn't exist",
+            icon: "error",
+            dangerMode: true,
+          })
         }
       })
       .catch(()=>{

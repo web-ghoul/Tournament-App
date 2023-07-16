@@ -3,7 +3,7 @@ const Tournament = require("../models/Tournament");
 const lodash = require("lodash");
 const axios = require("axios");
 
-const displayTour = (req, res, next) => {
+const displayNodes = (req, res, next) => {
   const tournament_Id = req.params.id;
 
   Node.find({ tournamentID: tournament_Id })
@@ -213,4 +213,33 @@ const gameEnds = async (req, res, next) => {
   }
 };
 
-module.exports = { displayTour, gameEnds };
+const displayTournaments = (req,res,next) => {
+
+  Tournament.find()
+  .then((result) => {
+    if(result)
+    {
+      res.status(200).json({
+        data : result
+      })
+    }
+    else
+    {
+      res.status(200).json({
+        message : "No Tournaments !"
+      })
+    }
+  }
+  )
+  .catch((err) => {
+    res.status(404).json({
+      error : err
+    })
+  }
+  )
+
+  
+}
+
+
+module.exports = { displayNodes , gameEnds ,  displayTournaments};

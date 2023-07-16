@@ -50,6 +50,7 @@ const Header = () => {
   };
   const handleLogout = ()=>{
     Cookie.remove("user_data")
+    Cookie.remove("token")
     setSign(false)
     navigate(process.env.REACT_APP_LOGIN_PAGE)
     dispatch(logout())
