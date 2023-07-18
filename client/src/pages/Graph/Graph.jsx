@@ -1,43 +1,73 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {MyBox} from "../../components/MyBox/MyBox"
 import { Box, Container, Typography } from '@mui/material'
 import styles from "./Graph.module.css"
 // import Match from '../../components/Match/Match'
-import {Bracket} from "react-tournament-bracket";
-const Graph = ({members}) => {
-    const num = new Array(Math.log2(members)).fill(0)
-    let c = members/2
-    const game1 = {
-        id: "1",
-        name: "finals",
-        scheduled: Number(new Date()),
-        sides: {
-            home: {
-                team: {
-                    id: "10",
-                    name: "Team meu"
-                },
-                score: {
-                    score: null
-                },
-            },
-            visitor: {
-                team: {
-                    id: "11",
-                    name: "Team pau"
-                },
-                score: {
-                    score: null
-                },
-            }
-        }
-    };
+import {Bracket,BracketGame} from "react-tournament-bracket";
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from "axios"
+import Match from '../../components/Match/Match';
+
+const Graph = () => {
+    // const num = new Array(Math.log2(members)).fill(0)
+    // let c = members/2
+    const navigate = useNavigate()
+    const {id} = useParams()
+    const [graph , setGraph] = useState([])
+    const [games, setGames] = useState([])
+
+    const handleDisplayGraph = useCallback(async()=>{
+        await axios.post(process.env.REACT_APP_SERVER_URL+`/displayGraph/${id}`,{},{
+            withCredentials:true
+        }).then((res)=>{
+            setGraph(res.data.data)
+            const data = res.data.data
+            let matches=[]
+            data.map((d)=>{
+                const game={
+                    id:d.gameID,
+                    name: `Round ${d.round}`,
+                    scheduled: Number(new Date()),
+                    sides: {
+                        home: {
+                            team: {
+                                id: d.userName1,
+                                name: d.userName1
+                            },
+                        },
+                        visitor: {
+                            team: {
+                                id: d.userName2,
+                                name: d.userName2
+                            },
+                        }
+                    }
+                }
+                matches.push(game)
+            })
+            setGames(matches)
+            console.log(res)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },[])
+    
+    useEffect(()=>{
+        handleDisplayGraph()
+    },[])
+
     return (
         <MyBox>
             <Container className={`grid-stretch ${styles.graph_contain}`}>
                 <Typography variant='h2' className={`tac`}>Tournament Graph</Typography>
-                <Box className={`${styles.graph}`}>
-                    <Bracket game={game1}/>
+                <Box className={` grid-start ${styles.graph}`}>
+                    {/* {
+                        games.length > 0 && (
+                            games.map((g,i)=>(
+                                <Match key={i} game={g}/>
+                            ))
+                        ) 
+                    } */}
                     {/* <Box className={`grid-stretch`} sx={{minWidth:`${num.length*300}px`}}>
                         <Box className={`grid-stretch ${styles.titles}`} sx={{gridTemplateColumns:`repeat(${num.length},1fr)`}}>
                             {

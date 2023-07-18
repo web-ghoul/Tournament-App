@@ -3,8 +3,8 @@
 }
 
 .graph{
-    overflow: scroll; 
-    scrollbar-width: thin;
+    /* overflow: scroll;  */
+    /* scrollbar-width: thin; */
 }
 
 .graph > div{

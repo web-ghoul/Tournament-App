@@ -3,8 +3,8 @@ import { Box } from '@mui/material'
 
 export const MyBox = styled(Box)(({theme})=>(
     {
-        paddingBottom:"50px",
-        paddingTop:"50px",
+        paddingBottom:"100px",
+        paddingTop:"100px",
         [theme.breakpoints.down("md")]:{
             paddingBottom:"75px",
             paddingTop:"75px",
