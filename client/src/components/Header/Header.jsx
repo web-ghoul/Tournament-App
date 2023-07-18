@@ -48,13 +48,12 @@ const Header = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleLogout = ()=>{
-<<<<<<< HEAD
-    Cookies.remove("user_data")
-    Cookies.remove("token")
-=======
-    Cookie.remove("user_data")
-    Cookie.remove("token")
->>>>>>> 3146c5c02886a5f66a95df0e5ce32ec65d96c5b7
+    try{
+      Cookies.remove("user_data")
+      Cookies.remove("token")
+    }catch(err){
+      console.log(err)
+    }
     setSign(false)
     navigate(process.env.REACT_APP_LOGIN_PAGE)
     dispatch(logout())

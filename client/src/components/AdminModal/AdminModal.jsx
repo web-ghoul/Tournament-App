@@ -18,7 +18,6 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
         username:Yup.string().required(),
     })
 
-<<<<<<< HEAD
     const initialAddTournamentValues = {
         name:"",
         description:"",
@@ -36,27 +35,6 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
         type:Yup.string().required(),
         time:Yup.string().required(),
         max:Yup.number().required(),
-=======
-  const handleSubmitAdmin = async(values,onSubmitProps)=>{
-    console.log(values)
-    await axios.post(process.env.REACT_APP_SERVER_URL+"/Admin/addAdmin",{
-        ...values
-    }, {withCredentials: true}).then((res)=>{
-        console.log(res)
-        swal.fire({
-            title:"Success",
-            text:res.data.message,
-            icon:"success"
-        })
-        onSubmitProps.resetForm()
-    }).catch((err)=>{
-        swal.fire({
-            title:"Error",
-            text:"error",
-            icon:"error"
-        })
-        onSubmitProps.resetForm()
->>>>>>> 3146c5c02886a5f66a95df0e5ce32ec65d96c5b7
     })
 
     const optionsType = [
