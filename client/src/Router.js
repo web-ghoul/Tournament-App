@@ -46,13 +46,14 @@ export const router= createBrowserRouter([
                 element:<Tournaments/>
             },
             {
+                path:"/graph/:id",
+                element:<Graph/>
+            },
+            {
                 path:process.env.REACT_APP_ABOUT_PAGE,
                 element:<About/>
             },
-            {
-                path:"/graph",
-                element:<Graph members={8}/>
-            },
+            
             {
                 path:"*",
                 element:<Error/>

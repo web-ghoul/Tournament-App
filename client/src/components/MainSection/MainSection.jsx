@@ -28,9 +28,9 @@ const MainSection = () => {
           )
         }
         </Box>
-        <Box className="flex-center image">
+        {/* <Box className="flex-center image">
           <Box component="img" className={styles.image} alt="banner" src={verseImg}/>
-        </Box>
+        </Box> */}
       </Container>
     </MyBox>
   )

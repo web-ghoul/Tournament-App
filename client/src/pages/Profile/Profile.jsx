@@ -15,7 +15,6 @@ const Profile = () => {
   const [userData , setUserData] = useState(null)
   const getUserData = useCallback(
     async()=>{
-      console.log(username)
       axios.get(`https://lichess.org/api/user/${username}`)
       .then((res)=>{
         if(res.data && res.data.id !== "null"){
