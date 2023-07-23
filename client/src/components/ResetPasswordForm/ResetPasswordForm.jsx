@@ -12,7 +12,6 @@ const ResetPasswordForm = ({values , touched, errors , handleBlur, handleChange}
             <TextField className={`grid-stretch pass`} label="Confirm Password" error={Boolean(touched.confirm_password) && Boolean(errors.confirm_password)} name='confirm_password' type="password" value={values.confirm_password} onChange={handleChange} id="confirm_password" helperText={touched.confirm_password && errors.confirm_password} onBlur={handleBlur}/>
             
             <Box className={`flex-center btn`}>
-                {/*onClick Wait Till End*/}
                 <MyButton type="submit">Reset Password</MyButton>
             </Box>
         </>

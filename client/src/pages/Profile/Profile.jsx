@@ -5,13 +5,13 @@ import {MyBox} from "../../components/MyBox/MyBox"
 import UserCard from "../../components/UserCard/UserCard"
 import GameStat from "../../components/GameStat/GameStat"
 import axios from "axios"
-import{useNavigate} from "react-router-dom"
+import{useNavigate, useParams} from "react-router-dom"
 import swal from "sweetalert"
 import { useSelector } from 'react-redux'
 
 const Profile = () => {
-  const {username} = useSelector((state)=>state.auth)
   const navigate = useNavigate()
+  const {username} = useParams()
   const [userData , setUserData] = useState(null)
   const getUserData = useCallback(
     async()=>{

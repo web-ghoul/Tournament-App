@@ -1,0 +1,47 @@
+.about_contain{
+    gap: 50px;
+}
+
+.member{
+    background-color: var(--indigo);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.member .info{
+    gap: 20px;
+}
+
+.member .photo{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.member .photo img{
+    width: 100%;
+    transform: scale(1.4);
+    height: 100%;
+    border-radius: 50%;
+}
+
+.member .contact{
+    gap: 20px;
+}
+
+.member .contact .icons{
+    gap: 10px;
+}
+
+.member .contact .icons button{
+    padding: 10px !important;
+}
+
+.member .contact .icons button:hover{
+    background-color: var(--body-bg) !important;
+}
+
+.member .contact .icons button svg{
+    font-size: 30px;
+}

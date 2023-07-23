@@ -2,15 +2,6 @@
     gap: 40px;
 }
 
-.graph{
-    /* overflow: scroll;  */
-    /* scrollbar-width: thin; */
-}
-
-.graph > div{
-    gap: 50px;
-    height: 100vh;
-}
 
 .titles{
     gap:50px;
@@ -32,3 +23,13 @@
     align-content: stretch !important;
     align-self: stretch !important;
 }
+
+
+.match{
+    overflow: scroll;
+    height: 800px;
+    width: 100%;
+    background-color:#210d90 !important;
+    padding: 20px;
+}
+

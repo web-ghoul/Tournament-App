@@ -15,6 +15,7 @@ const Tournament = (props) => {
   const navigate= useNavigate()
   const [exist , setExist] = useState(false)
   const calender = props.data.StartsAt.split("T")
+  const [data , setData] = useState(props.data)
   const time = calender[1].split(".")[0] 
   const date = calender[0] 
 
@@ -24,9 +25,13 @@ const Tournament = (props) => {
     }).then((res)=>{
       swal.fire({
         title: "Success",
-        text: res.data.message && "",
+        text: res.data.message,
         icon: "success",
       })
+      let d =data
+      d.Players.push(username)
+      setData(d)
+      setExist(true)
     }).catch((err)=>{
       swal.fire({
         title: "Error",
@@ -40,14 +45,8 @@ const Tournament = (props) => {
     await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${props.data._id}`,{},{
       withCredentials:true
     }).then((res)=>{
-      // swal.fire({
-      //   title: "Success",
-      //   text: res.data.message && "",
-      //   icon: "success",
-      // })
       navigate(`../graph/${props.data._id}`)
     }).catch((err)=>{
-      console.log(err)
       swal.fire({
         title: "Error",
         text: err.response.data.message && "",
@@ -66,7 +65,7 @@ const Tournament = (props) => {
     <Box className={`flex-center ${styles.tournament}`}>
       <Box component="img" alt="tournament" src={gameImg}/>
       <Box className={`grid-center ${styles.title}`}>
-        <Typography variant='h3' className='game-font text-upper'>{props.data.Name}</Typography>
+        <Typography variant='h3' className='game-font text-upper'>{data.Name}</Typography>
         <Box className={`flex-start ${styles.timing}`}>
           <Box className="flex-center">
             <HourglassFullOutlinedIcon fontSize='small' className={styles.icon}/>
@@ -85,15 +84,15 @@ const Tournament = (props) => {
           </Box> */}
           <Box className={`grid-center text-center  ${styles.border}`}>
             <Typography variant="subtitle2" className='text-upper'>Match Time</Typography>
-            <Typography variant="subtitle2" className='text-upper'>{props.data.Time}</Typography>
+            <Typography variant="subtitle2" className='text-upper'>{data.Time}</Typography>
           </Box>
           <Box className={`grid-center text-center  ${styles.border}`}>
             <Typography variant="subtitle2" className='text-upper'>Max Players</Typography>
-            <Typography variant="subtitle2" className='text-upper'>{props.data.Max}</Typography>
+            <Typography variant="subtitle2" className='text-upper'>{data.Max}</Typography>
           </Box>
           <Box className={`grid-center text-center  ${styles.border}`}>
             <Typography variant="subtitle2" className='text-upper'>Enrolled</Typography>
-            <Typography variant="subtitle2" className='text-upper'>11</Typography>
+            <Typography variant="subtitle2" className='text-upper'>{data.Players.length}</Typography>
           </Box>
         </Box>
       </Box>

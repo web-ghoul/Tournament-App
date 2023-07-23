@@ -46,7 +46,7 @@ export const router= createBrowserRouter([
                 element:<Tournaments/>
             },
             {
-                path:"/graph/:id",
+                path:process.env.REACT_APP_GRAPH_PAGE,
                 element:<Graph/>
             },
             {

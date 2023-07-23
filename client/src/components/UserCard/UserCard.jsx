@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, IconButton, Typography } from '@mui/material'
 import {MyButton} from "../MyButton/MyButton"
 import styles from "./UserCard.module.css"
-import userImg from "../../static/images/profile-logo.png"
+import userImg from "../../static/images/avatar.jpg"
 import PersonAddAlt1RoundedIcon from '@mui/icons-material/PersonAddAlt1Rounded';
 
 const UserCard = ({username, rating}) => {

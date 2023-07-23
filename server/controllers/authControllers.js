@@ -594,7 +594,7 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
   const currentUrl = "http://localhost:3000";
   const uniqueString = uuidv4() + _id;
 
-  console.log(uniqueString);
+  //console.log(uniqueString);
 
   const mailOptions = options(type, currentUrl, uniqueString, Email, _id);
   bcrypt.hash(uniqueString, 10, (err, hashedUniqueString) => {
@@ -647,7 +647,9 @@ const register = (req, res, next) => {
     } else {
       bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
         if (err) {
-          console.log(err);
+          res.status(404).json({
+            error: err,
+          });
         }
         let user = new User({
           Name: req.body.username,
@@ -672,11 +674,11 @@ const register = (req, res, next) => {
 
 const verify = (req, res, next) => {
   let { userId, uniqueString } = req.params;
-  console.log(uniqueString);
+  //console.log(uniqueString);
   Userverification.find({ userId })
     .then((result) => {
       if (result.length) {
-        console.log(result);
+        //console.log(result);
         const { expireAt } = result[0];
         const hashedUniqueString = result[0].uniqueString;
         console.log(hashedUniqueString);
@@ -685,23 +687,32 @@ const verify = (req, res, next) => {
             .then((result) => {
               User.deleteOne({ _id: userId })
                 .then((result) => {
-                  console.log("link has expired please sign up again");
+                  res.status(404).json({
+                    message: "link has expired please sign up again",
+                  });
                 })
                 .catch((err) => {
-                  console.log(err);
+                  res.status(404).json({
+                    error : err,
+                  });
                 });
               console.log("deleted verification successfully");
             })
             .catch((err) => {
-              console.log(err);
+              res.status(404).json({
+                error : err,
+              });
             });
         } else {
-          console.log("amr");
-          console.log(uniqueString);
-          console.log(hashedUniqueString);
+        
+          //console.log(uniqueString);
+         //console.log(hashedUniqueString);
           bcrypt.compare(uniqueString, hashedUniqueString, (err, result) => {
             if (err) {
-              console.log("error on compare");
+              res.status(404).json({
+                error : err,
+              
+              });
             } else {
               if (result) {
                 User.updateOne(
@@ -713,7 +724,7 @@ const verify = (req, res, next) => {
                     Userverification.deleteOne({ userId: userId })
                       .then((result) => {
                         console.log("the email is verified");
-                        res.redirect("/login");
+                        //res.redirect("/login");
                       })
                       .catch((err) => {
                         console.log("error while deleting verification");
@@ -789,54 +800,6 @@ const login = (req, res, next) => {
     });
 };
 
-const otherRegister = (req, res, next, userProfile) => {
-  //res.send(userProfile)
-
-  const email = userProfile._json.email;
-  const name = userProfile._json.name;
-
-  User.findOne({ Email: email }).then((user) => {
-    if (user) {
-      let token = jwt.sign(
-        { Id: user.id, Name: user.Name },
-        process.env.SECRET_KEY,
-        {
-          expiresIn: "1h",
-        }
-      );
-
-      res.cookie("token", token, { httpOnly: true });
-
-      res.redirect("/Home");
-    } else {
-      let user = new User({
-        Name: name,
-        Email: email,
-      });
-      user
-        .save()
-        .then((user) => {
-          let token = jwt.sign(
-            { Id: user.id, Name: user.Name },
-            process.env.SECRET_KEY,
-            {
-              expiresIn: "1h",
-            }
-          );
-
-          res.cookie("token", token, { httpOnly: true });
-
-          res.redirect("/Home");
-        })
-        .catch((error) => {
-          res.json({
-            message: "An error occured ! ",
-          });
-        });
-    }
-  });
-};
-
 const forgetPassword = (req, res, next) => {
   const userName = req.body.forgot_pass_username;
 
@@ -855,7 +818,7 @@ const forgetPassword = (req, res, next) => {
 
 const resetEmail = (req, res, next) => {
   let { userId, uniqueString } = req.params;
-  console.log(userId);
+  //console.log(userId);
   Userverification.find({ userId: userId })
     .then((result) => {
       if (result.length) {
@@ -868,7 +831,9 @@ const resetEmail = (req, res, next) => {
             .then((result) => {
               User.deleteOne({ _id: userId })
                 .then((result) => {
-                  console.log("link has expired please sign up again");
+                  res.status(404).json({
+                    message : "link has expired please sign up again",
+                  });;
                 })
                 .catch((err) => {
                   console.log(err);
@@ -879,11 +844,14 @@ const resetEmail = (req, res, next) => {
               console.log(err);
             });
         } else {
-          console.log(uniqueString);
-          console.log(hashedUniqueString);
+          //console.log(uniqueString);
+          //console.log(hashedUniqueString);
           bcrypt.compare(uniqueString, hashedUniqueString, (err, result) => {
             if (err) {
-              console.log("error on compare");
+              res.status(404).json({
+                    error : err,
+                    message : "error on compare"
+                  });
             } else {
               if (result) {
                 Userverification.deleteOne({ userId: userId })
@@ -911,7 +879,7 @@ const resetEmail = (req, res, next) => {
 
 const resetPassword = (req, res, next) => {
   const userId = req.body.user_id;
-  console.log(userId);
+  //console.log(userId);
   const newPassword = req.body.new_password;
 
   bcrypt.hash(newPassword, 10, (err, hashedPass) => {
@@ -943,7 +911,6 @@ module.exports = {
   register,
   verify,
   login,
-  otherRegister,
   resetEmail,
   resetPassword,
   forgetPassword,

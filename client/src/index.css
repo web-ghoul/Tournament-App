@@ -46,6 +46,31 @@ body{
   scroll-behavior: smooth;
 }
 
+a{
+  background-color: #fff;
+  text-decoration: none;
+  color: #fff;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 4px var(--header-bg);
+	background-color: var(--header-bg);
+}
+
+::-webkit-scrollbar
+{
+	width: 8px;
+  height: 8px;
+	background-color: var(--body-bg);
+}
+
+::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+	background-color: var(--body-bg);
+}
+
 .text-center{
   text-align: center ;
 }
@@ -96,6 +121,12 @@ body{
   display: grid !important;
   align-items: center;
   justify-content: flex-start !important;
+}
+
+.grid-end{
+  display: grid !important;
+  align-items: center;
+  justify-content: flex-end !important;
 }
 
 .game-font{

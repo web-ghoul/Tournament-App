@@ -20,11 +20,24 @@ const AdminRoutes = require('./routes/private/Admin')
 const User = require('./models/UserSchema')
 
 //app.use(express.static("public"));
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1',
+
+    // your origins here
+  ],
+  credentials: true,
+  exposedHeaders: ['set-cookie'],
+};
+
+
 app.use(express.json()) //can remove
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet())
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(session({
   secret: 'your-secret-key',

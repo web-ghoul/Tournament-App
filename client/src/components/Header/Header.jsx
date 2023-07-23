@@ -22,19 +22,25 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const lgSize = useMediaQuery("(max-width:1200px)")
+  const username = useSelector((state)=>state.auth.username)
   const [isAdmin,setIsAdmin] = useState(false)
   const [openModal, setOpenModal] = useState(false);
   const [headerClass , setHeaderClass] = useState(true)
   const [add, setAdd] =useState(null)
   const [sign , setSign] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   let userData = Cookies.get('user_data')
+
   const open = Boolean(anchorEl);
+
   const handleOpenModal = () => setOpenModal(true);
+
   const handleCloseModal = () => {
     setOpenModal(false);
     setAdd(null)
   }
+
   window.onscroll = ()=>{
     if(window.scrollY === 0){
       setHeaderClass(true)
@@ -44,12 +50,18 @@ const Header = () => {
       dispatch(showing())
     }
   }
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleLogout = ()=>{
-    Cookies.remove("user_data")
-    Cookies.remove("token")
+    try{
+      Cookies.remove("user_data")
+      Cookies.remove("token")
+    }catch(err){
+      console.log(err)
+    }
     setSign(false)
     navigate(process.env.REACT_APP_LOGIN_PAGE)
     dispatch(logout())
@@ -65,6 +77,7 @@ const Header = () => {
         setSign(true)
     }
   },[userData,sign])
+
   return (
     <AppBar className={ headerClass ? styles.header : styles.header_active}>
       {add === "admin" ? <AdminModal handleCloseModal={handleCloseModal} openModal={openModal} state="admin"/> : add === "tournament" ? <AdminModal openModal={openModal} handleCloseModal={handleCloseModal} state="tournament"/>:<AdminModal openModal={openModal}  handleCloseModal={handleCloseModal} setAdd={setAdd}/>}
@@ -81,7 +94,7 @@ const Header = () => {
                       <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_HOME_PAGE) ; handleClose()}}>Home</HeaderTypo>
                       <HeaderTypo variant="h5" onClick={()=>{navigate("/tournaments") ; handleClose()}}>Tournaments</HeaderTypo>
                       <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_ABOUT_PAGE) ; handleClose()}}>About Us</HeaderTypo>
-                      <HeaderTypo variant="h5" onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}}>Profile</HeaderTypo>
+                      <HeaderTypo variant="h5" onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}}>Profile</HeaderTypo>
                     </FlexStack>
                     <IconButton onClick={handleClick}>
                       <AccountCircleRounded sx={{color:'white'}} fontSize='large'/>
@@ -103,7 +116,7 @@ const Header = () => {
                         'aria-labelledby': 'basic-button',
                       }}
                     >
-                      <MenuItem className={`flex-center`} onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}} gap={2}>
+                      <MenuItem className={`flex-center`} onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}} gap={2}>
                         <AccountCircleRounded fontSize='large'/>
                         <Typography variant='h5'>{userData.username}</Typography>
                       </MenuItem>
@@ -158,7 +171,7 @@ const Header = () => {
                         <InfoRoundedIcon/>
                         <Typography variant='h5'>About Us</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}}>
+                      <MenuItem onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}}>
                         <AccountCircleRounded/>
                         <Typography variant='h5'>Profile</Typography>
                       </MenuItem>

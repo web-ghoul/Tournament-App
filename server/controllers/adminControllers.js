@@ -3,20 +3,33 @@ const Tournament = require("../models/Tournament");
 
 const addAdmin = (req, res, nxt) => {
   if (req.role == "Admin") {
-    const name = req.body.name;
+    const name = req.body.username;
 
     User.findOneAndUpdate({ Name: name }, { role: "Admin" }, { new: true })
       .then((result) => {
         console.log(result);
-        if (result) res.send("admin Added");
-        else res.send("user not found !");
+        if (result)
+        {
+          res.status(200).json({
+            message : "Admin Added !!"
+          })
+        } 
+        else
+        {
+          res.status(404).json({
+            error : "user not found !" 
+          })
+        }
       })
       .catch((err) => {
-        console.log(err);
-        res.send(err);
+        res.status(404).json({
+          error : err 
+        })
       });
   } else {
-    res.send("You are not authorized");
+    res.status(403).json({
+      error : "Unauthorized user ! "
+    })
   }
 };
 
@@ -33,13 +46,19 @@ const addTournament = (req, res, nxt) => {
     });
     Tourn.save()
       .then((result) => {
-        res.send("Tournament saved !!");
+        res.status(200).json({
+          message : "Tournament Added !"
+        })
       })
       .catch((err) => {
-        console.log(err);
+        res.status(404).json({
+          error : err 
+        })
       });
   } else {
-    res.send("You are not authorized");
+    res.status(403).json({
+      error : "Unauthorized user ! "
+    })
   }
 };
 

@@ -10,7 +10,7 @@
     color:var(--primary) !important;
     gap: 50px;
     max-height: 80vh;
-    max-width: 80vw;
+    width: 50vw;
     overflow-y: scroll;
 }
 
@@ -59,4 +59,42 @@
 
 .starts_at{
     gap: 20px;
+}
+
+@media (max-width:1200px) {
+    .options_buttons{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .modal{
+        padding: 35px;
+        border-radius: 9px;
+        gap: 45px;
+        width: 60vw;
+    }
+}
+
+@media (max-width:992px) {
+    .modal{
+        padding: 30px;
+        border-radius: 8px;
+        gap: 40px;
+        width: 70vw;
+    }
+}
+
+@media (max-width:768px) {
+    .modal{
+        padding: 25px;
+        border-radius: 6px;
+        gap: 30px;
+        width: 80vw;
+    }
+    .btns{
+        grid-template-columns: repeat(1,1fr);
+    }
+
+    .btns button{
+        padding: 5px !important;
+        font-size: 14px !important;
+    }
 }

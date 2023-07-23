@@ -48,7 +48,7 @@ router.post(
 router.post(
   "/EnterTournament/:id",
   authenticateMidd,
-  userControllers.EnterTournament , tournamentControllers.displayTour
+  userControllers.EnterTournament , tournamentControllers.displayNodes
 );
 
 router.post("/ForgotPassword" , authControllers.forgetPassword );
@@ -63,7 +63,7 @@ router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEm
 
 router.post("/ResetPassword" , authControllers.resetPassword ) ;
 
-router.get("/Tournament/:id" , tournamentControllers.displayTour) ;
+router.get("/Tournament/:id" , tournamentControllers.displayTournaments) ;
 
 router.post("/Node/:game_id/:node_id" , authenticateMidd , tournamentControllers.gameEnds) ;
 

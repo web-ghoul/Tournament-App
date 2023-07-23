@@ -7,10 +7,8 @@ import { Formik } from 'formik';
 import * as Yup from "yup"
 import axios from "axios"
 import swal from "sweetalert2"
-import {useSelector} from "react-redux"
 
 const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
-    const token = useSelector((state)=>state.auth.token)
     const initialAddAdminValues = {
         username:"",
     }
@@ -217,7 +215,7 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
         >
             <Box className={`grid-stretch ${styles.modal}`}>
                 <Typography className={`tac`} variant='h3'>Choose Option</Typography>
-                <Box className={`grid-stretch ${styles.btns}`}>
+                <Box className={`grid-stretch ${styles.btns} ${styles.options_buttons}`}>
                     <IconButton onClick={()=>setAdd("tournament")} className={`grid-center`}>
                     <EmojiEventsIcon fontSize={"large"}/>
                     <Typography variant='h4'>Create Tournament</Typography>

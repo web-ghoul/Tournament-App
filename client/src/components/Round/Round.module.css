@@ -1,0 +1,26 @@
+.round{
+    position: relative;
+    transition: var(--trans);
+    padding: 20px 0px;
+    border-radius:10px ;
+}
+
+.round:hover{
+    transform: scale(1.01);
+}
+
+.round h5{
+    position: absolute;
+    top: 10px;
+    padding: 10px;
+    background-color: var(--body-bg);
+    margin-right: 150px;
+    width: 220px;
+    border-radius: 6px;
+    text-align: center;
+    transition: var(--trans);
+}
+
+.round:hover h5{
+    background-color: transparent !important;
+}
