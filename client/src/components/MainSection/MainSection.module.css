@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .main_section{
     height: 100vh;
     background-image: url("../../../src/static/images/banner-bg.jpg");
@@ -90,4 +91,98 @@
         width: 200px;
         height:200px;
     } */
+=======
+.main_section{
+    height: 100vh;
+    background-image: url("../../../src/static/images/banner-bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.main_section::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0,0.4);
+}
+
+.contain_section{
+    gap: 20px;
+    position: relative;
+}
+
+.main_section h1, .main_section h4{
+    font-weight: 700;
+    position: relative;
+    z-index: 10;
+}
+
+.main_section h4{
+    color: var(--para-alt-color);
+}
+
+/* .main_section .contain_section::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+    background-image: url("../../static/images/left-banner.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 600px;
+    height:620px;
+    z-index: 1;
+} */
+
+/* .main_section .contain_section::before{
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    background-image: url("../../static/images/right-banner.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 600px;
+    height:620px;
+    z-index: 1;
+} */
+
+@media (max-width:1200px) {
+    /* .main_section::after,.main_section::before{
+        width: 500px;
+        height:500px;
+    } */
+}
+
+@media (max-width:992px) {
+    /* .main_section::after,.main_section::before{
+        width: 400px;
+        height:400px;
+    } */
+}
+
+@media (max-width:768px) {
+    .main_section{
+        align-items: center;
+    }
+    /* .main_section::after,.main_section::before{
+        width: 300px;
+        height:300px;
+    } */
+}
+
+@media (max-width:576px) {
+    /* .main_section::after,.main_section::before{
+        width: 200px;
+        height:200px;
+    } */
+>>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff
 }

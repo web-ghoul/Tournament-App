@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react'
 import {MyBox} from "../../components/MyBox/MyBox"
 import { Box, Container, IconButton, Typography } from '@mui/material'
@@ -73,3 +74,16 @@ const About = () => {
 }
 
 export default About
+=======
+import React from 'react'
+
+const About = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default About
+>>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff

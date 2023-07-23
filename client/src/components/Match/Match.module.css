@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .match_box{
     margin-right: 150px;
     position: relative;
@@ -65,4 +66,14 @@
 
 .winner_img{
     width: 25px;
+=======
+.match{
+    gap: 5px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.match div:last-child{
+    background-color: var(--gray);
+>>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff
 }

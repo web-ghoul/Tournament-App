@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .modal{
     background-color: var(--white);
     width: 50%;
@@ -98,3 +99,67 @@
         font-size: 14px !important;
     }
 }
+=======
+.modal{
+    background-color: var(--white);
+    width: 50%;
+    padding: 40px;
+    border-radius: 10px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    position: relative;
+    color:var(--primary) !important;
+    gap: 50px;
+    max-height: 80vh;
+    max-width: 80vw;
+    overflow-y: scroll;
+}
+
+.title{
+    gap: 10px;
+}
+
+.btns{
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+
+.form{
+    gap: 20px;
+}
+
+.form input{
+    color: var(--primary);
+}
+
+.form .btns button{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal button{
+    color:var(--primary) !important;
+    border: 4px solid var(--primary);
+    border-radius: 5px;
+    padding: 10px !important;
+    transition: var(--trans);
+    gap: 10px;
+}
+
+.modal button:hover{
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--white) !important;
+}
+
+.modal button svg{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.starts_at{
+    gap: 20px;
+}
+>>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff

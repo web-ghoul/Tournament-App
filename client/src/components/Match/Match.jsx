@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Avatar, Box, Button, Divider, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import styles from "./Match.module.css"
@@ -68,3 +69,18 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
 }
 
 export default Match
+=======
+import { Box } from '@mui/material'
+import React from 'react'
+import Card from '../Card/Card'
+import styles from "./Match.module.css"
+import { Bracket } from 'react-tournament-bracket'
+
+const Match = ({game}) => {
+  return (
+    <Bracket game={game}/>
+  )
+}
+
+export default Match
+>>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff
