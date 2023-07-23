@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .graph_contain{
     gap: 40px;
 }
@@ -34,39 +33,3 @@
     padding: 20px;
 }
 
-=======
-.graph_contain{
-    gap: 40px;
-}
-
-.graph{
-    /* overflow: scroll;  */
-    /* scrollbar-width: thin; */
-}
-
-.graph > div{
-    gap: 50px;
-    height: 100vh;
-}
-
-.titles{
-    gap:50px;
-}
-
-.title{
-    background-color: var(--dark);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.tournament{
-    gap:50px;
-}
-
-.level{
-    gap: 40px;
-    align-content: stretch !important;
-    align-self: stretch !important;
-}
->>>>>>> 212162d2f875d71fffb8130d5eff55f2d752d3ff
