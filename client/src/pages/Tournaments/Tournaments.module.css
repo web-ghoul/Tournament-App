@@ -3,11 +3,45 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-.para{
-    width: 60%;
-}
 
 .tournaments{
     gap: 30px;
     padding: 40px 0 0 0 ;
+}
+
+.tournament_contain{
+    gap: 50px;
+}
+
+.filter{
+    gap: 30px;
+}
+
+.filter_fields{
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter_fields input{
+    border: 2px solid var(--white) !important;
+    border-radius: 6px;
+}
+
+.filter_fields input:focus{
+    border-color: var(--blue) !important;
+}
+
+.filter_fields  > div  input , .filter_fields  > div  label{
+    color: var(--white) !important;
+}
+
+.filter_buttons button{
+    background-color: var(--blue);
+    padding: 10px 20px !important;
+}
+
+@media (max-width:992px) {
+    .tournaments{
+        justify-content: center !important;
+    }
 }

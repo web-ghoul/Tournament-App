@@ -1,19 +1,27 @@
 import React from 'react'
-import {Box, Button, IconButton, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material"
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import styles from "./AdminModal.module.css"
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Formik } from 'formik';
 import * as Yup from "yup"
 import axios from "axios"
-import swal from "sweetalert2"
+import {handleToastMessage} from "../../App"
+
+//MUI
+import {Box, Button, IconButton, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material"
+import {EmojiEvents,AdminPanelSettings} from '@mui/icons-material';
+
+//Style
+import styles from "./AdminModal.module.css"
 
 const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
+    const date = new Date()
+    const previous = new Date(date.getTime());
+    previous.setDate(date.getDate() - 1);
+
     const initialAddAdminValues = {
         username:"",
     }
+
     const AddAdminSchema = Yup.object().shape({
-        username:Yup.string().required(),
+        username:Yup.string().required("Enter New Admin Username"),
     })
 
     const initialAddTournamentValues = {
@@ -26,13 +34,13 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
     }
 
     const AddTournamentSchema = Yup.object().shape({
-        name:Yup.string().required(),
-        description:Yup.string().required(),
-        date:Yup.string().required(),
-        game_time:Yup.string().required(),
-        type:Yup.string().required(),
-        time:Yup.string().required(),
-        max:Yup.number().required(),
+        name:Yup.string().required("Enter Tournament Name"),
+        description:Yup.string().required("Enter Tournament Description"),
+        date:Yup.date().min(previous, "Enter Valid Date").required(),
+        game_time:Yup.string().required("Enter Type of Tournament Time"),
+        type:Yup.string().required("Enter Tournament Type"),
+        time:Yup.string().required("Enter Tournament Time"),
+        max:Yup.number().required("Enter Maximum Number of Players").positive().integer(),
     })
 
     const optionsType = [
@@ -50,18 +58,11 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
         },{
             withCredentials:true
         }).then((res)=>{
-            swal.fire({
-                title:"Success",
-                text:res.data.message,
-                icon:"success"
-            })
             onSubmitProps.resetForm()
+            handleToastMessage(res.data.message,"s")
+            handleCloseModal()
         }).catch((err)=>{
-            swal.fire({
-                title:"Error",
-                text:err.response.data.message,
-                icon:"error"
-            })
+            handleToastMessage(err.response.data.message,"e")
         })
     }
 
@@ -71,25 +72,17 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
         },{
             withCredentials:true
         }).then((res)=>{
-            swal.fire({
-                title:"Success",
-                text:res.data.message,
-                icon:"success"
-            })
             onSubmitProps.resetForm()
+            handleToastMessage(res.data.message,"s")
+            handleCloseModal()
         }).catch((err)=>{
-            swal.fire({
-                title:"Error",
-                text:err.response.data.message,
-                icon:"error"
-            })
-            onSubmitProps.resetForm()
+            handleToastMessage(err.response.data.message,"e")
         })
     }
 
     if(state === "tournament"){
         return (
-        <Modal
+            <Modal
             open={openModal}
             onClose={handleCloseModal}
             aria-labelledby="modal-modal-title"
@@ -97,7 +90,7 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
             >
                 <Box className={`grid-stretch ${styles.modal}`}>
                     <Box className={`flex-center ${styles.title} tac`}>
-                        <EmojiEventsIcon fontSize='large'/>
+                        <EmojiEvents fontSize='large'/>
                         <Typography className={`tac`} variant='h3'>Add Tournament</Typography>
                     </Box>
                     <Box>
@@ -181,7 +174,7 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
             >
                 <Box className={`grid-stretch ${styles.modal}`}>
                     <Box className={`flex-center ${styles.title} tac`}>
-                        <AdminPanelSettingsIcon fontSize='large'/>
+                        <AdminPanelSettings fontSize='large'/>
                         <Typography className={`tac`} variant='h3'>Add Admin</Typography>
                     </Box>
                     <Box>
@@ -217,11 +210,11 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
                 <Typography className={`tac`} variant='h3'>Choose Option</Typography>
                 <Box className={`grid-stretch ${styles.btns} ${styles.options_buttons}`}>
                     <IconButton onClick={()=>setAdd("tournament")} className={`grid-center`}>
-                    <EmojiEventsIcon fontSize={"large"}/>
+                    <EmojiEvents fontSize={"large"}/>
                     <Typography variant='h4'>Create Tournament</Typography>
                     </IconButton>
                     <IconButton onClick={()=>{setAdd("admin");console.log(1)}} className={`grid-center`}>
-                    <AdminPanelSettingsIcon fontSize={"large"}/>
+                    <AdminPanelSettings fontSize={"large"}/>
                     <Typography variant='h4'>Add Admin</Typography>
                     </IconButton>
                 </Box>

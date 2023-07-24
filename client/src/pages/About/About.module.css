@@ -2,10 +2,26 @@
     gap: 50px;
 }
 
+.team{
+    gap: 30px;
+}
+
 .member{
-    background-color: var(--indigo);
     padding: 20px;
     border-radius: 10px;
+    position: relative;
+}
+
+.member::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(111, 66, 193,0.95);
+    border-radius: 10px;
+    z-index: -1;
 }
 
 .member .info{
@@ -21,9 +37,21 @@
 
 .member .photo img{
     width: 100%;
-    transform: scale(1.4);
+    transform: scale(1.7);
     height: 100%;
     border-radius: 50%;
+}
+
+.member.amr .photo img{
+    transform: scale(1);
+}
+
+.member.webGhoul .job{
+    color: var(--primary);
+}
+
+.member.amr .job{
+    color: var(--teal);
 }
 
 .member .contact{
@@ -36,12 +64,120 @@
 
 .member .contact .icons button{
     padding: 10px !important;
+    position: relative;
+    z-index: 3;
 }
 
 .member .contact .icons button:hover{
-    background-color: var(--body-bg) !important;
+    background-color: #4609C3 !important;
 }
 
 .member .contact .icons button svg{
     font-size: 30px;
+}
+
+.webGhoul::before , .amr::before{
+    content: "";
+    position: absolute;
+    background-image: url("../../static//images/react.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    height: 100%;
+    transform: scale(0.8);
+    z-index: -1;
+    transition: var(--trans);
+}
+
+.amr::before{
+    background-image: url("../../static//images/node.jpg");
+}
+
+.member:hover:before{
+    transform: scale(1);
+    z-index: 2;
+}
+
+@media (max-width:992px) {
+    .about_contain{
+        gap: 40px;
+    }
+    
+    .team{
+        gap: 25px;
+    }
+    
+    .member{
+        padding: 18px;
+        border-radius: 8px;
+    }
+    
+    .member::after{
+        border-radius: 8px;
+    }
+    
+    .member .info{
+        gap: 15px;
+    }
+    
+    .member .photo{
+        width: 150px;
+        height: 150px;
+    }
+    
+    .member .contact{
+        gap: 15px;
+    }
+    
+    .member .contact .icons button svg{
+        font-size: 28px;
+    }
+    
+}
+
+@media (max-width:768px) {
+    .about_contain{
+        gap: 30px;
+    }
+    
+    .team{
+        gap: 30px;
+    }
+    
+    .member{
+        display: grid !important;
+        justify-content: center !important;
+        padding: 15px;
+        border-radius: 6px;
+        gap: 50px;
+    }
+    
+    .member::after{
+        border-radius: 8px;
+    }
+    
+    .member .info{
+        display: grid !important;
+        justify-content: center !important;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .member .photo{
+        width: 120px;
+        height: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: relative;
+    }
+    
+    .member .contact{
+        gap: 15px;
+    }
+    
+    .member .contact .icons button svg{
+        font-size: 28px;
+    }
+    
 }

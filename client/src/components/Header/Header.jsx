@@ -1,36 +1,33 @@
-import { AppBar, Container, Toolbar, IconButton, Box, Button, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
-import {AccountCircleRounded, Troubleshoot} from "@mui/icons-material"
 import React, { useEffect, useState } from 'react'
 import {useNavigate} from "react-router-dom"
-import {FlexStack} from "../FlexStack/FlexStack"
-import Logo from '../Logo/Logo'
-import styles from "./Header.module.css"
-import { HeaderTypo } from '../HeaderTypo/HeaderTypo'
-import LoginIcon from '@mui/icons-material/Login';
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import HouseRoundedIcon from '@mui/icons-material/HouseRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 import { useDispatch, useSelector } from 'react-redux'
-import {logout} from "../../store/authSlice"
 import {showing , hiding} from "../../store/scrollSlice"
-import AddIcon from '@mui/icons-material/Add';
-import AdminModal from '../AdminModal/AdminModal'
+import {logout} from "../../store/authSlice"
 import Cookies from 'js-cookie'
+
+//Components
+import Logo from '../Logo/Logo'
+import AdminModal from '../AdminModal/AdminModal'
+
+//MUI
+import { AppBar, Container, Toolbar, IconButton, Box, Button, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
+import {MenuRounded,AccountCircleOutlined,AddCircleOutline,Login,EmojiEventsOutlined,InfoOutlined,HomeOutlined} from '@mui/icons-material';
+import {FlexStack} from "../../MUIComponents/FlexStack/FlexStack"
+import { HeaderTypo } from '../../MUIComponents/HeaderTypo/HeaderTypo'
+
+//Style
+import styles from "./Header.module.css"
 
 const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const lgSize = useMediaQuery("(max-width:1200px)")
-  const username = useSelector((state)=>state.auth.username)
-  const [isAdmin,setIsAdmin] = useState(false)
+  const {role, username} = useSelector((state)=>state.auth)
   const [openModal, setOpenModal] = useState(false);
   const [headerClass , setHeaderClass] = useState(true)
   const [add, setAdd] =useState(null)
   const [sign , setSign] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  let userData = Cookies.get('user_data')
 
   const open = Boolean(anchorEl);
 
@@ -39,16 +36,6 @@ const Header = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
     setAdd(null)
-  }
-
-  window.onscroll = ()=>{
-    if(window.scrollY === 0){
-      setHeaderClass(true)
-      dispatch(hiding())
-    }else{
-      setHeaderClass(false)
-      dispatch(showing())
-    }
   }
 
   const handleClick = (event) => {
@@ -72,11 +59,21 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  window.onscroll = ()=>{
+    if(window.scrollY === 0){
+      setHeaderClass(true)
+      dispatch(hiding())
+    }else{
+      setHeaderClass(false)
+      dispatch(showing())
+    }
+  }
+
   useEffect(()=>{
-    if(userData){
+    if(username){
         setSign(true)
     }
-  },[userData,sign])
+  },[username,sign])
 
   return (
     <AppBar className={ headerClass ? styles.header : styles.header_active}>
@@ -97,7 +94,7 @@ const Header = () => {
                       <HeaderTypo variant="h5" onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}}>Profile</HeaderTypo>
                     </FlexStack>
                     <IconButton onClick={handleClick}>
-                      <AccountCircleRounded sx={{color:'white'}} fontSize='large'/>
+                      <AccountCircleOutlined sx={{color:'white'}} fontSize='large'/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
@@ -115,21 +112,26 @@ const Header = () => {
                       MenuListProps={{
                         'aria-labelledby': 'basic-button',
                       }}
+                      className={`${styles.menu}`}
                     >
-                      <MenuItem className={`flex-center`} onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}} gap={2}>
-                        <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>{userData.username}</Typography>
+                      <MenuItem className={`${styles.item}`}  onClick={()=>{navigate(`/profile/${username}`); handleClose()}}>
+                        <AccountCircleOutlined fontSize='large'/>
+                        <Typography variant='h5'>{username}</Typography>
                       </MenuItem>
                       <Divider/>
-                      <MenuItem onClick={()=>{
-                        handleOpenModal();
-                        handleClose();
-                      }} className={`flex-center`}>
-                        <AddIcon fontSize='large'/> 
-                      </MenuItem>
-                      <Divider/>
-                      <MenuItem onClick={()=>handleLogout()}>
-                        <LoginIcon/>
+                      {
+                        role === "Admin" && (
+                          <MenuItem  className={`${styles.item}`}  onClick={()=>{
+                            handleOpenModal();
+                            handleClose();
+                          }}>
+                            <AddCircleOutline fontSize='large'/> 
+                            <Typography variant='h5'>Add</Typography>
+                          </MenuItem>
+                        )
+                      }
+                      <MenuItem  className={`${styles.item}`}  onClick={()=>handleLogout()}>
+                        <Login/>
                         <Typography variant='h5'>Log Out</Typography>
                       </MenuItem>
                     </Menu>
@@ -137,8 +139,8 @@ const Header = () => {
                 ):
                 (
                   <>
-                    <IconButton   onClick={handleClick}>
-                      <MenuRoundedIcon/>
+                    <IconButton onClick={handleClick}>
+                      <MenuRounded/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
@@ -153,36 +155,42 @@ const Header = () => {
                       vertical: 'top',
                       horizontal: 'right',
                       }}
+                      className={`${styles.menu}`}
                     >
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_PROFILE_PAGE) ; handleClose()}} gap={2}>
-                        <AccountCircleRounded fontSize='large'/>
-                        <Typography variant='h5'>{userData.username}</Typography>
+                      <MenuItem onClick={()=>{navigate(`/profile/${username}`); handleClose()}} className={`${styles.username}`}>
+                        <AccountCircleOutlined fontSize='large'/>
+                        <Typography variant='h4'>{username}</Typography>
                       </MenuItem>
                       <Divider/>
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_HOME_PAGE) ; handleClose()}} gap={2}>
-                        <HouseRoundedIcon/>
+                      <MenuItem className={`${styles.item}`} onClick={()=>{navigate(process.env.REACT_APP_HOME_PAGE) ; handleClose()}} gap={2}>
+                        <HomeOutlined/>
                         <Typography variant='h5'>Home</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{navigate("/tournaments") ; handleClose()}}>
-                        <EmojiEventsRoundedIcon/>
+                      <MenuItem className={`${styles.item}`} onClick={()=>{navigate("/tournaments") ; handleClose()}}>
+                        <EmojiEventsOutlined/>
                         <Typography variant='h5'>Tournaments</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_ABOUT_PAGE) ; handleClose()}}>
-                        <InfoRoundedIcon/>
+                      <MenuItem className={`${styles.item}`} onClick={()=>{navigate(process.env.REACT_APP_ABOUT_PAGE) ; handleClose()}}>
+                        <InfoOutlined/>
                         <Typography variant='h5'>About Us</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}}>
-                        <AccountCircleRounded/>
+                      <MenuItem className={`${styles.item}`} onClick={()=>{navigate(`/profile/${username}`) ; handleClose()}}>
+                        <AccountCircleOutlined/>
                         <Typography variant='h5'>Profile</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{
-                        handleOpenModal();
-                        handleClose();
-                      }} className={`flex-center`}>
-                        <AddIcon fontSize='large'/> 
-                      </MenuItem>
-                      <MenuItem onClick={()=>handleLogout()}>
-                        <LoginIcon/>
+                      {
+                        role === "Admin" && (
+                          <MenuItem className={`${styles.item}`} onClick={()=>{
+                            handleOpenModal();
+                            handleClose();
+                          }}>
+                            <AddCircleOutline/> 
+                            <Typography variant='h5'>Add</Typography>
+                          </MenuItem>
+                        )
+                      }
+                      <MenuItem className={`${styles.item}`} onClick={()=>handleLogout()}>
+                        <Login/>
                         <Typography variant='h5'>Log Out</Typography>
                       </MenuItem>
                     </Menu>
@@ -200,7 +208,7 @@ const Header = () => {
                 (
                   <>
                     <IconButton  onClick={handleClick}>
-                      <LoginIcon/>
+                      <Login/>
                     </IconButton>
                     <Menu
                       id="basic-menu"
@@ -215,11 +223,12 @@ const Header = () => {
                       vertical: 'top',
                       horizontal: 'right',
                       }}
+                      className={`${styles.menu}`}
                     >
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_LOGIN_PAGE) ; handleClose()}}>
+                      <MenuItem  className={`${styles.item}`}  onClick={()=>{navigate(process.env.REACT_APP_LOGIN_PAGE) ; handleClose()}}>
                         <Typography variant='h5'>Log In</Typography>
                       </MenuItem>
-                      <MenuItem onClick={()=>{navigate(process.env.REACT_APP_SIGNUP_PAGE) ; handleClose()}}>
+                      <MenuItem  className={`${styles.item}`}  onClick={()=>{navigate(process.env.REACT_APP_SIGNUP_PAGE) ; handleClose()}}>
                         <Typography variant='h5'>Sign Up</Typography>
                       </MenuItem>
                     </Menu>

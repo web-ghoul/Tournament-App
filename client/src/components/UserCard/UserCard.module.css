@@ -37,8 +37,8 @@
     top: 50%;
     transform: translate(-50%,-50%);
     border: 3px solid var(--para-alt-color);
-    width: 120%;
-    height: 120%;
+    width: 115%;
+    height: 115%;
     border-radius: 50%;
     background-color: transparent;
 }
@@ -64,6 +64,7 @@
     top: 50%;
     transform: translate(-50%,-50%);
 }
+
 .avatar span::before{
     content: "";
     position: absolute;
@@ -94,14 +95,19 @@
         padding: 35px;
         border-radius:18px 18px 0 0;
     }
+
+    .avatar{
+        width: 140px;
+        height: 140px;
+    }
     
     .user_avatar{
         gap: 25px;
     }
   
     .avatar span{
-        top: 9px;
-        right: 9px;
+        top: 12px;
+        right: 12px;
     }
     
     .avatar span::after{
@@ -123,14 +129,19 @@
         padding: 30px;
         border-radius:16px 16px 0 0;
     }
+
+    .avatar{
+        width: 120px;
+        height: 120px;
+    }
     
     .user_avatar{
         gap: 20px;
     }
     
     .avatar span{
-        top: 8px;
-        right: 8px;
+        top: 12px;
+        right: 12px;
     }
     
     .avatar span::after{
@@ -156,6 +167,26 @@
         justify-content: stretch;
     }
 
+    .avatar{
+        width: 100px;
+        height: 100px;
+    }
+
+    .avatar::after{
+        width: 110%;
+        height: 110%;
+    }
+
+    .avatar span{
+        top: 15px;
+        right: 15px;
+    }
+        
+    .user_info{
+        gap: 10px;
+        justify-content: center !important;
+    }
+
     .user_avatar{
         display: grid;
         justify-content: center;
@@ -168,7 +199,6 @@
 
     .message > button:last-child{
         padding: 10px !important;
-
     }
 }
 

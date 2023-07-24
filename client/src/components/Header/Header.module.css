@@ -38,14 +38,52 @@
     padding: 2px 20px !important;
 }
 
+.username{
+    gap: 15px;
+}
+
+.item{
+    gap:10px;
+}
+
+.menu > div:nth-child(3){
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: var(--white);
+}
+
+.menu > div:nth-child(3) ul li:hover{
+    color: var(--para-alt-color);
+}
+
 @media (max-width:1200px) {
     .pages{
         gap: 30px;
+    }
+
+    .username{
+        gap: 12px;
+    }
+    
+    .item{
+        gap:8px;
     }
 }
 
 @media (max-width:992px) {
     .pages{
         gap: 20px;
+    }
+
+    .username{
+        gap: 10px;
+    }
+    
+    .item{
+        gap:5px;
     }
 }

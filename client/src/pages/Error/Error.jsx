@@ -1,9 +1,13 @@
-import { Box, Container, Typography } from '@mui/material'
 import React from 'react'
-import styles from "./Error.module.css" 
 import {useNavigate} from "react-router-dom"
-import { MyButton } from '../../components/MyButton/MyButton'
-import { MyBox } from '../../components/MyBox/MyBox'
+
+//Components
+import { Box, Container, Typography } from '@mui/material'
+import { MyButton } from '../../MUIComponents/MyButton/MyButton'
+import { MyBox } from '../../MUIComponents/MyBox/MyBox'
+
+//Style
+import styles from "./Error.module.css" 
 
 const Error = () => {
   const navigate = useNavigate()

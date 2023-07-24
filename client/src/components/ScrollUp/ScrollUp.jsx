@@ -1,8 +1,12 @@
 import React from 'react'
-import {Box} from "@mui/material"
-import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
-import styles from "./ScrollUp.module.css"
 import { useSelector } from 'react-redux';
+
+//MUI
+import {KeyboardDoubleArrowUpRounded} from '@mui/icons-material';
+import {Box} from "@mui/material"
+
+//Style
+import styles from "./ScrollUp.module.css"
 
 const ScrollUp = () => {
     const hide = useSelector((state)=>state.scroll.hide)
@@ -17,7 +21,7 @@ const ScrollUp = () => {
 
     return (
         <Box onClick={()=>handleScroll()} className={hide ? `flex-center ${styles.scroll_up} ${styles.hide}`: `flex-center ${styles.scroll_up}`}>
-            <KeyboardDoubleArrowUpRoundedIcon/>
+            <KeyboardDoubleArrowUpRounded/>
         </Box>
     )
 }

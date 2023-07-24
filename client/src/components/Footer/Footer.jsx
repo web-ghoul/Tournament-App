@@ -1,14 +1,17 @@
-import {  Box, Container, Divider, IconButton, Typography } from '@mui/material'
-import Logo from '../Logo/Logo'
-import styles from "./Footer.module.css"
 import React from 'react'
-import { FlexStack } from '../FlexStack/FlexStack'
 import {useNavigate} from "react-router-dom"
-import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { HeaderTypo } from '../HeaderTypo/HeaderTypo'
+
+//Component
+import Logo from '../Logo/Logo'
+
+//MUI
+import {  Box, Container, Divider, IconButton, Typography } from '@mui/material'
+import {LinkedIn,Twitter,WhatsApp,FacebookRounded} from '@mui/icons-material';
+import { FlexStack } from '../../MUIComponents/FlexStack/FlexStack'
+import { HeaderTypo } from '../../MUIComponents/HeaderTypo/HeaderTypo'
+
+//Style
+import styles from "./Footer.module.css"
 
 const Footer = () => {
   const navigate = useNavigate()
@@ -24,16 +27,16 @@ const Footer = () => {
           </FlexStack>
           <Box className={styles.icons}>
             <IconButton>
-              <FacebookRoundedIcon/>
+              <FacebookRounded/>
             </IconButton>
             <IconButton>
-              <TwitterIcon/>
+              <Twitter/>
             </IconButton>
             <IconButton>
-              <WhatsAppIcon/>
+              <WhatsApp/>
             </IconButton>
             <IconButton>
-              <LinkedInIcon/>
+              <LinkedIn/>
             </IconButton>
           </Box>
         </Box>

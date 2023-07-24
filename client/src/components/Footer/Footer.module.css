@@ -71,7 +71,7 @@ hr{
     .up{
         gap: 20px;
         display: grid !important;
-        justify-content: center;
+        justify-content: center !important;
     }
     .icons{
         gap: 10px;

@@ -3,12 +3,11 @@
     border: 1px solid #EDB8FF;
     border-radius:5px ;
     padding: 40px 20px;
-    width: fit-content;
     background-color: var(--body-bg);
 }
 
 .tournament img{
-    width:200px;
+    width:300px;
 }
 
 .title{
@@ -50,16 +49,13 @@
 
 @media (max-width:1200px) {
     .tournament{
-        gap: 40px;
+        gap: 30px;
         padding: 35px 20px;
-        display: grid !important;
     }
 
     .tournament img{
         width: 250px;
-        left: 50%;
-        transform: translateX(-50%);
-        position: relative;
+  
     }
     
     .title{
@@ -92,10 +88,18 @@
     .tournament{
         gap: 30px;
         padding: 30px 20px;
+        display: grid !important;
+        justify-content: center;
+        width: -moz-fit-content;
+        width: fit-content;
     }
     .tournament img{
-        width: 200px;
+        width: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: relative;
     }
+
     .title{
         gap: 15px;
     }

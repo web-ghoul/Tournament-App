@@ -1,9 +1,13 @@
 import React from 'react'
-import { Box, IconButton, Typography } from '@mui/material'
-import {MyButton} from "../MyButton/MyButton"
-import styles from "./UserCard.module.css"
+
+//Image
 import userImg from "../../static/images/avatar.jpg"
-import PersonAddAlt1RoundedIcon from '@mui/icons-material/PersonAddAlt1Rounded';
+
+//MUI
+import { Box, Typography } from '@mui/material'
+
+//Style
+import styles from "./UserCard.module.css"
 
 const UserCard = ({username, rating}) => {
   return (
@@ -17,12 +21,6 @@ const UserCard = ({username, rating}) => {
             <Typography variant='h3' className='game-font'>{username}</Typography>
             <Typography variant='h5' className='text-upper'>{rating} Rating</Typography>
         </Box>
-      </Box>
-      <Box className={`flex-end ${styles.message}`}>
-        <MyButton>Message</MyButton>
-        <IconButton>
-            <PersonAddAlt1RoundedIcon/>
-        </IconButton>
       </Box>
     </Box>
   )

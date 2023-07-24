@@ -1,57 +1,48 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styles from "./Profile.module.css" 
-import { Box,Container, Typography } from '@mui/material'
-import {MyBox} from "../../components/MyBox/MyBox"
+import React, {useEffect} from 'react'
+import{useParams} from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserData } from '../../store/userSlice'
+
+//Component
 import UserCard from "../../components/UserCard/UserCard"
 import GameStat from "../../components/GameStat/GameStat"
-import axios from "axios"
-import{useNavigate, useParams} from "react-router-dom"
-import swal from "sweetalert"
-import { useSelector } from 'react-redux'
+
+//MUI
+import { Box,Container, Typography } from '@mui/material'
+import {MyBox} from "../../MUIComponents/MyBox/MyBox"
+
+//Style
+import styles from "./Profile.module.css"
 
 const Profile = () => {
-  const navigate = useNavigate()
+  const dispatch= useDispatch()
+  const {isLoading, userData} = useSelector((state)=>state.user)
   const {username} = useParams()
-  const [userData , setUserData] = useState(null)
-  const getUserData = useCallback(
-    async()=>{
-      axios.get(`https://lichess.org/api/user/${username}`)
-      .then((res)=>{
-        if(res.data && res.data.id !== "null"){
-          setUserData(res.data)
-        }
-      })
-      .catch(()=>{
-        swal({
-          title: "Error",
-          text: "User doesn't exist",
-          icon: "error",
-          dangerMode: true,
-        })
-        navigate("*")
-      })
-    },[username,navigate]
-  )
 
   useEffect(()=>{
-    getUserData()
-  },[getUserData])
+    dispatch(getUserData(username))
+  },[dispatch,username])
 
-  if(!userData){
-    return (
-      <></>
-    )
-  }
-  
   return (
     <MyBox className={styles.profile_section}>
-      <Box className={`flex-center ${styles.background}`}>
-        <Typography variant='h1' className={`game-font text-center`}>{userData.username}</Typography>
-      </Box>
-      <Container className={`grid-stretch ${styles.profile_contain}`}>
-        <UserCard username={userData.username} rating = {userData.count.rated}/>
-        <GameStat perfs={userData.perfs} count = {userData.count}/>
-      </Container>
+      {
+        isLoading ? (
+          <>
+            <Typography variant='h3' className="tac">Loading...</Typography>
+          </>
+        ):
+        (
+          <>
+            <Box className={`flex-center ${styles.background}`}>
+              <Typography variant='h1' className={`game-font text-center`}>{userData.username}</Typography>
+            </Box>
+            <Container className={`grid-stretch ${styles.profile_contain}`}>
+              <UserCard username={userData.username} rating = {userData.count.rated}/>
+              <GameStat perfs={userData.perfs} count = {userData.count}/>
+            </Container>
+          </>
+        )
+      }
     </MyBox>
   )
 }

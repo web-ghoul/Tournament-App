@@ -1,74 +1,68 @@
-import { Box, Divider, Typography } from '@mui/material'
-import gameImg from "../../static/images/game-img-1.png"
-import styles from "./Tournament.module.css" 
-import {MyButton} from "../MyButton/MyButton"
-import HourglassFullOutlinedIcon from '@mui/icons-material/HourglassFullOutlined';
 import React, { useEffect, useState } from 'react'
-import {useNavigate} from "react-router-dom"
-import swal from "sweetalert2";
-import axios from "axios"
 import {useSelector} from "react-redux"
+import {useNavigate} from "react-router-dom"
+import axios from "axios"
+import {handleToastMessage} from "../../App"
 
-const Tournament = (props) => {
-  // console.log(props)
+//Images
+import gameImg from "../../static/images/game-img-1.png"
+
+//MUI
+import { Box, Divider, Typography } from '@mui/material'
+import {HourglassFullOutlined} from '@mui/icons-material';
+import {MyButton} from "../../MUIComponents/MyButton/MyButton"
+
+//Style
+import styles from "./Tournament.module.css" 
+
+const Tournament = ({tournament}) => {
   const username = useSelector((state)=>state.auth.username)
   const navigate= useNavigate()
   const [exist , setExist] = useState(false)
-  const calender = props.data.StartsAt.split("T")
-  const [data , setData] = useState(props.data)
+  const calender = tournament.StartsAt.split("T")
+  const [data , setData] = useState(tournament)
   const time = calender[1].split(".")[0] 
   const date = calender[0] 
 
   const handleJoin= async()=>{
-    await axios.post(process.env.REACT_APP_SERVER_URL+`/JoinTournament/${props.data._id}`,{},{
+    await axios.post(process.env.REACT_APP_SERVER_URL+`/JoinTournament/${tournament._id}`,{},{
       withCredentials:true
     }).then((res)=>{
-      swal.fire({
-        title: "Success",
-        text: res.data.message,
-        icon: "success",
-      })
-      let d =data
+      let d = JSON.parse(JSON.stringify(data))
       d.Players.push(username)
       setData(d)
       setExist(true)
+      handleToastMessage(res.data.message,"s");
     }).catch((err)=>{
-      swal.fire({
-        title: "Error",
-        text: err.response.data.message && "",
-        icon: "error",
-      })
+      handleToastMessage(err.response.data.message,"e");
     })
   }
 
   const handleEnter= async()=>{
-    await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${props.data._id}`,{},{
+    await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${tournament._id}`,{},{
       withCredentials:true
     }).then((res)=>{
-      navigate(`../graph/${props.data._id}`)
+      navigate(`../graph/${tournament._id}`)
+      handleToastMessage(`Welcome ${username}`,"s");
     }).catch((err)=>{
-      swal.fire({
-        title: "Error",
-        text: err.response.data.message && "",
-        icon: "error",
-      })
+      handleToastMessage(err.response.data.message,"e");
     })
   }
   
   useEffect(()=>{
-    if(props.data.Players.includes(username)){
+    if(tournament.Players.includes(username)){
       setExist(true)
     }
-  },[props , exist,username])
+  },[tournament , exist , username])
   
   return (
-    <Box className={`flex-center ${styles.tournament}`}>
+    <Box className={`flex-between ${styles.tournament}`}>
       <Box component="img" alt="tournament" src={gameImg}/>
       <Box className={`grid-center ${styles.title}`}>
         <Typography variant='h3' className='game-font text-upper'>{data.Name}</Typography>
         <Box className={`flex-start ${styles.timing}`}>
           <Box className="flex-center">
-            <HourglassFullOutlinedIcon fontSize='small' className={styles.icon}/>
+            <HourglassFullOutlined fontSize='small' className={styles.icon}/>
             <Typography variant='h5'>Starts in</Typography>
             <Typography variant='h5' className={styles.time}>{time}</Typography>
           </Box>
@@ -78,10 +72,6 @@ const Tournament = (props) => {
         </Box>  
         <Divider/>
         <Box className={`flex-start ${styles.info}`}>
-          {/* <Box className={`grid-center text-center  ${styles.border}`}>
-            <Typography variant="subtitle2" className='text-upper'>Match Type</Typography>
-            <Typography variant="subtitle2" className='text-upper'>{}</Typography>
-          </Box> */}
           <Box className={`grid-center text-center  ${styles.border}`}>
             <Typography variant="subtitle2" className='text-upper'>Match Time</Typography>
             <Typography variant="subtitle2" className='text-upper'>{data.Time}</Typography>

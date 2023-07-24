@@ -16,7 +16,7 @@
   --body-bg: #0e063d;
   --blue: #007bff;
   --indigo: #6610f2;
-  --purple: #6f42c1;
+  --purple: rgb(111, 66, 193);
   --pink: #e83e8c;
   --red: #dc3545;
   --orange: #fd7e14;
@@ -44,6 +44,10 @@ body{
   background-color: var(--body-bg);
   color: var(--white);
   scroll-behavior: smooth;
+}
+
+.para{
+  width: 60%;
 }
 
 a{
@@ -153,4 +157,22 @@ a{
 
 .swal2-confirm{
   padding: 0.625em 1.1em !important;
+}
+
+@media (max-width:1200px) {
+  .para{
+    width: 70%;
+  }
+}
+
+@media (max-width:992px) {
+  .para{
+    width: 80%;
+  }
+}
+
+@media (max-width:768px) {
+  .para{
+    width: 100%;
+  }
 }

@@ -1,9 +1,11 @@
-import { Box, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
+
+//MUI
+import { Box, Button, Typography } from '@mui/material'
+import {TrendingUpRounded,SportsEsportsRounded,ThumbsUpDownRounded} from '@mui/icons-material';
+
+//Style
 import styles from "./GameStat.module.css"
-import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
-import ThumbsUpDownRoundedIcon from '@mui/icons-material/ThumbsUpDownRounded';
-import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 
 const GameStat = ({perfs, count}) => {
     const [statType , setStatType] = useState("blitz")
@@ -27,17 +29,17 @@ const GameStat = ({perfs, count}) => {
                         && 
                         <>
                             <Box className={`grid-center ${styles.box}`}>
-                                <SportsEsportsRoundedIcon className={`${styles.icon}`}/>
+                                <SportsEsportsRounded className={`${styles.icon}`}/>
                                 <Typography variant='h4' className='game-font text-upper text-center'>Games</Typography>
                                 <Typography variant='h4' className='game-font text-center'>{perfs[statType].games}</Typography>
                             </Box>
                             <Box className={`grid-center ${styles.box}`}>
-                                <ThumbsUpDownRoundedIcon className={`${styles.icon}`}/>
+                                <ThumbsUpDownRounded className={`${styles.icon}`}/>
                                 <Typography variant='h4' className='game-font text-upper text-center'>Rating</Typography>
                                 <Typography variant='h4' className='game-font text-center'>{perfs[statType].rating}</Typography>
                             </Box>
                             <Box className={`grid-center ${styles.box}`}>
-                                <TrendingUpRoundedIcon className={`${styles.icon}`}/>
+                                <TrendingUpRounded className={`${styles.icon}`}/>
                                 <Typography variant='h4' className='game-font text-upper text-center'>Rating Deviation</Typography>
                                 <Typography variant='h4' className='game-font text-center'>{perfs[statType].rd}</Typography>
                             </Box>
