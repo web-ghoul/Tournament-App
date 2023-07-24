@@ -71,6 +71,6 @@ router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEm
 
 router.post("/ResetPassword" , authControllers.resetPassword );
 
-router.post("/Node/:game_id/:node_id" , authenticateMidd , tournamentControllers.gameEnds) ;
+router.post("/Node/:game_id/:node_id" , authenticateMidd , tournamentControllers.gameEnds  , tournamentControllers.displayNodes) ;
 
 module.exports = router;

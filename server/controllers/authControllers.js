@@ -717,7 +717,6 @@ const verify = (req, res, next) => {
                   .then((result) => {
                     Userverification.deleteOne({ userId: userId })
                       .then((result) => {
-                        console.log("the email is verified");
                         res.status(200).json({message:"the email is verified"})
                       })
                       .catch((err) => {
@@ -777,7 +776,8 @@ const login = (req, res, next) => {
                 res.cookie("token" , token)
                 res.status(200).json({
                     message: 'login successfully !' ,
-                    token:token
+                    token:token,
+                    role :user.role
                 })
               } else {
                 res.status(403).json({

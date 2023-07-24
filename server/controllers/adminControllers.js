@@ -56,7 +56,7 @@ const addTournament = (req, res, nxt) => {
       });
   } else {
     res.status(403).json({
-      error : "Unauthorized user!"
+      message : "Unauthorized user!"
     })
   }
 };

@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const TourNode = new Schema({
-    tournamentID: String,
+    tournamentID:{
+        type : mongoose.Schema.Types.ObjectId,
+        ref: "Tournament",
+    } ,
     gameID: String ,
     gameLink: String ,
     userName1: String,
@@ -16,6 +19,7 @@ const TourNode = new Schema({
       default: "*",
     }
 })
+
 
 const Node = mongoose.model("TourNodes", TourNode);
 
