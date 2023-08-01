@@ -46,12 +46,16 @@ body{
   scroll-behavior: smooth;
 }
 
+main{
+  position: relative !important;
+}
+
 .para{
   width: 60%;
 }
 
 a{
-  background-color: #fff;
+  background-color: transparent;
   text-decoration: none;
   color: #fff;
 }
@@ -98,7 +102,7 @@ a{
 }
 
 .flex-start{
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: flex-start;
 }
@@ -131,6 +135,12 @@ a{
   display: grid !important;
   align-items: center;
   justify-content: flex-end !important;
+}
+
+.grid-between{
+  display: grid !important;
+  align-items: center;
+  justify-content: space-between !important;
 }
 
 .game-font{

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getNodes } from '../../../store/nodesSlice'
+import { getBrackets } from '../../../store/slices/bracketsSlice'
 import axios from "axios"
 
 //Component
@@ -19,15 +19,35 @@ import styles from "./Match.module.css"
 import { handleToastMessage } from '../../../App'
 
 const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
-  const username = useSelector((state)=>state.auth.username)
+  const {username} = useSelector((state)=>state.auth)
+  const {tournament} = useSelector((state)=>state.brackets)
   const navigate = useNavigate()
   const {tournamentId} = useParams()
   const dispatch = useDispatch() 
+  
+  const handleEnterMatch = async()=>{
+      await axios.post(process.env.REACT_APP_SERVER_URL+`/GameEntered/${match._id}`,{},{
+          withCredentials:true
+      }).then((res)=>{
+        window.open(match.gameLink, "_blank")
+      }).catch((err)=>{
+          handleToastMessage(err.response.data.message, "e")
+      })
+  }
+
+  const handleAbortGame = async() =>{
+    await axios.post(process.env.REACT_APP_SERVER_URL+`/AbortMatch/${match.gameID}/${match._id}`,{},{withCredentials:true})
+    .then((res)=>{
+      dispatch(getBrackets(tournamentId))
+    }).catch((err)=>{
+      handleToastMessage(err.response.data.message,"e")
+    })
+  } 
 
   const handleEndGame = async() =>{
     await axios.post(process.env.REACT_APP_SERVER_URL + `/Node/${match.gameID}/${match._id}`,{},{withCredentials:true})
     .then((res)=>{
-      dispatch(getNodes(tournamentId))
+      dispatch(getBrackets(tournamentId))
     }).catch((err)=>{
       handleToastMessage(err.response.data.message,"e")
     })
@@ -49,12 +69,13 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
           {
             match.hasOwnProperty("userName1") && match.hasOwnProperty("userName2") && !waiting1 && !waiting2 && (
               <>
-                <Link target="_blank" to={match.gameLink}>
-                  <Button className={`${styles.match_button}`}>Match</Button>
-                </Link>
+                <Button className={`${styles.match_button}`} onClick={handleEnterMatch}>Match</Button>
                 {
-                  match.winner === "*" && (
-                    <Button onClick={handleEndGame}>Finish</Button>
+                  tournament && tournament.Players.includes(username) && match.winner === "*" && (
+                    <>
+                      <Button onClick={handleAbortGame} className={styles.abort_button}>Abort</Button>
+                      <Button onClick={handleEndGame} className={styles.finish_button}>Finish</Button>
+                    </>
                   )
                 }
               </>

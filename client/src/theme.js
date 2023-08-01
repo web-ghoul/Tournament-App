@@ -22,6 +22,7 @@ const theme = createTheme({
         error:{
             main:"#dc3545"
         },
+        white:"#fff"
     },
     breakpoints:{
         xs:{
@@ -39,7 +40,8 @@ const theme = createTheme({
         xl:{
             width:"1200px",
         }
-    }
+    },
+    direction:'ltr'
 })
 
 theme.typography.h1 = {

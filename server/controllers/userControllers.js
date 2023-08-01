@@ -12,6 +12,13 @@ const joinTournament = async (req, res, next) => {
         players_num:tournament.Players.length
       });
     }
+    if(tournament.Max == tournament.Players.length)
+    {
+      return res.status(200).json({
+        message: "Tournament is Full !",
+        players_num:tournament.Players.length
+      });
+    }
   } catch (err) {
     return res.status(404).json({
       message: err.message
@@ -41,26 +48,36 @@ const EnterTournament = (req, res, next) => {
   Tournament.findOne({ _id: tournamentId }).then((result) => {
     console.log(result);
     //checking if the user registered for this tournament
-    if (result.Players.includes(req.userName)) {
       const tournamentTime = result.StartsAt;
       //checking time
       // tournamentTime < Date.now()
       if (tournamentTime < Date.now()) {
         //res.redirect("/Bracket/:Tourid")
-        res.status(200);
-        next();
+        if(result.Type == "Points")
+        {
+          return next() ;
+        }
+        var check = Math.log2(result.Players.length)
+        console.log(check)
+        if(Number.isInteger(check))
+        {
+          next();
+        }else
+        {
+          res.status(404).json({
+            message : "Number of Players is not allowed"
+          });
+        }
+        
       } else {
         res.status(404).json({
-          message : "Not yet!"
+
+          message : `Tournament is not started yet`
         });
       }
-    } else {
-      res.status(404).json({
-        message : "Sorry you didn't Join the tournament!"
-      });
-    }
+    
   }).catch((err) => {
-    console.log(err)
+    
     res.status(404).json({
       message : err
     });
@@ -68,4 +85,20 @@ const EnterTournament = (req, res, next) => {
   );
 };
 
-module.exports = {EnterTournament , joinTournament}
+const finishedTutorial = (req,res,next) => {
+  const id = req.userId;
+  User.findOneAndUpdate({_id : id} , {tutorial : true} , {new : true})
+  .then((result) => {
+    res.status(200).json({
+      message : "Tutorial finished successfully !"
+    })
+  }
+  ).catch((err) => {
+    console.log(err)
+  }
+  )
+  
+}
+
+
+module.exports = {EnterTournament , joinTournament , finishedTutorial}

@@ -1,16 +1,26 @@
 import {configureStore} from "@reduxjs/toolkit"
-import authReducer from "./authSlice"
-import scrollReducer from "./scrollSlice"
-import tournamentsReducer from "./tournamentsSlice"
-import nodesReducer from "./nodesSlice"
-import userReducer from './userSlice'
+import authReducer from "./slices/authSlice"
+import scrollReducer from "./slices/scrollSlice"
+import liveTournamentsReducer from "./slices/liveTournamentsSlice"
+import finishedTournamentsReducer from "./slices/finishedTournamentsSlice"
+import bracketsReducer from "./slices/bracketsSlice"
+import pointsReducer from "./slices/pointsSlice"
+import userReducer from './slices/userSlice'
+import addTournamentReducer from "./slices/AddTournamentSlice"
+import linksReducer from "./slices/linksSlice"
+import tournamentTypeReducer from "./slices/tournamentTypeSlice"
 
 export const store = configureStore({
     reducer:{
         auth:authReducer,
         scroll:scrollReducer,
-        tournaments:tournamentsReducer,
-        nodes:nodesReducer,
-        user:userReducer
+        liveTournaments:liveTournamentsReducer,
+        finishedTournaments:finishedTournamentsReducer,
+        brackets:bracketsReducer,
+        points:pointsReducer,
+        user:userReducer,
+        addTournament:addTournamentReducer,
+        links:linksReducer,
+        tournamentType:tournamentTypeReducer
     }
 })

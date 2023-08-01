@@ -14,6 +14,8 @@ const TourNode = new Schema({
     round: Number,
     createdAt: Date,
     nodeNumber: Number,
+    firstUserEntered : { type: Date },
+    secondUserEntered : { type: Date },
     winner:{
       type: String ,
       default: "*",

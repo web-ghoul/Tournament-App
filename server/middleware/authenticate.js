@@ -12,7 +12,10 @@ const authenticate = (req,res,next) => {
         next()
     }catch(error)
     {
-        res.status(403)
+        res.status(403).json({
+          message : "user is not authorized "
+        })
+        
     }
 }
 

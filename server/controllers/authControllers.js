@@ -215,7 +215,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
                                 <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
                                   currentUrl +
-                                  "/user/resetPassword/" +
+                                  "/reset_password/" +
                                   _id +
                                   "/" +
                                   uniqueString
@@ -236,12 +236,12 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                     <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
                     <p style="margin: 0;"><a target="_blank" href=${
                       currentUrl +
-                      "/user/resetPassword/" +
+                      "/reset_password/" +
                       _id +
                       "/" +
                       uniqueString
                     }>${
-        currentUrl + "/user/resetPassword/" + _id + "/" + uniqueString
+        currentUrl + "/reset_password/" + _id + "/" + uniqueString
       }</a></p>
                   </td>
                 </tr>
@@ -497,7 +497,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
                                 <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
                                   currentUrl +
-                                  "/user/verify/" +
+                                  "/verify/" +
                                   _id +
                                   "/" +
                                   uniqueString
@@ -517,9 +517,9 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                     <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
                     <p style="margin: 0;"><a target="_blank" href=${
-                      currentUrl + "/user/verify/" + _id + "/" + uniqueString
+                      currentUrl + "/verify/" + _id + "/" + uniqueString
                     }>${
-        currentUrl + "/user/verify/" + _id + "/" + uniqueString
+        currentUrl + "/verify/" + _id + "/" + uniqueString
       }</a></p>
                   </td>
                 </tr>
@@ -591,7 +591,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
 }
 
 const sendVerificationEmail = ({ _id, Email }, type, res) => {
-  const currentUrl = "http://localhost:3000";
+  const currentUrl = "http://localhost:3001";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);
@@ -639,7 +639,7 @@ const sendVerificationEmail = ({ _id, Email }, type, res) => {
 };
 
 const register = (req, res, next) => {
-  User.findOne({ Name: req.body.username_reg ,Email:req.body.email}).then((result) => {
+  User.findOne({ Name: req.body.username_reg}).then((result) => {
     if (result) {
       res.status(403).json({
         message: "Username Already Exists!",
@@ -753,7 +753,7 @@ const login = (req, res, next) => {
         if (!user.verified) {
           res.status(403).json({
             status: "failed",
-            message: "User is not verified",
+            message: "Username or Password is incorrect",
           });
         } else {
           bcrypt.compare(
@@ -770,18 +770,19 @@ const login = (req, res, next) => {
                   { Id: user.id, Name: user.Name, Role: user.role },
                   process.env.SECRET_KEY,
                   {
-                    expiresIn: "5h",
+                    expiresIn: "30h",
                   }
                 );
                 res.cookie("token" , token)
                 res.status(200).json({
                     message: 'login successfully !' ,
                     token:token,
-                    role :user.role
+                    role :user.role,
+                    tutorial : user.tutorial
                 })
               } else {
                 res.status(403).json({
-                  message: "password isn't Correct !",
+                  message: "Username or Password is incorrect",
                 });
               }
             }
@@ -789,7 +790,7 @@ const login = (req, res, next) => {
         }
       } else {
         res.status(404).json({
-          message: "User isn't Exist!",
+          message: "Username or Password is incorrect",
         });
       }
     })
@@ -830,13 +831,13 @@ const resetEmail = (req, res, next) => {
               User.deleteOne({ _id: userId })
                 .then((result) => {
                   res.status(404).json({
-                    message : "link has expired please sign up again",
+                    message : "link has expired",
                   });;
                 })
                 .catch((err) => {
                   console.log(err);
                 });
-              console.log("deleted verification successfully");
+              //console.log("deleted verification successfully");
             })
             .catch((err) => {
               console.log(err);
@@ -848,20 +849,20 @@ const resetEmail = (req, res, next) => {
             if (err) {
               res.status(404).json({
                     error : err,
-                    message : "error on compare"
+                    message : "server error"
                   });
             } else {
               if (result) {
                 Userverification.deleteOne({ userId: userId })
                   .then((result) => {
-                    console.log("the email is verified");
+                  //  console.log("the email is verified");
                   })
                   .catch((err) => {
-                    console.log("error while deleting verification");
+                    //console.log("error while deleting verification");
                   });
                 next();
               } else {
-                console.log("incorrect verification");
+                //console.log("incorrect verification");
               }
             }
           });

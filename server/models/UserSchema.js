@@ -48,6 +48,10 @@ const UserSchema = Schema({
     type: String,
     default: "User",
   },
+  tutorial : {
+    type : Boolean ,
+    default : true
+  }
 });
 
 

@@ -13,7 +13,7 @@ const GameStat = ({perfs, count}) => {
         <Box className={`grid-stretch ${styles.game_stat}`}>
             <Box className={`grid-start ${styles.title}`}>
                 <Typography variant='h4' className={`game-font text-upper`}>Game Statistics</Typography>
-                <Typography variant="h6">Player's game specific statistics</Typography>
+                <Typography variant="h5">Player's game specific statistics</Typography>
             </Box>
             <Box className={`grid-stretch ${styles.stat}`}>
                 <Box className={`flex-start ${styles.types}`}>

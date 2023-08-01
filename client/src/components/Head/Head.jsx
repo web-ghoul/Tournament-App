@@ -1,13 +1,12 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
+import styles from "./Head.module.css"
 
-import styles from './Head.module.css'
-
-const Head = ({title,description}) => {
+const Head = ({title,description,gap, h, align , line}) => {
   return (
-    <Box className={`grid-center ${styles.head}`}>
-        <Typography variant="h2" className='text-center game-font text-upper'>{title}</Typography>
-        <Typography className={`text-center el-center-x para`} variant="h6">{description}</Typography>
+    <Box sx={{gap : `${gap && gap}px`}} className={`${align === "center" ? "grid-center" : "grid-start"}`} >
+        <Typography variant={h}   sx={{textAlign:align}} className={`${line && styles.line} game-font text-upper`}>{title}</Typography>
+        <Typography align={align} className={`${align === "center" && "el-center-x"} para`}  sx={{textAlign:align}} variant="h5">{description}</Typography>
     </Box>
   )
 }

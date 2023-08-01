@@ -1,0 +1,72 @@
+thead tr{
+    background-color: var(--indigo);
+}
+
+thead tr th{
+    font-weight: 800 !important;
+    color: var(--white) !important;
+}
+
+.points_body td:not(:last-child){
+    border-right: 4px solid var(--indigo) !important;
+}
+
+.tbody_cell{
+    gap: 20px;
+}
+
+.tbody_cell h6{
+    font-weight: normal;
+}
+
+.tbody_cell span{
+    color: var(--blue);
+    font-weight: 800;
+}
+
+.tbody_cell .buttons{
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tbody_cell .buttons button{
+    background-color: var(--blue);
+    padding: 5px 10px !important;
+}
+
+.tbody_cell .buttons button.abort{
+    background-color: var(--orange);
+}
+
+.tbody_cell .buttons button.finish{
+    background-color: var(--red);
+}
+
+@media (max-width:992px) {
+    .tbody_cell{
+        gap: 10px;
+    }
+    
+    .tbody_cell .buttons{
+        gap: 8px;
+    }
+    
+    .tbody_cell .buttons button{
+        padding: 4px 8px !important;
+    }
+}
+
+@media (max-width:768px) {
+    .tbody_cell{
+        gap: 8px;
+    }
+    
+    .tbody_cell .buttons{
+        gap: 6px;
+    }
+    
+    .tbody_cell .buttons button{
+        padding: 2px 6px !important;
+        font-size: 12px;
+    }
+}

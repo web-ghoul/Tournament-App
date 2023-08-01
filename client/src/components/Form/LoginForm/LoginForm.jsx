@@ -8,7 +8,6 @@ import { MyButton } from '../../../MUIComponents/MyButton/MyButton'
 
 const LoginForm = ({values , touched, errors , handleBlur, handleChange}) => {
     const navigate = useNavigate() 
-    
     useEffect(()=>{
         try{
             cookies.remove("user_data")

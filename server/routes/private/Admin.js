@@ -7,4 +7,6 @@ router.post("/addAdmin" ,authenticateMidd ,adminControllers.addAdmin)
 
 router.post("/addTournament" , authenticateMidd , adminControllers.addTournament)
 
+router.delete("/deleteTournament/:id" , adminControllers.deleteTournament )
+
 module.exports = router

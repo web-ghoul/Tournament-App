@@ -53,16 +53,21 @@
     padding: 5px;
     position: absolute;
     right: 0;
+    gap: 5px;
 }
 
 .buttons button{
     border-radius: 0px !important;
 }
 
-.buttons  > a:first-child button{
+.buttons  .match_button{
     background-color: var(--blue) !important;
 }
 
-.buttons > button:last-child{
+.buttons .abort_button{
+    background-color: var(--orange) !important;
+}
+
+.buttons .finish_button{
     background-color: var(--red) !important;
 }

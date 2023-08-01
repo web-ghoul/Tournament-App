@@ -4,6 +4,7 @@ var valid = require('validator');
 const Schema = mongoose.Schema ;
 
 const TournamentSchema = Schema({
+
   Name : {
     type : String ,
     required : true
@@ -11,7 +12,7 @@ const TournamentSchema = Schema({
   ,
   Type : {
     type : String ,
-    enum : ['normal' , 'crazy' ] ,
+    enum : ['Brackets' , 'Points' ] ,
   }
   ,
   Time : {
@@ -35,7 +36,26 @@ const TournamentSchema = Schema({
   StartsAt : {
     type : Date ,
     required : true 
-  } 
+  } ,
+  Winner: {
+    type : String ,
+    default: "*"
+  },
+  Creator: {
+    type:String ,
+    
+  },
+  EndedAt : {
+    type : Date ,
+
+  },
+  Password : {
+    type : String 
+  },
+  FinishedMatches: {
+    type : Number ,
+    default : 0
+  }
 
 
 })

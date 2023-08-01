@@ -1,11 +1,12 @@
 import React from 'react'
+import {useSelector} from "react-redux"
 
 //Images
 import webGhoul from "../../static/images/webGhoul.jpeg"
 import amr from "../../static/images/amr.jpg"
 
 //MUI
-import { Box, Container, IconButton, Typography } from '@mui/material'
+import { Box, Container, IconButton, Tooltip, Typography } from '@mui/material'
 import {LinkedIn,Facebook,GitHub, WhatsApp} from '@mui/icons-material';
 import {MyBox} from "../../MUIComponents/MyBox/MyBox"
 
@@ -15,24 +16,12 @@ import Head from '../../components/Head/Head';
 
 const About = () => {
 
-  const webGhoulContacts = {
-    "linkedin":"https://www.linkedin.com/in/mahmoud-salama-23b627211/",
-    "facebook":"https://www.facebook.com/mahmoud.gogoo.5/",
-    "whatsapp":"https://wa.me/+201009344881",
-    "github":"https://github.com/web-ghoul"
-  }
-
-  const amrContacts = {
-    "linkedin":"https://www.linkedin.com/in/amr-khaled-mohamed/",
-    "facebook":"https://www.facebook.com/profile.php?id=100006620191591",
-    "whatsapp":"https://wa.me/+201013714763",
-    "github":"https://github.com/Amr006"
-  }
+  const {webGhoulContacts , amrContacts} = useSelector((state)=>state.links)
 
   return (
     <MyBox className={`${styles.about}`}>
         <Container className={`grid-stretch ${styles.about_contain}`}>
-          <Head title={"About Us"} description ={"We are a MERN Stack Team , We build Tournament App to help Players to organize a Chess Game and each Player will know who is Play with him from Graph"}/>
+          <Head title={"About Us"} h={"h1"} align={"center"} description ={"We are a MERN Stack Team , We build Tournament App to help Players to organize a Chess Game and each Player will know who is Play with him from Graph"}/>
           <Box>
             <Typography variant='h2' className='tac'></Typography>
             <Typography variant='h6' className='text-center el-center-x para'></Typography>
@@ -51,18 +40,26 @@ const About = () => {
               <Box className={`grid-end ${styles.contact}`}>
                 <Typography variant='h4' className={`tac`}>Contact Me</Typography>
                 <Box className={`flex-center ${styles.icons}`}>
-                  <IconButton onClick={()=>window.location.href=webGhoulContacts.linkedin}>
-                    <LinkedIn/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=webGhoulContacts.github}>
-                    <GitHub/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=webGhoulContacts.facebook}>
-                    <Facebook/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=webGhoulContacts.whatsapp}>
-                    <WhatsApp/>
-                  </IconButton>
+                  <Tooltip title="linkedin">
+                    <IconButton onClick={()=>window.location.href=webGhoulContacts.linkedin}>
+                      <LinkedIn/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="github">
+                    <IconButton onClick={()=>window.location.href=webGhoulContacts.github}>
+                      <GitHub/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="facebook">
+                    <IconButton onClick={()=>window.location.href=webGhoulContacts.facebook}>
+                      <Facebook/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="whatsapp">
+                    <IconButton onClick={()=>window.location.href=webGhoulContacts.whatsapp}>
+                      <WhatsApp/>
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>
@@ -79,18 +76,26 @@ const About = () => {
               <Box className={`grid-end ${styles.contact}`}>
                 <Typography variant='h4' className={`tac`}>Contact Me</Typography>
                 <Box className={`flex-center ${styles.icons}`}>
-                  <IconButton onClick={()=>window.location.href=amrContacts.linkedin}>
-                    <LinkedIn/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=amrContacts.github}>
-                    <GitHub/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=amrContacts.facebook}>
-                    <Facebook/>
-                  </IconButton>
-                  <IconButton onClick={()=>window.location.href=amrContacts.whatsapp}>
-                    <WhatsApp/>
-                  </IconButton>
+                  <Tooltip title="linkedin">
+                    <IconButton onClick={()=>window.location.href=amrContacts.linkedin}>
+                      <LinkedIn/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="github">
+                    <IconButton onClick={()=>window.location.href=amrContacts.github}>
+                      <GitHub/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="facebook">
+                    <IconButton onClick={()=>window.location.href=amrContacts.facebook}>
+                      <Facebook/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="whatsapp">
+                    <IconButton onClick={()=>window.location.href=amrContacts.whatsapp}>
+                      <WhatsApp/>
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>

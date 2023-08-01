@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 const session = require('express-session')
 const helmet = require('helmet')
 const axios = require('axios');
-
+const path = require('path');
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
@@ -22,9 +22,11 @@ const User = require('./models/UserSchema')
 //app.use(express.static("public"));
 const corsOptions = {
   origin: [
-    'http://localhost:3000',
+    'https://chess-tournament.onrender.com',
     'http://localhost:3001',
-    'http://127.0.0.1',
+    'https://lichess.org',
+    '*'
+    
 
     // your origins here
   ],
@@ -36,11 +38,20 @@ const corsOptions = {
 app.use(express.json()) //can remove
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(helmet())
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", 'https://lichess.org/', 'https://chess-tournament.onrender.com/' , 'http://localhost:3001']
+    }
+  }
+}));
+
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(session({
-  secret: 'your-secret-key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -62,10 +73,16 @@ mongoose
     console.log(err);
   });
 
-app.use("/",HomeRoutes)
-app.use("/" , UserRoutes )
-app.use("/Admin" , AdminRoutes)
+app.use("/api",HomeRoutes)
+app.use("/api" , UserRoutes )
+app.use("/api/Admin" , AdminRoutes)
 
+// app.use(express.static(path.join(__dirname , '../client/build')))
+// app.get("*" , function (req,res) {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
+  
+// }
+// )
 
 //last to catch any wrong url ( needs cool 404 page :) ) 
 app.use((req, res) => {

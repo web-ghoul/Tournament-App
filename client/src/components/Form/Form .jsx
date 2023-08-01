@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import {setUserData} from "../../store/authSlice"
+import {setUserData} from "../../store/slices/authSlice"
 import Cookies from 'js-cookie';
 import {Formik} from "formik"
 import axios from "axios"
@@ -36,12 +36,12 @@ const From  = (props) => {
     const registerSchema = Yup.object().shape({
         email:Yup.string().email().required(),
         username_reg:Yup.string().required("Username is Required"),
-        password_reg:Yup.string().required("Password is Required"),
+        password_reg:Yup.string().required("Password is Required").min(8)
     })
     
     const loginSchema = Yup.object().shape({
         username_log:Yup.string().required("Username is Required"),
-        password_log:Yup.string().required("Password is Required"),
+        password_log:Yup.string().required("Password is Required")
     })
     
     const forgotPassSchema = Yup.object().shape({
@@ -77,9 +77,13 @@ const From  = (props) => {
         await axios.get(process.env.REACT_APP_SERVER_URL+`/user/resetPassword/${id}/${unique}`)
         .then((res)=>{
             Cookies.set("user_id",JSON.stringify(res.data.user_id))
-            handleToastMessage("Password is Reset Successfully!","s")
         }).catch((err)=>{
-            handleToastMessage(err.response.data.message,"e")
+            try{
+                handleToastMessage(err.response.data.message,"e")
+            }
+            catch(error){
+                handleToastMessage(error,"e")
+            }
         })
     }
 
@@ -95,7 +99,7 @@ const From  = (props) => {
             onSubmitProps.resetForm()
             handleToastMessage(res.data.message,"s")
         }).catch((err)=>{
-            handleToastMessage(err.response.data.message,"s")
+            handleToastMessage(err.response.data.message,"e")
         })
     }
 
@@ -103,7 +107,7 @@ const From  = (props) => {
         await axios.post(process.env.REACT_APP_SERVER_URL+"/login",{
             ...values
         }).then((res)=>{
-            const userData = {username:values.username_log , token:res.data.token , role:res.data.role}
+            const userData = {username:values.username_log , token:res.data.token , role:res.data.role, tutorial:res.data.tutorial}
             Cookies.set('user_data',JSON.stringify(userData) , { expires: 7 });
             Cookies.set('token',res.data.token , { expires: 7 });
             dispatch(setUserData(userData))

@@ -4,9 +4,10 @@ import Profile from "./pages/Profile/Profile.jsx"
 import Error  from "./pages/Error/Error.jsx"
 import App from "./App.jsx" 
 import Authentication from "./pages/Authentication/Authentication.jsx"
-import Graph from "./pages/Graph/Graph.jsx"
+import Tournament from "./pages/Tournament/Tournament.jsx"
 import Tournaments from "./pages/Tournaments/Tournaments.jsx"
 import About from "./pages/About/About.jsx"
+import Tutorial from "./pages/Tutorial/Tutorial.jsx"
 
 export const router= createBrowserRouter([
     {
@@ -46,14 +47,17 @@ export const router= createBrowserRouter([
                 element:<Tournaments/>
             },
             {
-                path:process.env.REACT_APP_GRAPH_PAGE,
-                element:<Graph/>
+                path:process.env.REACT_APP_TOURNAMENT_PAGE,
+                element:<Tournament/>
             },
             {
                 path:process.env.REACT_APP_ABOUT_PAGE,
                 element:<About/>
             },
-            
+            {
+                path:process.env.REACT_APP_TUTORIAL_PAGE,
+                element:<Tutorial/>
+            },
             {
                 path:"*",
                 element:<Error/>

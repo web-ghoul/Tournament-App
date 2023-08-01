@@ -1,12 +1,6 @@
-import React from 'react'
-
-//Component
-import Match from '../Match/Match'
-
-//MUI
 import { Box, Typography } from '@mui/material'
-
-//Style
+import React from 'react'
+import Match from '../Match/Match'
 import styles from "./Round.module.css"
 
 const Round = ({padding,max,matches ,round}) => {
