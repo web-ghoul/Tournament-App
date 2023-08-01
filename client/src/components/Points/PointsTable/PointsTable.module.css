@@ -1,0 +1,53 @@
+.table_contain{
+    background-color: var(--indigo) !important;
+    border-radius: 10px !important;
+}
+
+.table_contain table{
+    border-collapse: separate !important;
+}
+
+.table_contain  thead th{ 
+    border: none;
+    background-color: #000;
+    font-weight: 800;
+    color: var(--blue);
+}
+
+.table_contain select,.table_contain select option{
+    color: var(--white);
+    background-color: var(--indigo) !important;
+}
+
+.table_contain th , .table_contain td , .table_contain label{
+    color: var(--white);
+    border: none;
+    border-top: 4px solid var(--blue);
+    font-family: var(--body-alt-font) !important;
+}
+
+.table_contain tbody tr{
+    transition: var(--trans);
+}
+
+.table_contain tbody tr:hover ,.table_contain tbody tr.active{
+    background-color: var(--blue);
+}
+
+.table_contain tbody tr:first-child td, .table_contain tbody tr:first-child th{
+    border-top: none !important;
+    box-shadow: 2px solid var(--blue);
+}
+
+.player_name{
+    font-weight: 800;
+}
+
+.player{
+    gap: 20px;
+}
+
+.player_name:hover{
+    color: var(--dark);
+}
+

@@ -1,0 +1,39 @@
+.arrow{
+    position: absolute;
+    right: -155px;
+}
+
+.curve{
+    width: 80px;
+}
+
+.top .curve_1{
+    transform: translateX(2px) translateY(-5px);
+    border-top: 4px solid var(--blue) !important;
+    border-right: 4px solid var(--blue) !important;
+    border-top-right-radius: 12px !important;
+    transition: var(--trans);
+}
+
+.top .curve_2{
+    transform: translateX(-2px) translateY(5px);
+    border-bottom: 4px solid var(--blue) !important;
+    border-left: 4px solid var(--blue) !important;
+    border-bottom-left-radius: 12px !important;
+    transition: var(--trans);
+}
+
+
+.bottom .curve_1{
+    transform: translateX(2px) translateY(5px);
+    border-bottom: 4px solid var(--blue) !important;
+    border-right: 4px solid var(--blue) !important;
+    border-bottom-right-radius: 12px !important;
+}
+
+.bottom .curve_2{
+    transform: translateX(-2px) translateY(-5px);
+    border-top: 4px solid var(--blue) !important;
+    border-left: 4px solid var(--blue) !important;
+    border-top-left-radius: 12px !important;
+}
