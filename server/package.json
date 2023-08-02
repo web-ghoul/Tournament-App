@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon server.js"
+    "start": "nodemon server.js"
   },
   "author": "Amr006",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
+    "roundrobin-tournament-js": "^1.2.0",
     "uuid": "^9.0.0",
     "validator": "^13.9.0"
   }
