@@ -88,7 +88,7 @@ const deleteTournament = async (req, res, next) => {
   
     const id = req.params.id;
     const data = await Tournament.find({_id : req.userId})
-    if(data.Creator == req.username ||req.role == "Admin" )
+    if(data.Creator == req.userName ||req.role == "Admin" )
     {
 
     await Tournament.findByIdAndDelete({ _id: id })
@@ -123,7 +123,7 @@ const deleteTournament = async (req, res, next) => {
     }
    else {
     res.status(401).json({
-      message: "Unauthorized user!",
+      message: "FLAG{THE_EAZY_FLAG}",
     });
   }
 };
