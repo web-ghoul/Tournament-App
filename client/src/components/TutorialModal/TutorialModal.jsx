@@ -21,7 +21,6 @@ const TutorialModal = () => {
       let userData = JSON.parse(Cookies.get("user_data"))
       userData.tutorial = false
       Cookies.set("user_data", JSON.stringify(userData))
-      console.log(res)
     }).catch((err)=>{
       console.log(err)
     })

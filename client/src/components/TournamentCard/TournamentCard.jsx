@@ -3,15 +3,14 @@ import axios from "axios"
 import {useDispatch, useSelector} from "react-redux"
 import {Link, useNavigate} from "react-router-dom"
 import {handleToastMessage} from "../../App"
-import {bracketsType, pointsType} from "../../store/slices/tournamentTypeSlice"
 
 //Images
 import gameImg from "../../static/images/game-img-1.png"
 import kingImg from "../../static/images/king.png"
 
 //MUI
-import { Box, Divider, IconButton, Typography } from '@mui/material'
-import {HourglassFullOutlined,DeleteForeverRounded, HourglassBottomRounded, HourglassTopRounded} from '@mui/icons-material';
+import { Box, Button, Divider, IconButton, Typography } from '@mui/material'
+import {ContentCopyRounded, DeleteForeverRounded, HourglassBottomRounded, HourglassTopRounded} from '@mui/icons-material';
 import {MyButton} from "../../MUIComponents/MyButton/MyButton"
 
 //Style
@@ -49,9 +48,13 @@ const TournamentCard = ({tournament,finished}) => {
     await axios.post(process.env.REACT_APP_SERVER_URL+`/JoinTournament/${tournament._id}`,{},{
       withCredentials:true
     }).then((res)=>{
+      if(res.data.message === "Tournament is Full !"){
+        handleToastMessage(res.data.message,"i");
+      }else{
+        handleToastMessage(res.data.message,"s");
+      }
       dispatch(getLiveTournaments())
       setExist(true)
-      handleToastMessage(res.data.message,"s");
     }).catch((err)=>{
       try{
         if(err.response.data.message === "user is not authorized"){
@@ -69,14 +72,12 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleEnter= async()=>{
-    await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${tournament._id}`,{},{
-      withCredentials:true
-    }).then((res)=>{
-      navigate(`../tournament/${tournament._id}`)
-      if(tournament.Type==="points"){
-        dispatch(pointsType())
+    await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${tournament._id}`).then((res)=>{
+      console.log(tournament)
+      if(tournament.Type==="Points"){
+        navigate(`../points/${tournament._id}/${finished}`)
       }else{
-        dispatch(bracketsType())
+        navigate(`../brackets/${tournament._id}/${finished}`)
       }
       handleToastMessage(`Welcome ${username}`,"s");
     }).catch((err)=>{
@@ -86,6 +87,14 @@ const TournamentCard = ({tournament,finished}) => {
         handleToastMessage(error,"e");
       }
     })
+  }
+
+  const handleView= async()=>{
+    if(tournament.Type==="Points"){
+      navigate(`../points/${tournament._id}/${finished}`)
+    }else{
+      navigate(`../brackets/${tournament._id}/${finished}`)
+    }
   }
 
   const handleDelete = async()=>{
@@ -112,10 +121,17 @@ const TournamentCard = ({tournament,finished}) => {
       }
     })
   }
+
+  const handleCopyJoinLink = ()=>{
+    navigator.clipboard.writeText("Helssssssssssssssssslo")
+    handleToastMessage("Join Link Copied","s")
+  }
   
   useEffect(()=>{
     if(tournament.Players.includes(username)){
       setExist(true)
+    }else{
+      setExist(false)
     }
   },[tournament , exist , username])
   
@@ -193,18 +209,22 @@ const TournamentCard = ({tournament,finished}) => {
               <Typography variant="subtitle2" className='text-upper'>Enrolled</Typography>
               <Typography variant="h6" className={`text-upper ${styles.data}`}>{tournament.Players.length}</Typography>
             </Box>
+            <IconButton  onClick={handleCopyJoinLink} className={`grid-center text-center  ${styles.border}`}>
+              <Typography variant="subtitle2" className='text-upper'>Copy Join Link</Typography>
+              <ContentCopyRounded/>
+            </IconButton>
           </Box>
         </Box>
         <Box className={`flex-stretch ${styles.btn}`}>
             {
-              tournament.Finished?
+              finished?
               (
-                <MyButton className='text-upper' onClick={handleEnter}>View Tournament</MyButton>
+                <MyButton className='text-upper' onClick={handleView}>View Tournament</MyButton>
               ):(
-                exist ? (
-                  <MyButton className='text-upper' onClick={handleEnter}>Enter Tournament</MyButton>
-                ):(
+                !exist ? (
                   <MyButton className='text-upper' onClick={handleJoin}>Join Tournament</MyButton>
+                ):(
+                  <MyButton className='text-upper' onClick={handleEnter}>Enter Tournament</MyButton>
                 )
               )
             }

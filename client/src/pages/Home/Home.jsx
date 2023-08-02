@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {useNavigate} from "react-router-dom"
-import {openAddTournamentModal} from "../../store/slices/AddTournamentSlice"
+import {openAddTournamentModal} from "../../store/slices/addModalSlice"
 
 //MUI
 import { Box , Container , Typography} from '@mui/material'
@@ -21,19 +21,20 @@ const Home = () => {
         <Typography variant='h1' className='game-font text-upper'>Tournaments</Typography>
         <Typography variant='h4'  className='game-font text-upper'>Play Unlimited</Typography>
         <Box className={`grid-center ${styles.home_buttons}`} sx={{zIndex:"1000" , position:"relative"}}>
-        {
-          username ?
-          (
-            <>
-              <MyButton  onClick={()=>navigate(process.env.REACT_APP_TOURNAMENTS_PAGE)}>Let's Play</MyButton>
-              <MyButton  onClick={()=>dispatch(openAddTournamentModal())}>Add Your Tournament</MyButton>
-            </>
-          )
-            :
-          (
-            <MyButton onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Get Started</MyButton>
-          )
-        }
+          {
+            username ?
+            (
+              <>
+                <MyButton  onClick={()=>navigate(process.env.REACT_APP_TOURNAMENTS_PAGE)}>Let's Play</MyButton>
+                
+              </>
+            )
+              :
+            (
+              <MyButton onClick={()=>navigate(process.env.REACT_APP_SIGNUP_PAGE)}>Get Started</MyButton>
+            )
+          }
+          <MyButton  onClick={()=>dispatch(openAddTournamentModal())}>Add Your Tournament</MyButton>
         </Box>
       </Container>
     </MyBox>

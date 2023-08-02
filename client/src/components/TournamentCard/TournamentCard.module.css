@@ -46,15 +46,24 @@
 }
 
 .border{
-    border: 1px solid #281D61;
-    padding: 10px;
+    border-radius: 0 !important;
+    border: 1px solid #281D61 !important;
+    padding: 10px !important;
     gap: 5px;
 }
 .border h6{
     white-space:nowrap;
 }
-.border h6.data{
+.border h6.data,button.border svg{
     color: var(--para-alt-color);
+}
+
+.border button{
+    width: 40px;
+    height: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
 }
 
 .border h6.data.creator{
@@ -189,6 +198,7 @@
     
     .timing {
         gap: 15px;
+        justify-content: center !important;
     }
     
     .timing > div{
@@ -197,6 +207,9 @@
     
     .info{
         gap: 10px;
+        justify-content: center !important;
+        display: flex !important;
+        flex-wrap: wrap;
     }
 
     .btn button{

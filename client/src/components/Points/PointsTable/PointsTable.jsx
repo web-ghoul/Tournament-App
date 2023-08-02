@@ -83,13 +83,18 @@ const PointsTable = ({data}) => {
       ...rounds,
       { id: 'points', label: 'Points', minWidth: 100, align:"center" },
     ];
-    
+
     const rows = []
-    data.map((player)=>rows.push(createData(player.Name ,...Array.from({length: player.Matches.length}, (_, i) => i + 1) , player.Points)))
+    data.map((player)=>rows.push(createData(player.Name ,...Array.from({length: player.Matches.length}, (_, i) => {
+      const result = player.Matches[i].winner
+      return result === "draw" ? 1 : result === username ? 2 : 0
+    }) , player.Points)))
     rows.sort((a, b) => (a.points < b.points ? -1 : 1));
 
     const [page, setPage] = useState(0);
+
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 

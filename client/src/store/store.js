@@ -6,7 +6,7 @@ import finishedTournamentsReducer from "./slices/finishedTournamentsSlice"
 import bracketsReducer from "./slices/bracketsSlice"
 import pointsReducer from "./slices/pointsSlice"
 import userReducer from './slices/userSlice'
-import addTournamentReducer from "./slices/AddTournamentSlice"
+import addModalReducer from "./slices/addModalSlice"
 import linksReducer from "./slices/linksSlice"
 import tournamentTypeReducer from "./slices/tournamentTypeSlice"
 
@@ -19,7 +19,7 @@ export const store = configureStore({
         brackets:bracketsReducer,
         points:pointsReducer,
         user:userReducer,
-        addTournament:addTournamentReducer,
+        addModal:addModalReducer,
         links:linksReducer,
         tournamentType:tournamentTypeReducer
     }

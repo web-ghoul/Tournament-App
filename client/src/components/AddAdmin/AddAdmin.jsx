@@ -9,14 +9,16 @@ import {Box, Button, IconButton, InputLabel, MenuItem, Modal, Select, TextField,
 import {EmojiEvents,AdminPanelSettings} from '@mui/icons-material';
 
 //Style
-import styles from "./AdminModal.module.css"
-import { useSelector } from 'react-redux';
+import styles from "./AddAdmin.module.css"
+import { useDispatch, useSelector } from 'react-redux';
+import { closeAddAdminModal } from '../../store/slices/addModalSlice';
 
-const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
+const AddAdmin = () => {
+    const dispatch= useDispatch()
     const date = new Date()
     const previous = new Date(date.getTime());
     previous.setDate(date.getDate() - 1);
-    const {username} = useSelector((state)=>state.auth)
+    const {openAdminModal} = useSelector((state)=>state.addModal)
 
     const initialAddAdminValues = {
         username:"",
@@ -25,6 +27,10 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
     const AddAdminSchema = Yup.object().shape({
         username:Yup.string().required("Enter New Admin Username"),
     })
+
+    const handleCloseModal=()=>{
+        dispatch(closeAddAdminModal())
+    }
 
     const handleSubmitAdmin = async(values,onSubmitProps)=>{
         await axios.post(process.env.REACT_APP_SERVER_URL+"/Admin/addAdmin",{
@@ -42,7 +48,7 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
 
     return(
         <Modal
-            open={openModal}
+            open={openAdminModal}
             onClose={handleCloseModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
@@ -76,4 +82,4 @@ const AdminModal = ({state,openModal,handleCloseModal, setAdd}) => {
 
 }
 
-export default AdminModal
+export default AddAdmin

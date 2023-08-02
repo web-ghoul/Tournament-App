@@ -47,8 +47,12 @@ export const router= createBrowserRouter([
                 element:<Tournaments/>
             },
             {
-                path:process.env.REACT_APP_TOURNAMENT_PAGE,
-                element:<Tournament/>
+                path:process.env.REACT_APP_BRACKETS_PAGE,
+                element:<Tournament type="Brackets"/>
+            }, 
+            {
+                path:process.env.REACT_APP_POINTS_PAGE,
+                element:<Tournament type="Points"/>
             },
             {
                 path:process.env.REACT_APP_ABOUT_PAGE,

@@ -60,11 +60,9 @@ const Tournaments = () => {
             ):(
               liveTournaments && liveTournaments.length > 0 ?
               liveTournaments.map((d,i)=>{
-                if(d.Winner === "*"){
-                  return(
-                    <TournamentCard finished={false} key={i} tournament={d}/>
-                  )
-                }
+                return(
+                  <TournamentCard finished={false} key={i} tournament={d}/>
+                )
               })
               :
               <MyBox>

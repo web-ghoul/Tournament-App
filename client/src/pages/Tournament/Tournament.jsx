@@ -17,23 +17,21 @@ import Confetti from 'react-confetti'
 import Head from '../../components/Head/Head';
 import Points from '../../components/Points/Points';
 
-const Tournament = () => {
-    const {type} = useSelector((state)=>state.tournamentType)
+const Tournament = ({type}) => {
     const dispatch = useDispatch()
     const {isBracketsLoading, max,brackets,tournament,winner} = useSelector((state)=>state.brackets)
     const {isPointsLoading, points} = useSelector((state)=>state.points)
-    const {tournamentId} = useParams()
+    const {tournamentId, finished} = useParams()
     const {username} = useSelector((state)=>state.auth)
     const width = window.width
     const height = window.height
     useEffect(()=>{
-        if(type === "points"){
-            dispatch(getPoints(tournamentId))
+        if(type === "Points"){
+            dispatch(getPoints({tournamentId, finished}))
         }else{
-            dispatch(getBrackets(tournamentId))
+            dispatch(getBrackets({tournamentId, finished}))
         }
-    },[dispatch , tournamentId,type])
-    console.log(winner)
+    },[dispatch , tournamentId , type , finished])
     return (
         <MyBox className={`${styles.graph}`}>
             {
@@ -45,9 +43,9 @@ const Tournament = () => {
                 )
             }
             <Container className={`grid-stretch ${styles.graph_contain}`}>
-                <Head h={"h1"} align={"center"} title={type === "points" ? (points && points[0].tournamentID.Name):(tournament && tournament.Name)} description={type === "points" ? (points && points[0].tournamentID.Description):(tournament && tournament.Description)}/>
+                <Head h={"h1"} align={"center"} title={type === "Points" ? (points && points[0].tournamentID.Name):(tournament && tournament.Name)} description={type === "Points" ? (points && points[0].tournamentID.Description):(tournament && tournament.Description)}/>
                 {
-                    type === "points"?
+                    type === "Points"?
                     (
                         <Points isLoading={isPointsLoading} data={points}/>
                     ):

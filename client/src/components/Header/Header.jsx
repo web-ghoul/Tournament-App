@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {showing , hiding} from "../../store/slices/scrollSlice"
 import {logout} from "../../store/slices/authSlice"
 import Cookies from 'js-cookie'
-import { openAddTournamentModal, closeAddTournamentModal } from '../../store/slices/AddTournamentSlice'
+import { openAddTournamentModal,closeAddAdminModal ,closeAddTournamentModal, openAddAdminModal } from '../../store/slices/addModalSlice'
 
 //Components
 import Logo from '../Logo/Logo'
 import AddTournament from '../AddTournament/AddTournament'
+import AddAdmin from '../AddAdmin/AddAdmin'
 
 //MUI
 import { AppBar, Container, Toolbar, IconButton, Box, Button, useMediaQuery, Menu, MenuItem, Typography, Divider } from '@mui/material'
@@ -22,19 +23,13 @@ import styles from "./Header.module.css"
 const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {openTournamentModal} = useSelector((state)=>state.addTournament)
   const lgSize = useMediaQuery("(max-width:992px)")
-  const {username} = useSelector((state)=>state.auth)
+  const {username,role} = useSelector((state)=>state.auth)
   const [headerClass , setHeaderClass] = useState(true)
   const [sign , setSign] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const open = Boolean(anchorEl);
-
-
-  const handleCloseModal = () => {
-    dispatch(closeAddTournamentModal())
-  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,8 +71,12 @@ const Header = () => {
   return (
     <AppBar className={ headerClass ? styles.header : styles.header_active}>
       
-      <AddTournament openModal={openTournamentModal} handleCloseModal={handleCloseModal}/>
+      <AddTournament/>
 
+      {
+        role==="Admin" && <AddAdmin/>
+      }
+      
       <Container>
         <Toolbar className={`flex-between ${ headerClass ? styles.header_contain : styles.header_contain_active}`}>
           <Logo/>
@@ -127,6 +126,17 @@ const Header = () => {
                         <AddCircleOutline fontSize='large'/> 
                         <Typography variant='h5'>Add Tournament</Typography>
                       </MenuItem>
+                      {
+                        role === "Admin" && (
+                          <MenuItem className={`${styles.item}`} onClick={()=>{
+                            dispatch(openAddAdminModal());
+                            handleClose();
+                          }}>
+                            <PersonAddAltRounded/> 
+                            <Typography variant='h5'>Add Admin</Typography>
+                          </MenuItem>
+                        )
+                      } 
                       <MenuItem  className={`${styles.item}`}  onClick={()=>handleLogout()}>
                         <Login/>
                         <Typography variant='h5'>Log Out</Typography>
@@ -186,6 +196,17 @@ const Header = () => {
                         <AddCircleOutline/> 
                         <Typography variant='h5'>Add Tournament</Typography>
                       </MenuItem>
+                      {
+                        role === "Admin" &&(
+                          <MenuItem className={`${styles.item}`} onClick={()=>{
+                            dispatch(openAddAdminModal());
+                            handleClose();
+                          }}>
+                            <PersonAddAltRounded/> 
+                            <Typography variant='h5'>Add Admin</Typography>
+                          </MenuItem>
+                        )
+                      }
                       <MenuItem className={`${styles.item}`} onClick={()=>handleLogout()}>
                         <Login/>
                         <Typography variant='h5'>Log Out</Typography>
@@ -251,15 +272,19 @@ const Header = () => {
                         handleClose();
                       }}>
                         <AddCircleOutline/> 
-                        <Typography variant='h5'>Add Tournamnets</Typography>
+                        <Typography variant='h5'>Add Tournament</Typography>
                       </MenuItem>
-                      {/* <MenuItem className={`${styles.item}`} onClick={()=>{
-                        handleOpenAddAdminModal();
-                        handleClose();
-                      }}>
-                        <PersonAddAltRounded/> 
-                        <Typography variant='h5'>Add Admin</Typography>
-                      </MenuItem> */}
+                      {
+                        role === "Admin" && (
+                          <MenuItem className={`${styles.item}`} onClick={()=>{
+                            dispatch(openAddAdminModal());
+                            handleClose();
+                          }}>
+                            <PersonAddAltRounded/> 
+                            <Typography variant='h5'>Add Admin</Typography>
+                          </MenuItem>
+                        )
+                      }
                       <MenuItem  className={`${styles.item}`} onClick={()=>{navigate(process.env.REACT_APP_LOGIN_PAGE) ; handleClose()}}>
                         <LoginRounded/>
                         <Typography variant='h5'>Log in</Typography>

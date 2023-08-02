@@ -1,33 +1,55 @@
 import { Box,Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import {getPoints} from "../../../store/slices/pointsSlice"
 import React from 'react'
 import styles from "./PlayerTable.module.css"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios"
 import {handleToastMessage} from "../../../App"
+import { useParams } from 'react-router-dom';
 
 const PlayerTable = ({data}) => {
+    const dispatch = useDispatch()
+
+    const {tournamentId, finished} = useParams()
+
     const {username} = useSelector((state)=>state.auth)
 
     const playerData = data.filter((d)=>d.Name === username)[0]
-    console.log(playerData._id)
 
-    const handleEnterMatch = async(gameLink)=>{
-        await axios.post(process.env.REACT_APP_SERVER_URL+`/GameEntered/${playerData._id}`,{},{
+    const handleEnterMatch = async(gameLink, game_Id)=>{
+        await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsGameEntered/${game_Id}`,{},{
             withCredentials:true
         }).then((res)=>{
-          window.open(gameLink, "_blank")
+            window.open(gameLink, "_blank")
         }).catch((err)=>{
             handleToastMessage(err.response.data.message, "e")
         })
     }
 
-    const handleAbort = ()=>{
-    }
-
-    const handleFinish = async(game_link)=>{
-        await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsNode/${game_link}/1`,{},{
+    const handleAbort = async(game_id)=>{
+        await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsAbortMatch/${game_id}`,{},{
             withCredentials:true
         }).then((res)=>{
+            if(playerData.Matches[playerData.Matches.length-1].gameID === game_id){
+                dispatch(getPoints({tournamentId, finished:"true"}))
+            }else{
+                dispatch(getPoints({tournamentId, finished:"false"}))
+            }
+            handleToastMessage(res.data.message, "s")
+        }).catch((err)=>{
+            handleToastMessage(err.response.data.message, "e")
+        })
+    }
+
+    const handleFinish = async(game_id)=>{
+        await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsNode/${game_id}`,{},{
+            withCredentials:true
+        }).then((res)=>{
+            if(playerData.Matches[playerData.Matches.length-1].gameID === game_id){
+                dispatch(getPoints({tournamentId, finished:"true"}))
+            }else{
+                dispatch(getPoints({tournamentId, finished:"false"}))
+            }
             handleToastMessage(res.data.message,"s")
         }).catch((err)=>{
             handleToastMessage(err.response.data.message,"e")
@@ -61,13 +83,13 @@ const PlayerTable = ({data}) => {
                                 <Box className={`grid-start ${styles.tbody_cell}`}>
                                     <Typography variant='h6'>play with <span>{match.Player}</span></Typography>
                                     <Box className={`flex-start ${styles.buttons}`}>
-                                        <Button onClick={()=>handleEnterMatch(match.gameLink, playerData._id)}>
+                                        <Button onClick={()=>handleEnterMatch(match.gameLink, match.gameID)}>
                                             Match
                                         </Button>
-                                        <Button onClick={handleAbort} className={`${styles.abort}`}>
+                                        <Button onClick={()=>handleAbort(match.gameID)} className={`${styles.abort}`}>
                                             Abort
                                         </Button>
-                                        <Button onClick={()=>handleFinish(match._id)} className={`${styles.finish}`}>
+                                        <Button onClick={()=>handleFinish(match.gameID)} className={`${styles.finish}`}>
                                             Finish
                                         </Button>
                                     </Box>

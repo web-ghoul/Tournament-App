@@ -2,10 +2,19 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "axios"
 
 export const getPoints = createAsyncThunk("points/getPoints",async(args)=>{
-    const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayPoints/${args}`,{},{
-        withCredentials:true
-    })
-    return res.data.data
+    if(args.finished === "true"){
+        console.log(1)
+        const res = await axios.get(process.env.REACT_APP_SERVER_URL+`/DisplayFinishedTournamentsNode/${args.tournamentId}`,{},{
+            withCredentials:true
+        })
+        return res.data.data
+    }else{
+        console.log(2)
+        const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayPoints/${args.tournamentId}`,{},{
+            withCredentials:true
+        })
+        return res.data.data
+    }
 })
 
 const initialState = {

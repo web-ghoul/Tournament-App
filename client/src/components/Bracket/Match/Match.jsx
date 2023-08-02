@@ -38,7 +38,11 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
   const handleAbortGame = async() =>{
     await axios.post(process.env.REACT_APP_SERVER_URL+`/AbortMatch/${match.gameID}/${match._id}`,{},{withCredentials:true})
     .then((res)=>{
-      dispatch(getBrackets(tournamentId))
+      if(last){
+        dispatch(getBrackets({tournamentId,finished:"true"}))
+      }else{
+        dispatch(getBrackets({tournamentId,finished:"false"}))
+      }
     }).catch((err)=>{
       handleToastMessage(err.response.data.message,"e")
     })
@@ -47,9 +51,17 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
   const handleEndGame = async() =>{
     await axios.post(process.env.REACT_APP_SERVER_URL + `/Node/${match.gameID}/${match._id}`,{},{withCredentials:true})
     .then((res)=>{
-      dispatch(getBrackets(tournamentId))
+      if(last){
+        dispatch(getBrackets({tournamentId,finished:"true"}))
+      }else{
+        dispatch(getBrackets({tournamentId,finished:"false"}))
+      }
     }).catch((err)=>{
-      handleToastMessage(err.response.data.message,"e")
+      try{
+        handleToastMessage(err.response.data.message,"e")
+      }catch(error){
+        handleToastMessage(error,"e")
+      }
     })
   } 
 
@@ -71,7 +83,7 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
               <>
                 <Button className={`${styles.match_button}`} onClick={handleEnterMatch}>Match</Button>
                 {
-                  tournament && tournament.Players.includes(username) && match.winner === "*" && (
+                  (username === match.userName1 || username === match.userName2) && tournament && tournament.Players.includes(username) && match.winner === "*" && (
                     <>
                       <Button onClick={handleAbortGame} className={styles.abort_button}>Abort</Button>
                       <Button onClick={handleEndGame} className={styles.finish_button}>Finish</Button>

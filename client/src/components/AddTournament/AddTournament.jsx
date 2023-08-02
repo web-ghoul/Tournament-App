@@ -1,5 +1,5 @@
 import React from 'react'
-import { Formik } from 'formik';
+import { Formik, isInteger } from 'formik';
 import * as Yup from "yup"
 import axios from "axios"
 import {handleToastMessage} from "../../App"
@@ -12,13 +12,17 @@ import {EmojiEvents} from '@mui/icons-material';
 //Style
 import styles from "./AddTournament.module.css"
 import { useDispatch, useSelector } from 'react-redux';
+import { closeAddTournamentModal } from '../../store/slices/addModalSlice';
+import { useNavigate } from 'react-router-dom';
 
-const AddTournament = ({openModal,handleCloseModal}) => {
+const AddTournament = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const date = new Date()
     const previousDate = new Date(date.getTime());
     previousDate.setDate(date.getDate() - 1)
     const {username} = useSelector((state)=>state.auth)
+    const {openTournamentModal} = useSelector((state)=>state.addModal)
 
     const initialAddTournamentValues = {
         name:"",
@@ -33,11 +37,14 @@ const AddTournament = ({openModal,handleCloseModal}) => {
     const AddTournamentSchema = Yup.object().shape({
         name:Yup.string().required("Enter Tournament Name"),
         description:Yup.string().required("Enter Tournament Description"),
-        date:Yup.date().min(previousDate, "Enter Valid Date").required(),
+        date:Yup.date().min(previousDate, "Enter Valid Date").required("Enter Tournament Date"),
         game_time:Yup.string().required("Enter Type of Tournament Time"),
         type:Yup.string().required("Enter Tournament Type"),
         time:Yup.string().required("Enter Tournament Time"),
-        max:Yup.number().required("Enter Maximum Number of Players").positive().integer(),
+        max:Yup.number().integer().required("Enter Maximum Number of Players").positive().when("type",{
+            is:"Brackets",
+            then:(value)=>value.oneOf([2,4,8,16,32,64,128], "Must enter number in powers of 2")
+        })
     })
 
     const optionsType = [
@@ -45,7 +52,17 @@ const AddTournament = ({openModal,handleCloseModal}) => {
         {value:"Points", label:"Points"},
     ]
 
+    const handleCloseModal=()=>{
+        dispatch(closeAddTournamentModal())
+    }
+
     const handleSubmitTournament = async(values, onSubmitProps)=>{
+        if(!username){
+            handleToastMessage("Create Account First","i")
+            navigate(process.env.REACT_APP_SIGNUP_PAGE)
+            handleCloseModal()
+            return;
+        }
         const date = values.date
         const time = values.time
         const startsAt = date+"T"+time+":00+03:00"
@@ -67,7 +84,7 @@ const AddTournament = ({openModal,handleCloseModal}) => {
     
     return (
         <Modal
-        open={openModal}
+        open={openTournamentModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -100,8 +117,7 @@ const AddTournament = ({openModal,handleCloseModal}) => {
                                 <TextField className={`grid-stretch`} label="" name='time' value={values.time} onChange={handleChange} id="time" error={Boolean(touched.time) && Boolean(errors.time)} type='time' helperText={touched.time && errors.time} onBlur={handleBlur}/>
                             </Box>
 
-                            <TextField className={`grid-stretch`} type="number" label="Maximum Players" name='max' value={values.max} onChange={handleChange} id="max" error={Boolean(touched.max) && Boolean(errors.max)} helperText={touched.max && errors.max} onBlur={handleBlur}/>
-
+                            
                             <Box className={`grid-stretch`}>
                                 <InputLabel id="type">Type</InputLabel>
                                 <Select
@@ -121,6 +137,8 @@ const AddTournament = ({openModal,handleCloseModal}) => {
                                     }
                                 </Select>
                             </Box>
+
+                            <TextField className={`grid-stretch`} type="number" label="Maximum Players" name='max' value={values.max} onChange={handleChange} id="max" error={Boolean(touched.max) && Boolean(errors.max)} helperText={touched.max && errors.max} onBlur={handleBlur}/>
 
                             <Box className={`grid-stretch`}>
                                 <InputLabel id="game_time">Match Time</InputLabel>

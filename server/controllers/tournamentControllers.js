@@ -12,7 +12,7 @@ timeValue.set("Classic", 1800);
 
 const displayNodes = async (req, res, next) => {
 //  console.log("result");
-console.log("result");
+  console.log("result");
   const tournament_Id = req.params.id;
   
   await Node.find({ tournamentID: tournament_Id })
@@ -70,7 +70,7 @@ console.log("result");
                   j++;
                 } catch (error) {
                   console.log(error);
-                  res.json(error);
+                  return res.json(error);
                 }
               }
               data[0].tournamentID = result
@@ -132,11 +132,17 @@ const gameEnds = async (req, res, next) => {
       }
     } else {
       console.log("the game is not finished yet !!");
-      res.status(404).json({
+      return res.status(404).json({
         message: "the game is not finished yet!!",
       });
     }
   }
+} catch (err) {
+  return res.status(404).json({
+    message: "the game is not finished yet!!",
+  });
+}
+
       await Node.findOne({ _id: node_Id })
         .populate("tournamentID")
         .then(async (result1) => {
@@ -171,7 +177,7 @@ const gameEnds = async (req, res, next) => {
                       await result1.save();
                       console.log("Hello");
                       req.params.id = result1.tournamentID;
-                      next();
+                      return next();
                     } catch (error) {
                       console.log(error);
                     }
@@ -203,13 +209,14 @@ const gameEnds = async (req, res, next) => {
                 { round: result1.round + 1 },
                 { tournamentID: result1.tournamentID._id },
               ],
-            })
+            }).populate("tournamentID")
               .then(async (result) => {
                 if (result) {
-                  console.log("result")
+                  console.log("result00")
                   console.log(result)
                   let formData = new URLSearchParams();
                   var nodeTime = timeValue.get(result.tournamentID.Time);
+                  console.log(result.tournamentID)
                   formData.append("clock.limit", nodeTime);
                   if (first) {
                     formData.append(
@@ -224,6 +231,7 @@ const gameEnds = async (req, res, next) => {
                   }
 
                   formData.append("clock.increment", 0);
+                  console.log(formData)
                   try {
                     let response = await axios.post(
                       "https://lichess.org/api/challenge/open",
@@ -245,7 +253,7 @@ const gameEnds = async (req, res, next) => {
                       await result.save();
                       console.log("Hello");
                       req.params.id = result1.tournamentID;
-                      next();
+                      return next();
                     } catch (error) {
                       console.log(error);
                     }
@@ -253,7 +261,7 @@ const gameEnds = async (req, res, next) => {
                     console.log(error);
                   }
                 } else {
-                  if (result1.round == Math.log2(result1.tournamentID.Max)) {
+                  if (result1.round == Math.log2(result1.tournamentID.Players.length)) {
                     // const updatedData = {
                     //   Finished: true,
                     //   Winner: winnerName,
@@ -272,8 +280,7 @@ const gameEnds = async (req, res, next) => {
                       }
                     
                       // Step 2: Delete the document from the "Tournament" collection
-                      //const deleteResult = await Tournament.deleteOne({ _id: result1.tournamentID });
-                      
+                      const deleteResult = await Tournament.deleteOne({ _id: result1.tournamentID });
                       
                         tournamentToDelete.Winner = winnerName;
                         tournamentToDelete.EndedAt = Date.now();
@@ -306,7 +313,7 @@ const gameEnds = async (req, res, next) => {
                     
                         console.log("Tournament Finished!!");
                         req.params.id = result1.tournamentID;
-                        next();
+                        return next();
                       
                     } catch (err) {
                       console.error("Error moving tournament:", err);
@@ -341,7 +348,7 @@ const gameEnds = async (req, res, next) => {
                         .then((result) => {
                           console.log("Node saved ! ");
                           req.params.id = result1.tournamentID;
-                          next();
+                          return next();
                         })
                         .catch((err) => {
                           console.log(err);
@@ -361,10 +368,6 @@ const gameEnds = async (req, res, next) => {
           console.log(err);
         });
     
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({message: err});
-  }
   
 };
 
@@ -417,22 +420,21 @@ const abortMatch = async(req,res,next) => {
 
   await Node.findOne({_id : node_Id})
   .then((result) => {
-    if(user == result.userName1)
+    try{
+    if(user == result.userName1 && result.userName2 )
     {
       var timeDifferenceMs  = result.firstUserEntered.getTime() - timeNow ;
       console.log(Math.abs(timeDifferenceMs / (1000 * 60)))
       if(Math.abs(timeDifferenceMs / (1000 * 60)) > 1 && !result.hasOwnProperty("secondUserEntered"))
       {
-
         req.forfree = user;
         return next();
-        
       }
     }
-    if(user == result.userName2)
+    if(user == result.userName2 && result.userName1 )
     {
 
-      var timeDifferenceMs  = result.secondUserEntered - timeNow ;
+      var timeDifferenceMs  = result.secondUserEntered.getTime() - timeNow ;
       console.log(Math.abs(timeDifferenceMs / (1000 * 60)))
       if(Math.abs(timeDifferenceMs / (1000 * 60)) > 1 && !result.hasOwnProperty("firstUserEntered"))
       {
@@ -440,9 +442,16 @@ const abortMatch = async(req,res,next) => {
         return next();
       }
     }
-    res.status(402).json({
-      message : `Can't abort this match till ${1 - Math.ceil(Math.abs(timeDifferenceMs / (1000 * 60)))} min!`
+  }catch(err)
+  {
+    return res.status(402).json({
+      message : `Can't abort this match now`
     })
+  }
+    
+  return res.status(402).json({
+    message : `Can't abort this match now`
+  })
     
   }
   )
@@ -451,8 +460,6 @@ const abortMatch = async(req,res,next) => {
     
   }
   )
-
-  
 }
 
 const savingEntry = async(req,res,next) => {
@@ -509,7 +516,22 @@ const displayFinishedTournaments = (req,res,next) => {
   
 }
 
+const displayFinishedTournamentsNodes = (req,res,next) => {
+  console.log(req.params)
+  const tournament_Id = req.params.id;
+  Node.find({ tournamentID: tournament_Id })
+    .populate("tournamentID")
+    .then(async (result) => {
+      console.log(result);
+      if (result.length !== 0) {
+        return res.status(200).json({
+          data: result,
+        });
+  }})
+}
 
 
 
-module.exports = { displayNodes, gameEnds, displayTournaments , displayTournamentsById , savingEntry , abortMatch , displayFinishedTournaments};
+
+
+module.exports = { displayNodes, gameEnds, displayTournaments , displayTournamentsById , savingEntry , abortMatch , displayFinishedTournaments , displayFinishedTournamentsNodes};

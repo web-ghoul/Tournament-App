@@ -22,7 +22,6 @@ const MatchesSchema = Schema({
 });
 
 const PointsTournamentSchema = Schema({
-
   Name : {
     type : String ,
     required : true
@@ -39,11 +38,6 @@ const PointsTournamentSchema = Schema({
     type : Number ,
     default : 0
   },
-  
-  
-
-
-
 })
 
 module.exports = mongoose.model("PointsTournament" , PointsTournamentSchema)
