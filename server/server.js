@@ -13,11 +13,11 @@ const path = require('path');
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const HomeRoutes = require('./routes/public/Home')
 const UserRoutes = require('./routes/private/User')
 const AdminRoutes = require('./routes/private/Admin')
-const User = require('./models/UserSchema')
+//const User = require('./models/UserSchema')
 
 //app.use(express.static("public"));
 const corsOptions = {
@@ -57,6 +57,22 @@ app.use(session({
 }));
 
 
+
+app.use("/api",HomeRoutes)
+app.use("/api" , UserRoutes )
+app.use("/api/Admin" , AdminRoutes)
+
+// app.use(express.static(path.join(__dirname , '../client/build')))
+// app.get("*" , function (req,res) {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
+  
+// }
+// )
+
+app.use(notFound);
+app.use(errorHandler);
+
+
 mongoose
   .connect(process.env.DB_CONN, {
     useNewUrlParser: true,
@@ -73,19 +89,5 @@ mongoose
     console.log(err);
   });
 
-app.use("/api",HomeRoutes)
-app.use("/api" , UserRoutes )
-app.use("/api/Admin" , AdminRoutes)
-
-// app.use(express.static(path.join(__dirname , '../client/build')))
-// app.get("*" , function (req,res) {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
-  
-// }
-// )
 
 //last to catch any wrong url ( needs cool 404 page :) ) 
-app.use((req, res) => {
-  res.status(404).send("Sorry can't find that!");
-});
-  

@@ -261,7 +261,7 @@ const gameEnds = async (req, res, next) => {
                     console.log(error);
                   }
                 } else {
-                  if (result1.round == Math.log2(result1.tournamentID.Max)) {
+                  if (result1.round == Math.log2(result1.tournamentID.Players.length)) {
                     // const updatedData = {
                     //   Finished: true,
                     //   Winner: winnerName,
@@ -421,6 +421,7 @@ const abortMatch = async(req,res,next) => {
 
   await Node.findOne({_id : node_Id})
   .then((result) => {
+    try{
     if(user == result.userName1 && result.userName2 )
     {
       var timeDifferenceMs  = result.firstUserEntered.getTime() - timeNow ;
@@ -444,10 +445,16 @@ const abortMatch = async(req,res,next) => {
         return next();
       }
     }
-    
-    res.status(402).json({
-      message : `Can't abort this match till ${1 - Math.ceil(Math.abs(timeDifferenceMs / (1000 * 60)))} min!`
+  }catch(err)
+  {
+    return res.status(402).json({
+      message : `Can't abort this match now`
     })
+  }
+    
+  return res.status(402).json({
+    message : `Can't abort this match now`
+  })
     
   }
   )
@@ -514,7 +521,24 @@ const displayFinishedTournaments = (req,res,next) => {
   
 }
 
+const displayFinishedTournamentsNodes = (req,res,next) => {
+
+  const tournament_Id = req.params.id;
+  
+  Node.find({ tournamentID: tournament_Id })
+    .populate("tournamentID")
+    .then(async (result) => {
+      console.log(result);
+      if (result.length !== 0) {
+        return res.status(200).json({
+          data: result,
+        });
+  }})
+  
+}
 
 
 
-module.exports = { displayNodes, gameEnds, displayTournaments , displayTournamentsById , savingEntry , abortMatch , displayFinishedTournaments};
+
+
+module.exports = { displayNodes, gameEnds, displayTournaments , displayTournamentsById , savingEntry , abortMatch , displayFinishedTournaments , displayFinishedTournamentsNodes};

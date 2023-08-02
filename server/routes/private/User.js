@@ -9,22 +9,6 @@ const axios = require("axios");
 
 
 
-router.get("/Profile/:Name", authenticateMidd, (req, res) => {
-  //res.render("Profile")
-  const Name = req.params.Name;
-  axios
-    .get(`https://lichess.org/api/user/${Name}`)
-    .then(function (response) {
-      // handle success
-      console.log(response.data);
-      res.send(response.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
-  //res.send("Profile")
-});
 
 router.post("/register", authControllers.register);
 
@@ -87,5 +71,9 @@ router.get("/DisplayFinishedTournaments" , tournamentControllers.displayFinished
 router.post("/PointsGameEntered/:game_Id" , authenticateMidd ,pointsTournamentControllers.savingEntry)
 
 router.post("/PointsAbortMatch/:game_Id" , authenticateMidd , pointsTournamentControllers.abortMatch , pointsTournamentControllers.gameEnds , pointsTournamentControllers.displayNodes)
+
+router.get("/DisplayFinishedTournamentsNode/:node_id" ,tournamentControllers.displayFinishedTournamentsNodes)
+
+
 
 module.exports = router;
