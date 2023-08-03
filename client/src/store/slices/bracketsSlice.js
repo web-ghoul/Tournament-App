@@ -3,13 +3,11 @@ import axios from "axios"
 
 export const getBrackets = createAsyncThunk("brackets/getBrackets",async(args)=>{
     if(args.finished === "true"){
-        console.log(1)
         const res = await axios.get(process.env.REACT_APP_SERVER_URL+`/DisplayFinishedTournamentsNode/${args.tournamentId}`,{},{
             withCredentials:true
         })
         return res.data.data
     }else{
-        console.log(2)
         const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayGraph/${args.tournamentId}`,{},{
             withCredentials:true
         })

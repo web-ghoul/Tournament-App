@@ -47,7 +47,19 @@
     gap: 20px;
 }
 
-.player_name:hover{
-    color: var(--dark);
+.player_name:hover {
+    color: var(--dark) !important;
+}
+
+.round_point{
+    border-radius: 50% !important;
+    padding: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width:auto !important;
+}
+
+.round_point:hover{
+    background-color: var(--dark) !important;
 }
 

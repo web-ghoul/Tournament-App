@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import {Avatar, Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow} from "@mui/material"
+import {Avatar, Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography} from "@mui/material"
 import styles from "./PointsTable.module.css"
-import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage } from '@mui/icons-material';
+import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage, PlayCircleFilledWhiteRounded } from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 import avatarImg from "../../../static/images/avatar.jpg"
 import { Link } from 'react-router-dom';
@@ -67,8 +67,8 @@ const PointsTable = ({data}) => {
 
     const createData=(...args)=> {
       let row = {name: args[0]  ,points:args[args.length-1]};
-      args.slice(1,args.length-1).map((round)=>{
-        row[`round${round}`] = round
+      args.slice(1,args.length-1).map((round,i)=>{
+        row[`round${i+1}`] = round
       })
       return row
     }
@@ -87,9 +87,9 @@ const PointsTable = ({data}) => {
     const rows = []
     data.map((player)=>rows.push(createData(player.Name ,...Array.from({length: player.Matches.length}, (_, i) => {
       const result = player.Matches[i].winner
-      return result === "draw" ? 1 : result === username ? 2 : 0
+      return result === "*" ? "-" : result === player.Name ? 2 : result==="draw"?1:0
     }) , player.Points)))
-    rows.sort((a, b) => (a.points < b.points ? -1 : 1));
+    rows.sort((a, b) => (a.points > b.points ? -1 : 1));
 
     const [page, setPage] = useState(0);
 
@@ -112,13 +112,13 @@ const PointsTable = ({data}) => {
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column,i) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  {column.label}
+                  <Typography variant='h5' className={`${i > 0 && i < columns.length-1 && "tac"}`}>{column.label}</Typography>
                 </TableCell>
               ))}
             </TableRow>
@@ -137,11 +137,18 @@ const PointsTable = ({data}) => {
                       </Link>
                     </TableCell>
                     {
-                      Object.keys(row).map((key,i)=>{
+                      Object.keys(row).map((key,x)=>{
                         if(key.startsWith("round")){
+                          console.log(row[key])
                           return (
-                            <TableCell key={i*2} style={{ width: 160 }} align="center">
-                              {row[key]}
+                            <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
+                              {
+                                row[key] !== "-" ? (
+                                  <Button onClick={()=>window.open(data[i].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
+                                ):(
+                                  row[key]
+                                )
+                              }
                             </TableCell>
                           )
                         }
@@ -160,11 +167,11 @@ const PointsTable = ({data}) => {
               )}
           </TableBody>
           {
-            rows.length > 5 && (
+            rows.length >= 5 && (
               <TableFooter>
                   <TableRow>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                        rowsPerPageOptions={rows.length >= 5 ? [5, { label: 'All', value: -1 }] : rows.length >=10 ? [5,10, { label: 'All', value: -1 }] : rows.length >= 25 && [5,10,25, { label: 'All', value: -1 }]}
                         colSpan={columns.length}
                         count={rows.length}
                         rowsPerPage={rowsPerPage}

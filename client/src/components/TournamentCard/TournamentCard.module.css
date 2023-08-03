@@ -51,9 +51,15 @@
     padding: 10px !important;
     gap: 5px;
 }
+
+button.border:hover{
+    background-color: var(--blue) !important;    
+}
+
 .border h6{
     white-space:nowrap;
 }
+
 .border h6.data,button.border svg{
     color: var(--para-alt-color);
 }

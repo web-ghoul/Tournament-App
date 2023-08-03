@@ -4,15 +4,51 @@ thead tr{
 
 thead tr th{
     font-weight: 800 !important;
+    border: none !important;
     color: var(--white) !important;
 }
 
 .points_body td:not(:last-child){
+    border: none !important;
     border-right: 4px solid var(--indigo) !important;
+}
+
+.info_player{
+    gap:20px;
+}
+
+tbody tr{
+    overflow: visible;
 }
 
 .tbody_cell{
     gap: 20px;
+}
+
+.disabled_cell{
+    opacity: 0.5;
+}
+
+.able_cell{
+    opacity: 1;
+}
+
+.win{
+    background-color:#2dde98!important;
+    color: var(--white) !important;
+}
+
+.loss{
+   background-color: #fc636b !important; 
+   color: var(--white) !important;
+}
+
+.status_img{
+    width: 50px;
+}
+
+.status_img img{
+    width: 100%;
 }
 
 .tbody_cell h6{
@@ -58,11 +94,24 @@ thead tr th{
 
 @media (max-width:768px) {
     .tbody_cell{
-        gap: 8px;
+        gap: 10px;
+        display: grid !important;
+        justify-content: center !important;
+    }
+
+    .info_player{
+        gap: 10px;
+    }
+
+    .status_img{
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
     }
     
     .tbody_cell .buttons{
         gap: 6px;
+        justify-content: center;
     }
     
     .tbody_cell .buttons button{
