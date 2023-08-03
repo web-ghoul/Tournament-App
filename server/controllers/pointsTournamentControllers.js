@@ -2,7 +2,7 @@ const Node = require("../models/PointsTournamentNode");
 const Tournament = require("../models/Tournament");
 const FinishedTournament = require("../models/FinishedTournament");
 const roundrobin = require("roundrobin-tournament-js");
-const fs = require("fs");
+
 
 //const lodash = require("lodash");
 const axios = require("axios");
@@ -22,7 +22,7 @@ const displayNodes = async (req, res, next) => {
     .then(async (result) => {
       var roundNumber =
     Math.floor(
-      data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.length/2)
+      result.tournamentID.FinishedMatches / (result.tournamentID.Players.length/2)
     ) + 1;
       if (result.length !== 0) {
         return res.status(200).json({
