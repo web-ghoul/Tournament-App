@@ -87,7 +87,7 @@ const EnterTournament = (req, res, next) => {
 
 const finishedTutorial = (req,res,next) => {
   const id = req.userId;
-  User.findOneAndUpdate({_id : id} , {tutorial : true} , {new : true})
+  User.findOneAndUpdate({_id : id} , {tutorial : false} , {new : true})
   .then((result) => {
     res.status(200).json({
       message : "Tutorial finished successfully !"

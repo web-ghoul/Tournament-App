@@ -50,7 +50,7 @@ const UserSchema = Schema({
   },
   tutorial : {
     type : Boolean ,
-    default : true
+    default : true,
   }
 });
 
