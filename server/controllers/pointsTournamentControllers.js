@@ -2,11 +2,12 @@ const Node = require("../models/PointsTournamentNode");
 const Tournament = require("../models/Tournament");
 const FinishedTournament = require("../models/FinishedTournament");
 const roundrobin = require("roundrobin-tournament-js");
-
+const fs = require("fs");
 
 //const lodash = require("lodash");
 const axios = require("axios");
 const { round } = require("lodash");
+const { Console } = require("console");
 
 var timeValue = new Map();
 
@@ -20,14 +21,15 @@ const displayNodes = async (req, res, next) => {
   await Node.find({ tournamentID: tournament_Id })
     .populate("tournamentID")
     .then(async (result) => {
-      var roundNumber =
-    Math.floor(
-      result.tournamentID.FinishedMatches / (result.tournamentID.Players.length/2)
-    ) + 1;
       if (result.length !== 0) {
+        var roundNumber =
+          Math.floor(
+            result[0].tournamentID.FinishedMatches /
+              (result[0].tournamentID.Players.length / 2)
+          ) + 1;
         return res.status(200).json({
           data: result,
-          current_round : roundNumber
+          current_round: roundNumber,
         });
       } else {
         var data = [];
@@ -100,7 +102,6 @@ const displayNodes = async (req, res, next) => {
                   tournamentID: tournament_Id,
                   Matches: data[keys[i]],
                 });
-
                 try {
                   await playerMatches.save();
                   WholeData.push(playerMatches);
@@ -114,7 +115,7 @@ const displayNodes = async (req, res, next) => {
               console.log(WholeData);
               return res.status(200).json({
                 data: WholeData,
-                current_round : 1
+                current_round: 1,
               });
             }
           })
@@ -126,7 +127,7 @@ const displayNodes = async (req, res, next) => {
 };
 
 const gameEnds = async (req, res, next) => {
-  const game_Id = req.params.game_id;
+  const game_Id = req.params.game_Id;
   console.log(game_Id);
   //console.log(req.forfree);
 
@@ -180,12 +181,13 @@ const gameEnds = async (req, res, next) => {
   }).populate("tournamentID");
   console.log(game_Id);
   console.log(data);
-  var response = { data: {} };
+
   var roundNumber =
     Math.floor(
-      data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.length/2)
+      data[0].tournamentID.FinishedMatches /
+        (data[0].tournamentID.Players.length / 2)
     ) + 1;
-  
+  console.log(response.data);
   if (
     response.data.hasOwnProperty("status") &&
     response.data.status == "draw" &&
@@ -210,13 +212,54 @@ const gameEnds = async (req, res, next) => {
     }
   }
   data[0].tournamentID.FinishedMatches += 1;
-  if (roundNumber == data[0].tournamentID.Players.length) {
-    data[0].tournamentID.Winner = winnerName;
-  }
-  await data[0].tournamentID.save();
+
   const promises = data.map((document) => document.save());
   await Promise.all(promises);
+  var roundNumber =
+    Math.floor(
+      data[0].tournamentID.FinishedMatches /
+        (data[0].tournamentID.Players.length / 2)
+    ) + 1;
+  console.log("roundNumber");
+  console.log(roundNumber);
+  if (roundNumber == data[0].tournamentID.Players.length) {
+    const final = await Node.find().populate("tournamentID");
+    var finalWinner;
+    var Points = 0;
+    console.log("final");
+    console.log(final);
+    for (let i = 0; i < final.length; i++) {
+      if (Points < final[i].Points) {
+        Points = final[i].Points;
+        finalWinner = final[i].Name;
+      }
+    }
 
+    data[0].tournamentID.Winner = finalWinner;
+    //const deleteResult = await Tournament.deleteOne({ _id: data[0].tournamentID });
+    var tournamentToDelete = data[0].tournamentID ;
+    const temp = new FinishedTournament(
+      {
+        _id: tournamentToDelete._id,
+        Name: tournamentToDelete.Name,
+        Type: tournamentToDelete.Type,
+        Time: tournamentToDelete.Time,
+        Players: tournamentToDelete.Players,
+        Description: tournamentToDelete.Description,
+        Max: tournamentToDelete.Max,
+        StartsAt: tournamentToDelete.StartsAt,
+
+        Winner: tournamentToDelete.Winner,
+        Creator: tournamentToDelete.Creator,
+        EndedAt: Date.now(),
+      },
+      { _id: false }
+    );
+    await temp.save();
+  }
+
+  
+  await data[0].tournamentID.save();
   req.params.id = data[0].tournamentID;
   return next();
 };
@@ -236,7 +279,7 @@ const abortMatch = async (req, res, next) => {
         const round =
           Math.floor(
             result[0].tournamentID.FinishedMatches /
-            (data[0].tournamentID.Players.length/2)
+              (result[0].tournamentID.Players.length / 2)
           ) + 1;
         if (
           !result[0].Matches[round - 1].hasOwnProperty("secondUserEntered") &&
@@ -246,12 +289,15 @@ const abortMatch = async (req, res, next) => {
             result[0].Matches[round - 1].firstUserEntered.Time.getTime() -
             timeNow;
           console.log(Math.abs(timeDifferenceMs / (1000 * 60)));
-          if (Math.abs(timeDifferenceMs / (1000 * 60)) > 10) {
+          if (Math.abs(timeDifferenceMs / (1000 * 60)) > 1) {
             req.forfree = user;
             console.log(user);
             return next();
           }
         }
+        return res.status(402).json({
+          message: `Can't abort this match now`,
+        });
       } catch (err) {
         return res.status(402).json({
           message: `Can't abort this match now`,
@@ -274,7 +320,7 @@ const savingEntry = async (req, res, next) => {
       const round =
         Math.floor(
           result[0].tournamentID.FinishedMatches /
-          (data[0].tournamentID.Players.length/2)
+            (result[0].tournamentID.Players.length / 2)
         ) + 1;
       const timeNow = Date.now();
       const data = {

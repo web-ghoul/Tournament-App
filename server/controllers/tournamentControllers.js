@@ -309,7 +309,7 @@ const gameEnds = async (req, res, next) => {
                         } ,{ _id: false });
                         console.log(temp)
                         await temp.save();
-                        await tournamentToDelete.save();
+                        //await tournamentToDelete.save();
                     
                         console.log("Tournament Finished!!");
                         req.params.id = result1.tournamentID;

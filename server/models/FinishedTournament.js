@@ -8,7 +8,7 @@ const FinishedTournamentSchema = Schema({
   _id: Schema.Types.ObjectId ,
   Name : {
     type : String ,
-    required : true
+    required : true ,
   }
   ,
   Type : {
@@ -27,7 +27,7 @@ const FinishedTournamentSchema = Schema({
     default : []
   }
   ,
-  Description : String
+  Description : String 
   ,
   Max : {
     type : Number ,

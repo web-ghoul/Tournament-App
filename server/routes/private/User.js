@@ -56,11 +56,11 @@ router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEm
 
 router.post("/ResetPassword" , authControllers.resetPassword );
 
-router.post("/Node/:game_id/:node_id" , authenticateMidd , tournamentControllers.gameEnds  , tournamentControllers.displayNodes) ;
+router.post("/Node/:game_Id/:node_id" , authenticateMidd , tournamentControllers.gameEnds  , tournamentControllers.displayNodes) ;
 
-router.post("/PointsNode/:game_id" , authenticateMidd , pointsTournamentControllers.gameEnds  , pointsTournamentControllers.displayNodes)
+router.post("/PointsNode/:game_Id" , authenticateMidd , pointsTournamentControllers.gameEnds  , pointsTournamentControllers.displayNodes)
 
-router.post("/AbortMatch/:game_id/:node_id" , authenticateMidd , tournamentControllers.abortMatch , tournamentControllers.gameEnds , tournamentControllers.displayNodes);
+router.post("/AbortMatch/:game_Id/:node_id" , authenticateMidd , tournamentControllers.abortMatch , tournamentControllers.gameEnds , tournamentControllers.displayNodes);
 
 router.post("/GameEntered/:node_id" , authenticateMidd , tournamentControllers.savingEntry)
 
