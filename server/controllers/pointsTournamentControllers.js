@@ -180,13 +180,28 @@ const gameEnds = async (req, res, next) => {
     Matches: { $elemMatch: { gameID: game_Id } }, // Matches the specified element in the Matches array
   }).populate("tournamentID");
   console.log(game_Id);
-  console.log(data);
-
+  
+  
+  
   var roundNumber =
     Math.floor(
       data[0].tournamentID.FinishedMatches /
         (data[0].tournamentID.Players.length / 2)
     ) + 1;
+
+var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.length / 2) 
+  if( temp > 0 && Number.isInteger(temp)  && data[0].Matches[temp-1].winner != "*" && data[0].Matches[temp-1].winner == winnerName)
+  {
+    return res.status(404).json({
+      message: "the game is already finished",
+    });
+  }
+  console.log(temp)
+  console.log(data[0].Matches[temp])
+  console.log("matches");
+  console.log(data[0].Matches[roundNumber - 1]);
+  console.log("roundNumber");
+  console.log(roundNumber);
   console.log(response.data);
   if (
     response.data.hasOwnProperty("status") &&
@@ -197,6 +212,7 @@ const gameEnds = async (req, res, next) => {
     data[0].Points += 1;
     data[1].Matches[roundNumber - 1].winner = "draw";
     data[1].Points += 1;
+    data[0].tournamentID.FinishedMatches += 1;
   } else {
     if (
       data[0].Name == winnerName &&
@@ -205,13 +221,15 @@ const gameEnds = async (req, res, next) => {
       data[0].Matches[roundNumber - 1].winner = winnerName;
       data[0].Points += 2;
       data[1].Matches[roundNumber - 1].winner = winnerName;
+      data[0].tournamentID.FinishedMatches += 1;
     } else if (data[0].Matches[roundNumber - 1].winner == "*") {
       data[1].Matches[roundNumber - 1].winner = winnerName;
       data[1].Points += 2;
       data[0].Matches[roundNumber - 1].winner = winnerName;
+      data[0].tournamentID.FinishedMatches += 1;
     }
   }
-  data[0].tournamentID.FinishedMatches += 1;
+  
 
   const promises = data.map((document) => document.save());
   await Promise.all(promises);
@@ -220,8 +238,7 @@ const gameEnds = async (req, res, next) => {
       data[0].tournamentID.FinishedMatches /
         (data[0].tournamentID.Players.length / 2)
     ) + 1;
-  console.log("roundNumber");
-  console.log(roundNumber);
+  
   if (roundNumber == data[0].tournamentID.Players.length) {
     const final = await Node.find().populate("tournamentID");
     var finalWinner;
