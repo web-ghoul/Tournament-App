@@ -43,6 +43,10 @@ tbody tr{
    color: var(--white) !important;
 }
 
+.draw{
+    background-color: #caccd1 !important; 
+ }
+
 .status_img{
     width: 50px;
 }

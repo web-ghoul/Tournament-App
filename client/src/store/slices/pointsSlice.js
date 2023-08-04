@@ -2,23 +2,18 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "axios"
 
 export const getPoints = createAsyncThunk("points/getPoints",async(args)=>{
-    if(args.finished === "true"){
-        const res = await axios.get(process.env.REACT_APP_SERVER_URL+`/DisplayFinishedTournamentsNode/${args.tournamentId}`,{},{
-            withCredentials:true
-        })
-        return res.data.data
-    }else{
-        const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayPoints/${args.tournamentId}`,{},{
-            withCredentials:true
-        })
-        return res.data
-    }
+    const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayPoints/${args}`,{},{
+        withCredentials:true
+    })
+    return res.data
 })
 
 const initialState = {
     isPointsLoading:true,
     points:null,
-    currentRound:null
+    currentRound:1,
+    pointsWinner:null,
+    tournament:null
 }
 
 const pointsSlice = createSlice({
@@ -31,6 +26,7 @@ const pointsSlice = createSlice({
             state.isPointsLoading = false
             state.points = action.payload.data
             state.currentRound = action.payload.current_round
+            state.pointsWinner = state.points[0].tournamentID.Winner
         },[getPoints.rejected]:(state,action)=>{
             state.isPointsLoading = true
         }

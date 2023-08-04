@@ -29,16 +29,17 @@ const TournamentCard = ({tournament,finished}) => {
     const calender = new Date(new Date(targetDate).setHours(new Date(targetDate).getHours()+3)).toISOString().split("T")
     const time = calender[1].split(".")[0] 
     const date = calender[0] 
+    console.log(date,time)
     return {date, time}
   }
 
   const startDate = handleTournamentDateAndTime(tournament.StartsAt).date
 
   const startTime = handleTournamentDateAndTime(tournament.StartsAt).time
-  
-  const endDate = handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).date
-
-  const endTime = handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).time
+  //handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).date
+  const endDate = "" 
+  //handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).time
+  const endTime = ""
 
   const handleJoin= async()=>{
     if(!signed){
@@ -73,11 +74,10 @@ const TournamentCard = ({tournament,finished}) => {
 
   const handleEnter= async()=>{
     await axios.post(process.env.REACT_APP_SERVER_URL+`/EnterTournament/${tournament._id}`).then((res)=>{
-      console.log(tournament)
       if(tournament.Type==="Points"){
-        navigate(`../points/${tournament._id}/${finished}`)
+        navigate(`../points/${tournament._id}`)
       }else{
-        navigate(`../brackets/${tournament._id}/${finished}`)
+        navigate(`../brackets/${tournament._id}`)
       }
       handleToastMessage(`Welcome ${username}`,"s");
     }).catch((err)=>{
@@ -91,9 +91,9 @@ const TournamentCard = ({tournament,finished}) => {
 
   const handleView= async()=>{
     if(tournament.Type==="Points"){
-      navigate(`../points/${tournament._id}/${finished}`)
+      navigate(`../points/${tournament._id}`)
     }else{
-      navigate(`../brackets/${tournament._id}/${finished}`)
+      navigate(`../brackets/${tournament._id}`)
     }
   }
 
@@ -123,7 +123,7 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleCopyJoinLink = ()=>{
-    navigator.clipboard.writeText("Helssssssssssssssssslo")
+    navigator.clipboard.writeText("Hello")
     handleToastMessage("Join Link Copied","s")
   }
   

@@ -2,25 +2,18 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "axios"
 
 export const getBrackets = createAsyncThunk("brackets/getBrackets",async(args)=>{
-    if(args.finished === "true"){
-        const res = await axios.get(process.env.REACT_APP_SERVER_URL+`/DisplayFinishedTournamentsNode/${args.tournamentId}`,{},{
-            withCredentials:true
-        })
-        return res.data.data
-    }else{
-        const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayGraph/${args.tournamentId}`,{},{
-            withCredentials:true
-        })
-        return res.data.data
-    }
+    const res = await axios.post(process.env.REACT_APP_SERVER_URL+`/displayGraph/${args}`,{},{
+        withCredentials:true
+    })
+    return res.data.data
 })
 
 const initialState = {
     isBracketsLoading:true,
-    brackets:null,
+    brackets:[],
     max :null,
     winner:"*",
-    tournament:null
+    tournament:{}
 }
 
 const bracketsSlice = createSlice({

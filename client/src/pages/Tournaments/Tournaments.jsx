@@ -1,7 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getLiveTournaments } from '../../store/slices/liveTournamentsSlice'
-import { getFinishedTournaments } from '../../store/slices/finishedTournamentsSlice'
 
 //Component
 import TournamentCard from '../../components/TournamentCard/TournamentCard'
@@ -23,8 +22,6 @@ const Tournaments = () => {
 
   const {isLiveTournamentsLoading , liveTournaments} = useSelector((state)=>state.liveTournaments)
 
-  const {isFinishedTournamentsLoading , finishedTournaments} = useSelector((state)=>state.finishedTournaments)
-
   const loading = (
     <Box className={`grid-stretch ${styles.tournaments_loading}`}>
       <Skeleton variant="rounded"/>
@@ -34,7 +31,6 @@ const Tournaments = () => {
 
   useEffect(()=>{
     dispatch(getLiveTournaments())
-    dispatch(getFinishedTournaments())
   },[dispatch])
   
   return (
@@ -60,9 +56,11 @@ const Tournaments = () => {
             ):(
               liveTournaments && liveTournaments.length > 0 ?
               liveTournaments.map((d,i)=>{
-                return(
-                  <TournamentCard finished={false} key={i} tournament={d}/>
-                )
+                  if(d.Winner === "*"){
+                    return(
+                      <TournamentCard finished={false} key={i} tournament={d}/>
+                    )
+                  }
               })
               :
               <MyBox>
@@ -72,14 +70,16 @@ const Tournaments = () => {
           )
           :
           (
-            isFinishedTournamentsLoading ? (
+            isLiveTournamentsLoading ? (
               loading
             ):(
-              finishedTournaments && finishedTournaments.length > 0 ?
-              finishedTournaments.map((d,i)=>{
-                return(
-                  <TournamentCard finished={true} key={i} tournament={d}/>
-                )
+              liveTournaments && liveTournaments.length > 0 ?
+              liveTournaments.map((d,i)=>{
+                  if(d.Winner !== "*"){
+                    return(
+                      <TournamentCard finished={true} key={i} tournament={d}/>
+                    )
+                  }
               })
               :
               <MyBox>

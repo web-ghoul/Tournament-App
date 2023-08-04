@@ -6,8 +6,8 @@ import PlayerTable from './PlayerTable/PlayerTable'
 import { Streetview, ViewTimeline } from '@mui/icons-material'
 
 const Points = ({isLoading, data}) => {
-  console.log(data)
   const [pointsTable, setPointsTable] = useState(false)
+
   return (
     <Box className={`grid-stretch ${styles.match}`}> 
       <Box className={`grid-center ${styles.toggle_buttons}`}>

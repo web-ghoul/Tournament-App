@@ -43,7 +43,8 @@ const AddTournament = () => {
         time:Yup.string().required("Enter Tournament Time"),
         max:Yup.number().integer().required("Enter Maximum Number of Players").positive().when("type",{
             is:"Brackets",
-            then:(value)=>value.oneOf([2,4,8,16,32,64,128], "Must enter number in powers of 2")
+            then:(value)=>value.oneOf([2,4,8,16,32,64,128], "Must enter number in powers of 2"),
+            otherwise:(value)=>value.oneOf([2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72], "Must enter even number less then 72")
         })
     })
 

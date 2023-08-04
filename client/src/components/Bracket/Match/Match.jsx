@@ -39,9 +39,9 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
     await axios.post(process.env.REACT_APP_SERVER_URL+`/AbortMatch/${match.gameID}/${match._id}`,{},{withCredentials:true})
     .then((res)=>{
       if(last){
-        dispatch(getBrackets({tournamentId,finished:"true"}))
+        dispatch(getBrackets(tournamentId))
       }else{
-        dispatch(getBrackets({tournamentId,finished:"false"}))
+        dispatch(getBrackets(tournamentId))
       }
     }).catch((err)=>{
       handleToastMessage(err.response.data.message,"e")
@@ -52,9 +52,9 @@ const Match = ({waiting1,waiting2 , match , last,dir ,h}) => {
     await axios.post(process.env.REACT_APP_SERVER_URL + `/Node/${match.gameID}/${match._id}`,{},{withCredentials:true})
     .then((res)=>{
       if(last){
-        dispatch(getBrackets({tournamentId,finished:"true"}))
+        dispatch(getBrackets(tournamentId))
       }else{
-        dispatch(getBrackets({tournamentId,finished:"false"}))
+        dispatch(getBrackets(tournamentId))
       }
     }).catch((err)=>{
       try{

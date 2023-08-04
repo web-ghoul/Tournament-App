@@ -64,7 +64,6 @@ function TablePaginationActions(props) {
 
 const PointsTable = ({data}) => {
     const {username} = useSelector((state)=>state.auth)
-
     const createData=(...args)=> {
       let row = {name: args[0]  ,points:args[args.length-1]};
       args.slice(1,args.length-1).map((round,i)=>{

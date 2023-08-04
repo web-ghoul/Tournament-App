@@ -56,6 +56,12 @@ button.border:hover{
     background-color: var(--blue) !important;    
 }
 
+button.border svg{
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
 .border h6{
     white-space:nowrap;
 }

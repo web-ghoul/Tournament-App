@@ -7,6 +7,7 @@ import axios from "axios"
 import {handleToastMessage} from "../../../App"
 import { useParams } from 'react-router-dom';
 import winnerImg from "../../../static/images/winner.png"
+import drawImg from "../../../static/images/draw.png"
 import lossImg from "../../../static/images/lose.png"
 
 const PlayerTable = ({data}) => {
@@ -19,10 +20,8 @@ const PlayerTable = ({data}) => {
     const {currentRound} = useSelector((state)=>state.points)
 
     const playerData = data.filter((d)=>d.Name === username)[0]
-    console.log(currentRound);
-    console.log(data);
+    
     const handleEnterMatch = async(gameLink, game_Id)=>{
-        console.log(gameLink)
         await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsGameEntered/${game_Id}`,{},{
             withCredentials:true
         }).then((res)=>{
@@ -36,11 +35,10 @@ const PlayerTable = ({data}) => {
         await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsAbortMatch/${game_id}`,{},{
             withCredentials:true
         }).then((res)=>{
-          
             if(currentRound === data.length){
-                dispatch(getPoints({tournamentId, finished:"true"}))
+                dispatch(getPoints(tournamentId))
             }else{
-                dispatch(getPoints({tournamentId, finished:"false"}))
+                dispatch(getPoints(tournamentId))
             }
             handleToastMessage(res.data.message, "s")
         }).catch((err)=>{
@@ -52,15 +50,15 @@ const PlayerTable = ({data}) => {
         await axios.post(process.env.REACT_APP_SERVER_URL+`/PointsNode/${game_id}`,{},{
             withCredentials:true
         }).then((res)=>{
-            if(currentRound === data.length){
-                dispatch(getPoints({tournamentId, finished:"true"}))
-            }else{
-                dispatch(getPoints({tournamentId, finished:"false"}))
-            }
             handleToastMessage(res.data.message,"s")
         }).catch((err)=>{
             handleToastMessage(err.response.data.message,"e")
         })
+        if(currentRound === data.length){
+            dispatch(getPoints(tournamentId))
+        }else{
+            dispatch(getPoints(tournamentId))
+        }
     }
 
     return (
@@ -88,15 +86,15 @@ const PlayerTable = ({data}) => {
                                     key={match._id}
                                     align={match.align}
                                     style={{ minWidth: 200 }}
-                                    className={`${currentRound !== i+1 ? styles.disabled_cell :styles.able_cell} ${match.winner !== "*"? match.winner === username ? styles.win:styles.loss:""}`}
+                                    className={`${currentRound !== i+1 ? styles.disabled_cell :styles.able_cell} ${match.winner !== "*"?match.winner === "draw" ? styles.draw: match.winner === username ? styles.win:styles.loss:  ""}`}
                                 >
                                     <Box className={`flex-between ${styles.tbody_cell}`}>
                                         <Box className={`grid-center ${styles.info_player}`}>
-                                            <Typography variant='h6'>{match.winner === "*" ? "play with " : match.winner === username ? "you win " : "you lost from " }<span>{match.Player}</span></Typography>
+                                            <Typography variant='h6'>{match.winner === "*" ? "play with " : match.winner === "draw" ? "you draw with " : match.winner === username ? "you won " : "you lost from "}<span>{match.Player}</span></Typography>
                                             {
                                                 true && (
                                                     <Box className={`flex-start ${styles.buttons}`}>
-                                                        <Button disabled={currentRound !== i+1} onClick={()=>handleEnterMatch(match.gameLink, match.gameID)}>
+                                                        <Button disabled={currentRound > i+1} onClick={()=>handleEnterMatch(match.gameLink, match.gameID)}>
                                                             Match
                                                         </Button>
                                                         {
@@ -119,7 +117,7 @@ const PlayerTable = ({data}) => {
                                         {
                                             match.winner !== "*" && (
                                                 <Box className={`${styles.status_img}`}>
-                                                    <Box component={"img"} alt="player status" src={match.winner === username ? winnerImg : lossImg} />
+                                                    <Box component={"img"} alt="player status" src={match.winner === username ? winnerImg : match.winner === "draw" ? drawImg : lossImg} />
                                                 </Box>
                                             )
                                         }
