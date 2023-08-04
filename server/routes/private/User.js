@@ -72,8 +72,9 @@ router.post("/PointsGameEntered/:game_Id" , authenticateMidd ,pointsTournamentCo
 
 router.post("/PointsAbortMatch/:game_Id" , authenticateMidd , pointsTournamentControllers.abortMatch , pointsTournamentControllers.gameEnds , pointsTournamentControllers.displayNodes)
 
-router.get("/DisplayFinishedTournamentsNode/:id",tournamentControllers.displayFinishedTournamentsNodes)
+router.get("/DisplayFinishedBracketsNode/:id",tournamentControllers.displayFinishedTournamentsNodes)
 
+router.get("/DisplayFinishedPointsNode/:id",pointsTournamentControllers.displayFinishedTournamentsNodes)
 
 
 module.exports = router;

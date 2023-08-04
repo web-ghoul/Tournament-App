@@ -180,24 +180,28 @@ const gameEnds = async (req, res, next) => {
     Matches: { $elemMatch: { gameID: game_Id } }, // Matches the specified element in the Matches array
   }).populate("tournamentID");
   console.log(game_Id);
-  
-  
-  
+
   var roundNumber =
     Math.floor(
       data[0].tournamentID.FinishedMatches /
         (data[0].tournamentID.Players.length / 2)
     ) + 1;
 
-var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.length / 2) 
-  if( temp > 0 && Number.isInteger(temp)  && data[0].Matches[temp-1].winner != "*" && data[0].Matches[temp-1].winner == winnerName)
-  {
-    return res.status(404).json({
+  var temp =
+    data[0].tournamentID.FinishedMatches /
+    (data[0].tournamentID.Players.length / 2);
+  if (
+    temp > 0 &&
+    Number.isInteger(temp) &&
+    data[0].Matches[temp - 1].winner != "*" &&
+    data[0].Matches[temp].winner == winnerName
+  ) {
+    return res.status(403).json({
       message: "the game is already finished",
     });
   }
-  console.log(temp)
-  console.log(data[0].Matches[temp])
+  console.log(temp);
+  console.log(data[0].Matches[temp]);
   console.log("matches");
   console.log(data[0].Matches[roundNumber - 1]);
   console.log("roundNumber");
@@ -229,7 +233,6 @@ var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.
       data[0].tournamentID.FinishedMatches += 1;
     }
   }
-  
 
   const promises = data.map((document) => document.save());
   await Promise.all(promises);
@@ -238,9 +241,10 @@ var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.
       data[0].tournamentID.FinishedMatches /
         (data[0].tournamentID.Players.length / 2)
     ) + 1;
-  
+
   if (roundNumber == data[0].tournamentID.Players.length) {
-    const final = await Node.find().populate("tournamentID");
+    const final = await Node.find({tournamentID: data[0].tournamentID});
+    
     var finalWinner;
     var Points = 0;
     console.log("final");
@@ -253,8 +257,8 @@ var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.
     }
 
     data[0].tournamentID.Winner = finalWinner;
-    //const deleteResult = await Tournament.deleteOne({ _id: data[0].tournamentID });
-    var tournamentToDelete = data[0].tournamentID ;
+    // const deleteResult = await Tournament.deleteOne({ _id: data[0].tournamentID });
+    var tournamentToDelete = data[0].tournamentID;
     const temp = new FinishedTournament(
       {
         _id: tournamentToDelete._id,
@@ -274,8 +278,6 @@ var temp = data[0].tournamentID.FinishedMatches / (data[0].tournamentID.Players.
     );
     await temp.save();
   }
-
-  
   await data[0].tournamentID.save();
   req.params.id = data[0].tournamentID;
   return next();
@@ -345,17 +347,16 @@ const savingEntry = async (req, res, next) => {
         Time: timeNow,
       };
       console.log(round);
-      console.log(result[0].Matches[0]);
-      if (!result[0].Matches[round - 1].hasOwnProperty("firstUserEntered")) {
+      console.log(result[0].Matches[round - 1]);
+      if (! "firstUserEntered" in result[0].Matches[round - 1]) {
         result[0].Matches[round - 1].firstUserEntered = data;
         result[1].Matches[round - 1].firstUserEntered = data;
       } else if (
-        !result[0].Matches[round - 1].hasOwnProperty("secondUserEntered")
+        ! "secondUserEntered" in result[0].Matches[round - 1]
       ) {
         result[0].Matches[round - 1].secondUserEntered = data;
         result[1].Matches[round - 1].secondUserEntered = data;
       }
-
       const promises = result.map((document) => document.save());
       await Promise.all(promises);
 
@@ -368,43 +369,25 @@ const savingEntry = async (req, res, next) => {
     });
 };
 
-//  function generateTournamentSchedule(numberOfPlayers) {
-//   if (numberOfPlayers % 2 !== 0) {
-//     throw new Error("Number of players must be even.");
-//   }
+const displayFinishedTournamentsNodes = (req, res, next) => {
+  console.log(req.params);
+  const tournament_Id = req.params.id;
+  Node.find({ tournamentID: tournament_Id })
+    .populate("tournamentID")
+    .then(async (result) => {
+      console.log(result);
+      if (result.length !== 0) {
+        return res.status(200).json({
+          data: result,
+        });
+      }
+    });
+};
 
-//   const schedule = [];
-//   const players = Array.from({ length: numberOfPlayers }, (_, i) => i + 1);
-
-//   for (let round = 0; round < numberOfPlayers - 1; round++) {
-//     const roundSchedule = [];
-//     const player1 = players[0];
-//     const player2 = players[players.length - 1];
-
-//     roundSchedule.push([player1, player2]);
-
-//     for (let i = 1; i < numberOfPlayers / 2; i++) {
-//       const opponent1 = players[i];
-//       const opponent2 = players[players.length - 1 - i];
-
-//       roundSchedule.push([opponent1, opponent2]);
-//     }
-
-//     schedule.push(roundSchedule);
-
-//     // Rotate players for the next round
-//     players.splice(1, 0, players.pop());
-//   }
-
-//   return schedule;
-// }
-
-// try {
-//   const numberOfPlayers = 4; // Replace this with your desired number of players (must be even)
-//   const tournamentSchedule = generateTournamentSchedule(numberOfPlayers);
-//   console.log(JSON.stringify(tournamentSchedule, null, 2));
-// } catch (error) {
-//   console.error(error.message);
-// }
-
-module.exports = { displayNodes, gameEnds, savingEntry, abortMatch };
+module.exports = {
+  displayNodes,
+  gameEnds,
+  savingEntry,
+  abortMatch,
+  displayFinishedTournamentsNodes,
+};
