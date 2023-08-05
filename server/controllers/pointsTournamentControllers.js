@@ -346,17 +346,27 @@ const savingEntry = async (req, res, next) => {
         User: user,
         Time: timeNow,
       };
+      const newResult = result[0].Matches[round-1]
+
       console.log(round);
-      console.log(result[0].Matches[round - 1]);
-      if (! "firstUserEntered" in result[0].Matches[round - 1]) {
+      console.log(newResult)
+      console.log(result[0].Matches[round-1])
+      console.log(result[0].Matches[round-1]["firstUserEntered"])
+      console.log(result[0].Matches[round-1]["secondUserEntered"])
+      console.log(newResult.firstUserEntered.User)
+      console.log(newResult.firstUserEntered["User"])
+
+      if (!newResult.firstUserEntered.User) {
         result[0].Matches[round - 1].firstUserEntered = data;
         result[1].Matches[round - 1].firstUserEntered = data;
       } else if (
-        ! "secondUserEntered" in result[0].Matches[round - 1]
+        !newResult.secondUserEntered.User
       ) {
         result[0].Matches[round - 1].secondUserEntered = data;
         result[1].Matches[round - 1].secondUserEntered = data;
       }
+      console.log(round);
+      console.log(result[0].Matches[round - 1]);
       const promises = result.map((document) => document.save());
       await Promise.all(promises);
 

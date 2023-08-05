@@ -1,5 +1,6 @@
 const User = require("../models/UserSchema");
 const Tournament = require("../models/Tournament");
+const adminControllers = require("./adminControllers");
 
 const joinTournament = async (req, res, next) => {
   const tournamentId = req.params.id;
@@ -51,32 +52,47 @@ const EnterTournament = (req, res, next) => {
   const tournamentId = req.params.id;
 
   Tournament.findOne({ _id: tournamentId })
-    .then((result) => {
+    .then(async(result) => {
       console.log(result);
       //checking if the user registered for this tournament
       const tournamentTime = result.StartsAt;
       //checking time
       // tournamentTime < Date.now()
-      if (tournamentTime < Date.now()) {
+      if (tournamentTime <= Date.now()) {
         //res.redirect("/Bracket/:Tourid")
+
+        if(result.Players.length == 0)
+        {
+          req.role = "Admin"
+          req.message  = true ;
+          await adminControllers.deleteTournament(req,res)
+        }
+
         if (result.Type == "Points") {
           if (result.Players.length % 2 == 0) {
             return next();
           } else {
+            req.role = "Admin"
+            req.message  = true ;
+            await adminControllers.deleteTournament(req,res)
             res.status(404).json({
               message: "Number of Players is not allowed",
             });
+
           }
-        }
+        }else{
         var check = Math.log2(result.Players.length);
         console.log(check);
-        if (Number.isInteger(check)) {
+        if (Number.isInteger(check) && check != 0) {
           next();
         } else {
+          req.role = "Admin"
+          req.message  = true ;
+          adminControllers.deleteTournament(req,res)
           res.status(404).json({
             message: "Number of Players is not allowed",
           });
-        }
+        }}
       } else {
         res.status(404).json({
           message: `Tournament is not started yet`,
@@ -84,6 +100,7 @@ const EnterTournament = (req, res, next) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       res.status(404).json({
         message: err,
       });

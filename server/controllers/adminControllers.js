@@ -88,7 +88,7 @@ const deleteTournament = async (req, res, next) => {
   
     const id = req.params.id;
     const data = await Tournament.find({_id : req.userId})
-    if(data.Creator == req.userName ||req.role == "Admin" )
+    if(data.Creator == req.userName || req.role == "Admin" )
     {
 
     await Tournament.findByIdAndDelete({ _id: id })
@@ -98,14 +98,19 @@ const deleteTournament = async (req, res, next) => {
 
           await Node.deleteMany({ tournamentID: id })
             .then((result) => {
+              if(req.message)
+              {
+              console.log("hello")
+              }else{
               res.status(202).json({
                 //data: result1,
                 message: "Tournament deleted.",
               });
+            }
             })
             .catch((err) => {
               res.status(404).json({
-                message: err,
+                message: "err",
               });
             });
         } else {

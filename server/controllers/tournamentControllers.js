@@ -91,7 +91,7 @@ const displayNodes = async (req, res, next) => {
 
 const gameEnds = async (req, res, next) => {
   //console.log(req.params);
-  const game_Id = req.params.game_id;
+  const game_Id = req.params.game_Id;
   const node_Id = req.params.node_id;
 
   try {
