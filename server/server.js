@@ -24,6 +24,7 @@ const corsOptions = {
   origin: [
     'https://chess-tournament.onrender.com',
     'https://lichess.org',
+    'http://localhost:3001'
     
 
     // your origins here
@@ -41,7 +42,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'https://lichess.org/', 'https://chess-tournament.onrender.com/' ]
+      connectSrc: ["'self'", 'https://lichess.org/', 'https://chess-tournament.onrender.com/','http://localhost:3001' ]
     }
   }
 }));
@@ -60,12 +61,12 @@ app.use("/api",HomeRoutes)
 app.use("/api" , UserRoutes )
 app.use("/api/Admin" , AdminRoutes)
 
-app.use(express.static(path.join(__dirname , '../client/build')))
-app.get("*" , function (req,res) {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'))
+// app.use(express.static(path.join(__dirname , '../client/build')))
+// app.get("*" , function (req,res) {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
   
-}
-)
+// }
+// )
 
 app.use(notFound);
 app.use(errorHandler);
