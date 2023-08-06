@@ -1,0 +1,39 @@
+.howToPointsTournament{
+    gap: 40px;
+}
+
+.images{
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.images > div{
+    gap: 5px;
+    color: var(--blue);
+}
+
+.images img{
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    border: 4px solid var(--blue);
+}
+
+@media (max-width:1200px) {
+    .howToPointsTournament{
+        gap: 30px;
+    }
+}
+
+@media (max-width:992px) {
+    .howToPointsTournament{
+        gap: 25px;
+    }
+}
+
+@media (max-width:768px) {
+    .howToPointsTournament{
+        gap: 20px;
+    }
+}

@@ -1,0 +1,167 @@
+.game_stat{
+    gap: 30px;
+    padding: 40px;
+    background-color: #4609C3;
+    border-radius: 0 0 20px 20px;
+}
+
+.title{
+    gap: 10px;
+}
+
+.stat{
+    gap: 30px;
+}
+
+.types{
+    gap: 20px;
+    position: relative;
+}
+
+.types button{
+    padding: 10px 0px !important;
+    width: -moz-fit-content;
+    width: fit-content !important;
+    min-width: 0;
+    font-size: 18px;
+    border-bottom: 2px solid transparent;
+    z-index: 2;
+    border-radius: 0 !important;
+}
+
+.colored{
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.types::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    height: 2px;
+    z-index: 1;
+}
+
+.active{
+    color: var(--para-alt-color) !important;
+    border-color: var(--para-alt-color) !important;
+}
+
+.boxes{
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit,minmax(260px , 1fr));
+}
+
+.box{
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 20px;
+    gap:20px;
+}
+
+.box svg{
+    font-size: 70px;
+    left:50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
+@media (max-width:1200px) {
+    .game_stat{
+        gap: 25px;
+        padding: 35px;
+        border-radius: 0 0 18px 18px;
+    }
+    
+    .types button{
+        font-size: 17px;
+    }
+  
+    .boxes{
+        grid-template-columns: repeat(auto-fit,minmax(240px , 1fr));
+    }
+    
+    .box{
+        padding: 25px;
+        border-radius: 18px;
+    }
+    
+    .box svg{
+        font-size: 65px;
+    }
+}
+
+@media (max-width:992px) {
+    .game_stat{
+        padding: 30px;
+        border-radius: 0 0 16px 16px;
+    }
+    
+    .types button{
+        font-size: 16px;
+    }
+  
+    .boxes{
+        grid-template-columns: repeat(auto-fit,minmax(220px , 1fr));
+    }
+    
+    .box{
+        padding: 20px;
+        border-radius: 16px;
+    }
+    
+    .box svg{
+        font-size: 60px;
+    }
+}
+
+@media (max-width:768px) {
+    .game_stat{
+        padding: 25px;
+        border-radius: 0 0 14px 14px;
+    }
+
+    .types{
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .types button{
+        font-size: 15px;
+    }
+  
+    .boxes{
+        grid-template-columns: repeat(1,1fr);
+    }
+    
+    .box{
+        padding: 15px;
+        border-radius: 14px;
+    }
+    
+    .box svg{
+        font-size: 50px;
+    }
+}
+
+@media (max-width:576px) {
+    .game_stat{
+        padding: 20px;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .types button{
+        font-size: 14px;
+    }
+  
+    .box{
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .box svg{
+        font-size: 40px;
+    }
+}

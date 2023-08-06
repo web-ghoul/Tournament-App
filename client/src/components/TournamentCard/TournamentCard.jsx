@@ -30,19 +30,18 @@ const TournamentCard = ({tournament,finished}) => {
   const [buttonType , setButtonType] = useState('join')
 
   const handleTournamentDateAndTime = (targetDate)=>{
-    console.log(new Date(new Date(targetDate).setHours(new Date(targetDate).getHours()+3)))
     const calender = new Date(new Date(targetDate).setHours(new Date(targetDate).getHours()+3)).toISOString().split("T")
     const time = calender[1].split(".")[0] 
     const date = calender[0] 
     return {date, time}
   }
-  
+
   const startDate = tournament && handleTournamentDateAndTime(tournament.StartsAt).date
 
   const startTime = tournament && handleTournamentDateAndTime(tournament.StartsAt).time
-  
+
   const endDate = tournament && handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).date
-  
+
   const endTime = tournament && handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).time
 
   const handleJoin= async()=>{
@@ -151,7 +150,7 @@ const TournamentCard = ({tournament,finished}) => {
     }
   },[tournament , exist , finished , username])
   
-  return !tournament ? <BasicLoading/> : (
+  return !tournament ? (<BasicLoading/>) : (
     <Box className={`grid-stretch ${styles.tournament}`}>
       <Box className={`grid-between ${styles.tour}`}>
         {
