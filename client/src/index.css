@@ -50,16 +50,13 @@ main{
   position: relative !important;
 }
 
-.para{
-  width: 60%;
-}
-
 a{
   background-color: transparent;
   text-decoration: none;
   color: #fff;
 }
 
+/* Scroll bar Style */
 ::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 4px var(--header-bg);
@@ -77,6 +74,12 @@ a{
 {
   border-radius: 10px;
 	background-color: var(--body-bg);
+}
+
+
+/* Helping Classes Styling */
+.para{
+  width: 80%;
 }
 
 .text-center{
@@ -161,14 +164,6 @@ a{
   text-align: center;
 }
 
-.swal2-container{
-  z-index: 100000 !important;
-}
-
-.swal2-confirm{
-  padding: 0.625em 1.1em !important;
-}
-
 @media (max-width:1200px) {
   .para{
     width: 70%;
@@ -183,6 +178,6 @@ a{
 
 @media (max-width:768px) {
   .para{
-    width: 100%;
+    width: 90%;
   }
 }

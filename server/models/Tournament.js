@@ -55,7 +55,12 @@ const TournamentSchema = Schema({
   FinishedMatches: {
     type : Number ,
     default : 0
+  },
+  EndedAt : {
+    type : Date ,
+
   }
+
 
 
 })

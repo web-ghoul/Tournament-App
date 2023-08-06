@@ -20,6 +20,7 @@
 
 .types button{
     padding: 10px 0px !important;
+    width: -moz-fit-content;
     width: fit-content !important;
     min-width: 0;
     font-size: 18px;
@@ -123,8 +124,8 @@
     }
 
     .types{
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
     }
     
     .types button{

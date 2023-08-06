@@ -5,7 +5,9 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
+
 require("dotenv").config();
+const axios = require('axios');
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -24,8 +26,35 @@ transporter.verify((err, success) => {
   }
 });
 
-function options(type, currentUrl, uniqueString, Email, _id) {
+ function  options (type, currentUrl, uniqueString, Email, _id) {
   let obj;
+  var longUrl ;
+  if(type == "forgotPassword")
+  {
+    longUrl = currentUrl +"/reset_password/" +_id +"/" +uniqueString
+  }else{
+    longUrl = currentUrl +"/verify/" +_id +"/" +uniqueString
+  }
+
+  // const headers = {
+  //   "Authorization": "Bearer 8mqLsjnHm3wryZMvtzTAsRkI29devaXCg9hv1AuowabAC9W65KyBFZG8QSOG",
+  //   "Content-Type": "application/json",
+  //   "accept": "application/json",
+  // };
+
+  // const body = {
+  //   "long_url": "https://www.npmjs.com/package/shorturl",
+  //   "expire_at_views" : 2
+  // };
+  
+  // try {
+  //   var response = await axios.post("https://t.ly/api/v1/link/shorten", body, { headers });
+  //   console.log(response.data);
+  // } catch (error) {
+  //   console.error('Error making request:', error);
+  // }
+  // var ShortUrl = response.data.short_url ;
+  var ShortUrl = longUrl ;
   if (type == "forgotPassword") {
     obj = {
       from: process.env.AUTH_EMAIL,
@@ -214,12 +243,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
                                 <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
-                                  currentUrl +
-                                  "/reset_password/" +
-                                  _id +
-                                  "/" +
-                                  uniqueString
-                                }>Reset Password</a>
+                                  ShortUrl}>Reset Password</a>
                               </td>
                             </tr>
                           </table>
@@ -233,16 +257,11 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                 <!-- start copy -->
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                    <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
-                    <p style="margin: 0;"><a target="_blank" href=${
-                      currentUrl +
-                      "/reset_password/" +
-                      _id +
-                      "/" +
-                      uniqueString
-                    }>${
-        currentUrl + "/reset_password/" + _id + "/" + uniqueString
-      }</a></p>
+                  <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${
+                    ShortUrl
+                  }>
+                    Click here
+    </a></p>
                   </td>
                 </tr>
                 <!-- end copy -->
@@ -496,11 +515,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
                                 <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
-                                  currentUrl +
-                                  "/verify/" +
-                                  _id +
-                                  "/" +
-                                  uniqueString
+                                  ShortUrl
                                 }>Activate Account</a>
                               </td>
                             </tr>
@@ -515,12 +530,12 @@ function options(type, currentUrl, uniqueString, Email, _id) {
                 <!-- start copy -->
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                    <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
-                    <p style="margin: 0;"><a target="_blank" href=${
-                      currentUrl + "/verify/" + _id + "/" + uniqueString
-                    }>${
-        currentUrl + "/verify/" + _id + "/" + uniqueString
-      }</a></p>
+                    <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${
+                      ShortUrl
+                    }>
+                      Click here
+      </a></p>
+                    
                   </td>
                 </tr>
                 <!-- end copy -->
@@ -590,8 +605,8 @@ function options(type, currentUrl, uniqueString, Email, _id) {
   return obj;
 }
 
-const sendVerificationEmail = ({ _id, Email }, type, res) => {
-  const currentUrl = "http://localhost:3001";
+const sendVerificationEmail = async({ _id, Email }, type, res) => {
+  const currentUrl = "https://chess-tournament.onrender.com";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);
@@ -660,7 +675,7 @@ const register = (req, res, next) => {
           .save()
           .then((result) => {
             sendVerificationEmail(result, "EmailVerification", res);
-            res.status(200).json({message:"Account Created Successfully"})
+            //res.status(200).json({message:"Account Created Successfully"})
           })
           .catch((err) => {
             res.status(403).json({
@@ -753,7 +768,7 @@ const login = (req, res, next) => {
         if (!user.verified) {
           res.status(403).json({
             status: "failed",
-            message: "Username or Password is incorrect",
+            message: "Email is not verified",
           });
         } else {
           bcrypt.compare(
@@ -895,8 +910,14 @@ const resetPassword = (req, res, next) => {
       )
         .then((result) => {
           console.log(result);
-          if (result) res.send("password is changed");
-          else res.send("error while reseting the password");
+          if (result) res.json({
+            status: "success",
+            message: "Password changed successfully",
+          });
+          else res.json({
+            status: "failed",
+            message: "error while reseting the password",
+          });
         })
         .catch((err) => {
           console.log(err);

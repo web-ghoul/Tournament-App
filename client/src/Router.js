@@ -8,6 +8,7 @@ import Tournament from "./pages/Tournament/Tournament.jsx"
 import Tournaments from "./pages/Tournaments/Tournaments.jsx"
 import About from "./pages/About/About.jsx"
 import Tutorial from "./pages/Tutorial/Tutorial.jsx"
+import JoinTournament from "./components/JoinTournament/JoinTournament.jsx"
 
 export const router= createBrowserRouter([
     {
@@ -53,6 +54,10 @@ export const router= createBrowserRouter([
             {
                 path:process.env.REACT_APP_POINTS_PAGE,
                 element:<Tournament type="Points"/>
+            },
+            {
+                path:process.env.REACT_APP_JOIN_PAGE,
+                element:<JoinTournament/>
             },
             {
                 path:process.env.REACT_APP_ABOUT_PAGE,

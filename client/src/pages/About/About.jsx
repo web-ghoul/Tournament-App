@@ -21,7 +21,7 @@ const About = () => {
   return (
     <MyBox className={`${styles.about}`}>
         <Container className={`grid-stretch ${styles.about_contain}`}>
-          <Head title={"About Us"} h={"h1"} align={"center"} description ={"We are a MERN Stack Team , We build Tournament App to help Players to organize a Chess Game and each Player will know who is Play with him from Graph"}/>
+          <Head title={"About Us"} h={"h2"} align={"center"} description ={"We are a MERN Stack Team , We build Tournament App to help Players to organize a Chess Game and each Player will know who is Play with him from Graph"}/>
           <Box>
             <Typography variant='h2' className='tac'></Typography>
             <Typography variant='h6' className='text-center el-center-x para'></Typography>

@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import {Avatar, Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography} from "@mui/material"
+import {Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography} from "@mui/material"
 import styles from "./PointsTable.module.css"
-import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage, PlayCircleFilledWhiteRounded } from '@mui/icons-material';
+import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
-import avatarImg from "../../../static/images/avatar.jpg"
 import { Link } from 'react-router-dom';
 import {useSelector} from "react-redux"
 
-
+//Function to Handle and Control Pages Change
 function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -64,25 +63,25 @@ function TablePaginationActions(props) {
 
 const PointsTable = ({data}) => {
     const {username} = useSelector((state)=>state.auth)
+
     const createData=(...args)=> {
       let row = {name: args[0]  ,points:args[args.length-1]};
-      args.slice(1,args.length-1).map((round,i)=>{
-        row[`round${i+1}`] = round
-      })
+      args.slice(1,args.length-1).map((round,i)=>row[`round${i+1}`] = round)
       return row
     }
-
-    let rounds = []
-    new Array(data.length-1).fill(1).map((n,i)=>{
-        rounds.push({id:`round${i+1}`, label:`round ${i+1}`, minWidth:100})
-    })
     
+    //Handle Round Number Of Table From Data of Tournament
+    let rounds = []
+    new Array(data.length-1).fill(1).map((n,i)=>rounds.push({id:`round${i+1}`, label:`round ${i+1}`, minWidth:100}))
+
+    //Handle Columns Of Table From Data of Tournament
     const columns = [
       { id: 'player', label: 'Player', minWidth: 200 },
       ...rounds,
       { id: 'points', label: 'Points', minWidth: 100, align:"center" },
     ];
 
+    //Handle Rows Of Table From Data of Tournament
     const rows = []
     data.map((player)=>rows.push(createData(player.Name ,...Array.from({length: player.Matches.length}, (_, i) => {
       const result = player.Matches[i].winner
@@ -130,27 +129,26 @@ const PointsTable = ({data}) => {
                 ).map((row,i) => (
                 <TableRow className={`${styles.table_cells} ${row.name === username && styles.active}`} key={row.name}>
                     <TableCell key={i} className={`flex-start ${styles.player}`} component="th" scope="row">
-                      <Avatar alt={row.name} src={avatarImg}/>
+                      <Box className={`flex-center ${i+1 === 1 && styles.first} ${styles.player_number}`}>
+                        <Typography variant='h6'>{i+1}</Typography>
+                      </Box>
                       <Link className={`${styles.player_name}`} to={`/profile/${row.name}`}>
                         {row.name}
                       </Link>
                     </TableCell>
                     {
                       Object.keys(row).map((key,x)=>{
-                        if(key.startsWith("round")){
-                          console.log(row[key])
-                          return (
-                            <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
-                              {
-                                row[key] !== "-" ? (
-                                  <Button onClick={()=>window.open(data[i].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
-                                ):(
-                                  row[key]
-                                )
-                              }
-                            </TableCell>
-                          )
-                        }
+                        return key.startsWith("round") && (
+                          <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
+                            {
+                              row[key] !== "-" ? (
+                                <Button onClick={()=>window.open(data[i].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
+                              ):(
+                                row[key]
+                              )
+                            }
+                          </TableCell>
+                        )
                       })
                     }
                     <TableCell style={{ width: 160 }} align="center">

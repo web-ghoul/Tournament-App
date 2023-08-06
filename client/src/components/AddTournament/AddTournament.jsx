@@ -1,9 +1,9 @@
 import React from 'react'
-import { Formik, isInteger } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from "yup"
 import axios from "axios"
 import {handleToastMessage} from "../../App"
-import { getLiveTournaments } from '../../store/slices/liveTournamentsSlice';
+import { getTournaments } from '../../store/slices/tournamentsSlice';
 
 //MUI
 import {Box, Button, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material"
@@ -76,7 +76,7 @@ const AddTournament = () => {
             onSubmitProps.resetForm()
             handleToastMessage(res.data.message,"s")
             handleCloseModal()
-            dispatch(getLiveTournaments())
+            dispatch(getTournaments())
         }).catch((err)=>{
             console.log(err)
             handleToastMessage(err.response.data.message,"e")

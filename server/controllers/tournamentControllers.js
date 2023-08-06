@@ -297,8 +297,8 @@ const gameEnds = async (req, res, next) => {
                     { _id: false }
                   );
                   console.log(temp);
-                  await temp.save();
-                  //await tournamentToDelete.save();
+                  //await temp.save();
+                  await tournamentToDelete.save();
 
                   console.log("Tournament Finished!!");
                   req.params.id = result1.tournamentID;
@@ -408,7 +408,7 @@ const abortMatch = async (req, res, next) => {
           var timeDifferenceMs = result.firstUserEntered.getTime() - timeNow;
           console.log(Math.abs(timeDifferenceMs / (1000 * 60)));
           if (
-            Math.abs(timeDifferenceMs / (1000 * 60)) > 1 &&
+            Math.abs(timeDifferenceMs / (1000 * 60)) > 10 &&
             !result.hasOwnProperty("secondUserEntered")
           ) {
             req.forfree = user;
@@ -419,7 +419,7 @@ const abortMatch = async (req, res, next) => {
           var timeDifferenceMs = result.secondUserEntered.getTime() - timeNow;
           console.log(Math.abs(timeDifferenceMs / (1000 * 60)));
           if (
-            Math.abs(timeDifferenceMs / (1000 * 60)) > 1 &&
+            Math.abs(timeDifferenceMs / (1000 * 60)) > 10 &&
             !result.hasOwnProperty("firstUserEntered")
           ) {
             req.forfree = user;

@@ -63,3 +63,15 @@
     background-color: var(--dark) !important;
 }
 
+.player_number{
+    width: 25px;
+    height: 25px;
+    background-color: var(--white);
+    color: var(--dark);
+    border-radius: 50%;
+}
+
+.player_number.first{
+    background-color: var(--yellow);
+    color: var(--white);
+}

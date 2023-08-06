@@ -12,33 +12,6 @@
 .tournament_contain{
     gap: 50px;
 }
-/* 
-.filter{
-    gap: 30px;
-}
-
-.filter_fields{
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.filter_fields input{
-    border: 2px solid var(--white) !important;
-    border-radius: 6px;
-}
-
-.filter_fields input:focus{
-    border-color: var(--blue) !important;
-}
-
-.filter_fields  > div  input , .filter_fields  > div  label{
-    color: var(--white) !important;
-}
-
-.filter_buttons button{
-    background-color: var(--blue);
-    padding: 10px 20px !important;
-} */
 
 .tournaments_buttons{
     gap:50px;
@@ -80,6 +53,10 @@
 }
 
 @media (max-width:992px) {
+    .tournament_contain{
+        gap: 30px;
+    }
+
     .tournaments_loading{
         gap: 25px;
     }
@@ -105,9 +82,7 @@
         gap: 8px;
     }
 
-    .tournament_contain{
-        gap: 30px;
-    }
+
 }
 
 @media (max-width:768px) {
@@ -127,16 +102,20 @@
     
     .tournaments_buttons{
         gap:20px;
-        grid-template-columns: repeat(1,1fr);
     }
     
     .tournaments_buttons button{
-        padding: 6px !important;
+        padding: 5px !important;
         border-radius: 4px;
-        gap: 6px;
+        gap: 5px;
+        display: flex;
+        align-items: center;
+        justify-self: center;
     }
 
-    .tournament_contain{
-        gap: 20px;
+    .tournaments_buttons button svg{
+        font-size: 15px;
     }
+
+    
 }

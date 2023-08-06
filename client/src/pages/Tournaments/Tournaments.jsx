@@ -1,18 +1,19 @@
 import React, { useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLiveTournaments } from '../../store/slices/liveTournamentsSlice'
+import { getTournaments } from '../../store/slices/tournamentsSlice'
 
 //Component
 import TournamentCard from '../../components/TournamentCard/TournamentCard'
 
 //MUI
-import { Box, Container, IconButton,Skeleton,Typography } from '@mui/material'
+import { Box, Container, IconButton,Typography } from '@mui/material'
 import {MyBox} from "../../MUIComponents/MyBox/MyBox"
 import {CheckCircleOutline,LiveTvRounded} from '@mui/icons-material';
 
 //Style
 import styles from "./Tournaments.module.css"
 import Head from '../../components/Head/Head'
+import BasicLoading from '../../components/BasicLoading/BasicLoading'
 
 const Tournaments = () => {
 
@@ -20,23 +21,31 @@ const Tournaments = () => {
 
   const [type,setType] = useState("live")
 
-  const {isLiveTournamentsLoading , liveTournaments} = useSelector((state)=>state.liveTournaments)
+  const {isTournamentsLoading , tournaments} = useSelector((state)=>state.tournaments)
 
-  const loading = (
-    <Box className={`grid-stretch ${styles.tournaments_loading}`}>
-      <Skeleton variant="rounded"/>
-      <Skeleton variant="rounded"/>
-    </Box>
-  )
+  const liveTournaments = []
+
+  const finishedTournaments = []
+
+  if(tournaments){
+    tournaments.map((t)=>{
+      if(t.Winner === "*"){
+        liveTournaments.push(t)
+      }
+      if(t.Winner !== "*"){
+        finishedTournaments.push(t)
+      }
+    })
+  }
 
   useEffect(()=>{
-    dispatch(getLiveTournaments())
+    dispatch(getTournaments())
   },[dispatch])
   
   return (
     <MyBox className={styles.tournament_section} id="tournaments">
       <Container className={`grid-stretch ${styles.tournament_contain}`}>
-        <Head title={"TOURNAMENTS"} align={"center"} h={"h1"} description ={"Find the perfect tournaments for you. Head to head matches where you pick the game, rules and prize."}/>
+        <Head title={"TOURNAMENTS"} align={"center"} h={"h2"} description ={"Find the perfect tournaments for you. Head to head matches where you pick the game, rules and prize."}/>
         <Box className={`grid-center ${styles.tournaments_buttons}`}>
           <IconButton onClick={()=>setType("live")} className={`flex-center ${styles.live} ${type === "live" && styles.active}`}>
             <LiveTvRounded fontSize={"large"}/>
@@ -51,40 +60,32 @@ const Tournaments = () => {
         {
           type === "live"?
           (
-            isLiveTournamentsLoading ? (
-              loading
+            isTournamentsLoading ? (
+              <BasicLoading/>
             ):(
-              liveTournaments && liveTournaments.length > 0 ?
-              liveTournaments.map((d,i)=>{
-                  if(d.Winner === "*"){
-                    return(
-                      <TournamentCard finished={false} key={i} tournament={d}/>
-                    )
-                  }
-              })
+              liveTournaments.length > 0?
+              liveTournaments.map((t,i)=>(
+                <TournamentCard key={i} tournament={t} finished={false} />
+              ))
               :
-              <MyBox>
+              (<MyBox>
                 <Typography variant='h1' className='tac'>No Tournaments Found!..</Typography>
-              </MyBox>
+              </MyBox>)
             )
           )
           :
           (
-            isLiveTournamentsLoading ? (
-              loading
+            isTournamentsLoading ? (
+              <BasicLoading/>
             ):(
-              liveTournaments && liveTournaments.length > 0 ?
-              liveTournaments.map((d,i)=>{
-                  if(d.Winner !== "*"){
-                    return(
-                      <TournamentCard finished={true} key={i} tournament={d}/>
-                    )
-                  }
-              })
+              finishedTournaments.length > 0?
+              finishedTournaments.map((t,i)=>(
+                <TournamentCard key={i} tournament={t} finished={true} />
+              ))
               :
-              <MyBox>
+              (<MyBox>
                 <Typography variant='h1' className='tac'>No Tournaments Found!..</Typography>
-              </MyBox>
+              </MyBox>)
             )
           )
         }

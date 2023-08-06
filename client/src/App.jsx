@@ -19,7 +19,6 @@ import theme from "./theme.js"
 
 //Style
 import "./index.css"
-import { StartRounded } from '@mui/icons-material';
 
 export const handleToastMessage = (msg , state , position = "top-right") =>{
   if(state === "s"){

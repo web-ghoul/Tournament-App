@@ -190,16 +190,24 @@ const gameEnds = async (req, res, next) => {
   var temp =
     data[0].tournamentID.FinishedMatches /
     (data[0].tournamentID.Players.length / 2);
-  if (
-    temp > 0 &&
-    Number.isInteger(temp) &&
-    data[0].Matches[temp - 1].winner != "*" &&
-    data[0].Matches[temp].winner == winnerName
-  ) {
-    return res.status(403).json({
-      message: "the game is already finished",
-    });
-  }
+    try{
+      if (
+        temp > 0 &&
+        Number.isInteger(temp) &&
+        data[0].Matches[temp - 1].winner != "*" &&
+        data[0].Matches[temp].winner == winnerName
+      ) {
+        return res.status(403).json({
+          message: "the game is already finished",
+        });
+      }
+    }catch(err)
+    {
+      return res.status(403).json({
+        message: "the game is already finished",
+      });
+    }
+  
   console.log(temp);
   console.log(data[0].Matches[temp]);
   console.log("matches");
@@ -256,7 +264,7 @@ const gameEnds = async (req, res, next) => {
       }
     }
 
-    data[0].tournamentID.Winner = finalWinner;
+    
     // const deleteResult = await Tournament.deleteOne({ _id: data[0].tournamentID });
     var tournamentToDelete = data[0].tournamentID;
     const temp = new FinishedTournament(
@@ -276,7 +284,9 @@ const gameEnds = async (req, res, next) => {
       },
       { _id: false }
     );
-    await temp.save();
+    //await temp.save();
+    data[0].tournamentID.Winner = finalWinner;
+    data[0].tournamentID.EndedAt = Date.now();
   }
   await data[0].tournamentID.save();
   req.params.id = data[0].tournamentID;
@@ -307,8 +317,8 @@ const abortMatch = async (req, res, next) => {
           var timeDifferenceMs =
             result[0].Matches[round - 1].firstUserEntered.Time.getTime() -
             timeNow;
-          console.log(Math.abs(timeDifferenceMs / (1000 * 60)));
-          if (Math.abs(timeDifferenceMs / (1000 * 60)) > 1) {
+          //console.log(Math.abs(timeDifferenceMs / (1000 * 60)));
+          if (Math.abs(timeDifferenceMs / (1000 * 60)) > 10) {
             req.forfree = user;
             console.log(user);
             return next();

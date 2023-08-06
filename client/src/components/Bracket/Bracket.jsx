@@ -11,7 +11,6 @@ import styles from "./Bracket.module.css"
 
 const Bracket = ({nodes , max,isLoading}) => {
     var pad=100
-
     return (
         <Box className={`${styles.match}`}>
             {

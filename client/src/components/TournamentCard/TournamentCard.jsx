@@ -9,37 +9,41 @@ import gameImg from "../../static/images/game-img-1.png"
 import kingImg from "../../static/images/king.png"
 
 //MUI
-import { Box, Button, Divider, IconButton, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Typography } from '@mui/material'
 import {ContentCopyRounded, DeleteForeverRounded, HourglassBottomRounded, HourglassTopRounded} from '@mui/icons-material';
 import {MyButton} from "../../MUIComponents/MyButton/MyButton"
 
 //Style
 import styles from "./TournamentCard.module.css" 
-import { getLiveTournaments } from '../../store/slices/liveTournamentsSlice'
+import { getTournaments } from '../../store/slices/tournamentsSlice'
 import Cookies from 'js-cookie'
 import { logout } from '../../store/slices/authSlice'
+import BasicLoading from '../BasicLoading/BasicLoading'
 
 const TournamentCard = ({tournament,finished}) => {
+  
   const {username,role, signed} = useSelector((state)=>state.auth)
   const navigate= useNavigate()
   const dispatch = useDispatch()
   const [exist , setExist] = useState(false)
 
+  const [buttonType , setButtonType] = useState('join')
+
   const handleTournamentDateAndTime = (targetDate)=>{
+    console.log(new Date(new Date(targetDate).setHours(new Date(targetDate).getHours()+3)))
     const calender = new Date(new Date(targetDate).setHours(new Date(targetDate).getHours()+3)).toISOString().split("T")
     const time = calender[1].split(".")[0] 
     const date = calender[0] 
-    console.log(date,time)
     return {date, time}
   }
+  
+  const startDate = tournament && handleTournamentDateAndTime(tournament.StartsAt).date
 
-  const startDate = handleTournamentDateAndTime(tournament.StartsAt).date
-
-  const startTime = handleTournamentDateAndTime(tournament.StartsAt).time
-  //handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).date
-  const endDate = "" 
-  //handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).time
-  const endTime = ""
+  const startTime = tournament && handleTournamentDateAndTime(tournament.StartsAt).time
+  
+  const endDate = tournament && handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).date
+  
+  const endTime = tournament && handleTournamentDateAndTime(finished ? tournament.EndedAt : tournament.StartsAt).time
 
   const handleJoin= async()=>{
     if(!signed){
@@ -54,7 +58,7 @@ const TournamentCard = ({tournament,finished}) => {
       }else{
         handleToastMessage(res.data.message,"s");
       }
-      dispatch(getLiveTournaments())
+      dispatch(getTournaments())
       setExist(true)
     }).catch((err)=>{
       try{
@@ -105,7 +109,7 @@ const TournamentCard = ({tournament,finished}) => {
     await axios.delete(process.env.REACT_APP_SERVER_URL+`/Admin/deleteTournament/${tournament._id}`,{},{
       withCredentials:true
     }).then((res)=>{
-      dispatch(getLiveTournaments())
+      dispatch(getTournaments())
       handleToastMessage(res.data.message,"s");
     }).catch((err)=>{
       try{
@@ -123,19 +127,31 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleCopyJoinLink = ()=>{
-    navigator.clipboard.writeText("Hello")
+    navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
+    console.log(navigator.clipboard.read())
     handleToastMessage("Join Link Copied","s")
   }
-  
+
   useEffect(()=>{
-    if(tournament.Players.includes(username)){
-      setExist(true)
-    }else{
-      setExist(false)
+    if(tournament){
+      // if(((tournament.Players.length === 0 || tournament.length === 1) || (tournament.Type === "Points" && tournament.Players.length % 2 !== 0) || (tournament.Type === "Brackets" && Math.round(Math.log(tournament.Players.length) / Math.log(2)) !== Math.log(tournament.Players.length) / Math.log(2))) && new Date(tournament.StartsAt) <= new Date() && !finished){
+      //   handleDelete("Sorry , Number of Players is not allowed , so we deleted the tournament")
+      // }
+      if(tournament.Players.includes(username)){
+        setExist(true)
+        setButtonType('enter')
+      }else{
+        setExist(false)
+        if(new Date(tournament.StartsAt) <= new Date()){
+          setButtonType("view")
+        }else{
+          setButtonType("join")
+        }
+      }
     }
-  },[tournament , exist , username])
+  },[tournament , exist , finished , username])
   
-  return (
+  return !tournament ? <BasicLoading/> : (
     <Box className={`grid-stretch ${styles.tournament}`}>
       <Box className={`grid-between ${styles.tour}`}>
         {
@@ -217,16 +233,9 @@ const TournamentCard = ({tournament,finished}) => {
         </Box>
         <Box className={`flex-stretch ${styles.btn}`}>
             {
-              finished?
-              (
-                <MyButton className='text-upper' onClick={handleView}>View Tournament</MyButton>
-              ):(
-                !exist ? (
-                  <MyButton className='text-upper' onClick={handleJoin}>Join Tournament</MyButton>
-                ):(
-                  <MyButton className='text-upper' onClick={handleEnter}>Enter Tournament</MyButton>
-                )
-              )
+              buttonType === "view" ? 
+              (<MyButton className='text-upper' onClick={handleView}>View Tournament</MyButton>):buttonType === "join" ?
+              (<MyButton className='text-upper' onClick={handleJoin}>Join Tournament</MyButton>):(<MyButton className='text-upper' onClick={handleEnter}>Enter Tournament</MyButton>)
             }
         </Box>
       </Box>

@@ -1,15 +1,15 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "axios"
 
-export const getTournament = createAsyncThunk("tournaments/getTournament",async(args)=>{
+export const getTournament = createAsyncThunk("tournament/getTournament",async(args)=>{
     const res =  await axios.get(process.env.REACT_APP_SERVER_URL+`/Tournaments/${args}`)
     return res.data.data
 })
 
 
 const initialState = {
-    isLoading:true,
-    tournament:{}
+    isTournamentLoading:true,
+    tournament:null
 }
 
 const tournamentSlice = createSlice({
@@ -17,14 +17,13 @@ const tournamentSlice = createSlice({
     initialState,
     extraReducers:{
         [getTournament.pending]:(state,action)=>{
-            state.isLoading = true
+            state.isTournamentLoading = true
         },[getTournament.fulfilled]:(state,action)=>{
-            state.isLoading = false
-            state.tournaments = action.payload
-            console.log(state.tournaments)
-            state.tournaments.reverse()
+            state.isTournamentLoading = false
+            console.log(action.payload)
+            state.tournament = action.payload
         },[getTournament.rejected]:(state,action)=>{
-            state.isLoading = true
+            state.isTournamentLoading = true
         }
     }
 })

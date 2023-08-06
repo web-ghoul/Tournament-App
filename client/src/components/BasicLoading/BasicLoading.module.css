@@ -1,0 +1,29 @@
+.loading{
+    gap: 30px;
+}
+
+.loading span{
+    height: 300px !important;
+    background-color: var(--body-bg) !important;
+    opacity: 0.5;
+}
+
+@media (max-width:992px) {
+    .loading{
+        gap: 25px;
+    }
+    
+    .loading span{
+        height: 200px !important;
+    }
+}
+
+@media (max-width:768px) {
+    .loading{
+        gap: 20px;
+    }
+    
+    .loading span{
+        height: 150px !important;
+    }
+}

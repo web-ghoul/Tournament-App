@@ -6,8 +6,7 @@ import {useSelector} from "react-redux"
 import Logo from '../Logo/Logo'
 
 //MUI
-import {  Box, Container, Divider, IconButton, Link, Typography } from '@mui/material'
-import {LinkedIn,Twitter,WhatsApp,FacebookRounded} from '@mui/icons-material';
+import {  Box, Container, Divider, Link, Typography } from '@mui/material'
 import { FlexStack } from '../../MUIComponents/FlexStack/FlexStack'
 import { HeaderTypo } from '../../MUIComponents/HeaderTypo/HeaderTypo'
 
@@ -28,20 +27,6 @@ const Footer = () => {
             <HeaderTypo variant='h6' onClick={()=>navigate(process.env.REACT_APP_TOURNAMENTS_PAGE)}>Tournaments</HeaderTypo>
             <HeaderTypo variant='h6' onClick={()=>navigate(process.env.REACT_APP_ABOUT_PAGE)}>About Us</HeaderTypo>
           </FlexStack>
-          {/* <Box className={styles.icons}>
-            <IconButton>
-              <FacebookRounded/>
-            </IconButton>
-            <IconButton>
-              <Twitter/>
-            </IconButton>
-            <IconButton>
-              <WhatsApp/>
-            </IconButton>
-            <IconButton>
-              <LinkedIn/>
-            </IconButton>
-          </Box> */}
         </Box>
         <Divider/>
         <Box>

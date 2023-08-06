@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box, Button, IconButton, Modal} from '@mui/material'
+import {Box, IconButton, Modal} from '@mui/material'
 import Head from "../Head/Head"
 import HowToAddTournament from "./HowToAddTournament/HowToAddTournament"
 import HowToPointsTournament from "./HowToTournaments/HowToPointsTournament/HowToPointsTournament"
@@ -7,7 +7,6 @@ import HowToBracketsTournament from "./HowToTournaments/HowToBracketsTournament/
 import styles from "./TutorialModal.module.css"
 import { CloseRounded } from '@mui/icons-material'
 import axios from 'axios'
-import { handleToastMessage } from '../../App'
 import Cookies from 'js-cookie'
  
 const TutorialModal = () => {

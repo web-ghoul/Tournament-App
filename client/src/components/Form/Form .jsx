@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {setUserData} from "../../store/slices/authSlice"
-import Cookies from 'js-cookie';
+import {handleToastMessage} from "../../App"
 import {Formik} from "formik"
+import Cookies from 'js-cookie';
 import axios from "axios"
 import * as Yup from "yup"
-import {handleToastMessage} from "../../App"
 
 //Components
 import LoginForm from './LoginForm/LoginForm'
@@ -82,7 +82,7 @@ const From  = (props) => {
                 handleToastMessage(err.response.data.message,"e")
             }
             catch(error){
-                handleToastMessage(error,"e")
+                handleToastMessage("Error","e")
             }
         })
     }
@@ -97,9 +97,17 @@ const From  = (props) => {
         }).then((res)=>{
             navigate("/login")
             onSubmitProps.resetForm()
-            handleToastMessage(res.data.message,"s")
+            try{
+                handleToastMessage(res.data.message,"s")
+            }catch(error){
+                handleToastMessage("Email is Created Successfully","s")
+            }
         }).catch((err)=>{
-            handleToastMessage(err.response.data.message,"e")
+            try{
+                handleToastMessage(err.response.data.message,"e")
+            }catch(error){
+                handleToastMessage( "Error","e")
+            }
         })
     }
 
@@ -112,11 +120,19 @@ const From  = (props) => {
             Cookies.set('token',res.data.token , { expires: 7 });
             dispatch(setUserData(userData))
             navigate("/")
-            Cookies.remove("user_id")
+            try{
+                Cookies.remove("user_id")
+            }catch(error){
+                console.log(error)
+            }
             onSubmitProps.resetForm()
             handleToastMessage(`Welcome ${values.username_log}`,"s")
         }).catch((err)=>{
-            handleToastMessage(err.response.data.message,"e")
+            try{
+                handleToastMessage(err.response.data.message,"e")
+            }catch(error){
+                handleToastMessage("Error","e")
+            }
         })
     }
 
@@ -126,9 +142,17 @@ const From  = (props) => {
         }).then((res)=>{
             setSent(true)
             onSubmitProps.resetForm()
-            handleToastMessage( "Check your Mail","s")
+            try{
+                handleToastMessage(res.data.message,"s")
+            }catch(error){
+                handleToastMessage( "Check your Mail","s")
+            }
         }).catch((err)=>{
-            handleToastMessage( err.response.data.message,"e")
+            try{
+                handleToastMessage( err.response.data.message,"e")
+            }catch(error){
+                handleToastMessage( "Error","e")
+            }
         })
     }
 
@@ -151,9 +175,17 @@ const From  = (props) => {
     const handleVerify = async()=>{
         await axios.get(process.env.REACT_APP_SERVER_URL+`/user/verify/${id}/${unique}`).then((res)=>{
             navigate(process.env.REACT_APP_LOGIN_PAGE)
-            handleToastMessage(res.data.message,"s")
+            try{
+                handleToastMessage(res.data.message,"s")
+            }catch(error){
+                handleToastMessage("Email Verified Successfully","s")
+            }
         }).catch((err)=>{
-            handleToastMessage(err.response.data.message,"e")
+            try{
+                handleToastMessage(err.response.data.message,"e")
+            }catch(error){
+                handleToastMessage("Error","e")
+            }
         })
     }
 

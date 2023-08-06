@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {showing , hiding} from "../../store/slices/scrollSlice"
 import {logout} from "../../store/slices/authSlice"
 import Cookies from 'js-cookie'
-import { openAddTournamentModal,closeAddAdminModal ,closeAddTournamentModal, openAddAdminModal } from '../../store/slices/addModalSlice'
+import { openAddTournamentModal, openAddAdminModal } from '../../store/slices/addModalSlice'
 
 //Components
 import Logo from '../Logo/Logo'

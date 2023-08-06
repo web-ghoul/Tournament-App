@@ -5,8 +5,8 @@ import axios from "axios"
 import {handleToastMessage} from "../../App"
 
 //MUI
-import {Box, Button, IconButton, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material"
-import {EmojiEvents,AdminPanelSettings} from '@mui/icons-material';
+import {Box, Button, Modal, TextField, Typography} from "@mui/material"
+import {AdminPanelSettings} from '@mui/icons-material';
 
 //Style
 import styles from "./AddAdmin.module.css"
@@ -28,10 +28,6 @@ const AddAdmin = () => {
         username:Yup.string().required("Enter New Admin Username"),
     })
 
-    const handleCloseModal=()=>{
-        dispatch(closeAddAdminModal())
-    }
-
     const handleSubmitAdmin = async(values,onSubmitProps)=>{
         await axios.post(process.env.REACT_APP_SERVER_URL+"/Admin/addAdmin",{
             ...values
@@ -40,7 +36,7 @@ const AddAdmin = () => {
         }).then((res)=>{
             onSubmitProps.resetForm()
             handleToastMessage(res.data.message,"s")
-            handleCloseModal()
+            dispatch(closeAddAdminModal())
         }).catch((err)=>{
             handleToastMessage(err.response.data.message,"e")
         })
@@ -49,7 +45,7 @@ const AddAdmin = () => {
     return(
         <Modal
             open={openAdminModal}
-            onClose={handleCloseModal}
+            onClose={()=>dispatch(closeAddAdminModal())}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -70,7 +66,7 @@ const AddAdmin = () => {
                             <TextField className={`grid-stretch`} label="Username" name='username' value={values.username} onChange={handleChange} id="username" error={Boolean(touched.username) && Boolean(errors.username)} helperText={touched.username && errors.username} onBlur={handleBlur}/>
                             <Box className={`grid-stretch ${styles.btns}`}>
                                 <Button type="submit">Add</Button>
-                                <Button onClick={handleCloseModal}>Cancel</Button>
+                                <Button onClick={()=>dispatch(closeAddAdminModal())}>Cancel</Button>
                             </Box>
                         </form>
                         )}
