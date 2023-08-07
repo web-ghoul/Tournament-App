@@ -177,44 +177,25 @@ const gameEnds = async (req, res, next) => {
     });
   }
   const data = await Node.find({
-    Matches: { $elemMatch: { gameID: game_Id } }, // Matches the specified element in the Matches array
+    Matches: { $elemMatch: { gameID: game_Id , winner : "*" } }, // Matches the specified element in the Matches array
   }).populate("tournamentID");
   console.log(game_Id);
-
+  if(data.length == 0)
+  {
+    return res.status(403).json({
+      message: "the game is already finished",
+    });
+  }
   var roundNumber =
     Math.floor(
       data[0].tournamentID.FinishedMatches /
         (data[0].tournamentID.Players.length / 2)
     ) + 1;
-
-  var temp =
-    data[0].tournamentID.FinishedMatches /
-    (data[0].tournamentID.Players.length / 2);
-    try{
-      if (
-        temp > 0 &&
-        Number.isInteger(temp) &&
-        data[0].Matches[temp - 1].winner != "*" &&
-        data[0].Matches[temp].winner == winnerName
-      ) {
-        return res.status(403).json({
-          message: "the game is already finished",
-        });
-      }
-    }catch(err)
-    {
-      return res.status(403).json({
-        message: "the game is already finished",
-      });
-    }
   
-  console.log(temp);
-  console.log(data[0].Matches[temp]);
-  console.log("matches");
-  console.log(data[0].Matches[roundNumber - 1]);
-  console.log("roundNumber");
-  console.log(roundNumber);
-  console.log(response.data);
+
+
+  
+  
   if (
     response.data.hasOwnProperty("status") &&
     response.data.status == "draw" &&

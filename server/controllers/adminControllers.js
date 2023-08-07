@@ -128,7 +128,7 @@ const deleteTournament = async (req, res, next) => {
     }
    else {
     res.status(401).json({
-      message: "FLAG{THE_EAZY_FLAG}",
+      message: "FLAG{THE_EAZY_FLAG}" ,
     });
   }
 };
