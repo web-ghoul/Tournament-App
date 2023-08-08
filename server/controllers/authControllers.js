@@ -606,7 +606,7 @@ transporter.verify((err, success) => {
 }
 
 const sendVerificationEmail = async({ _id, Email }, type, res) => {
-  const currentUrl = "http://localhost:3001";
+  const currentUrl = "https://chess-tournament.onrender.com";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);
