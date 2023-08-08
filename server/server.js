@@ -61,12 +61,12 @@ app.use("/api",HomeRoutes)
 app.use("/api" , UserRoutes )
 app.use("/api/Admin" , AdminRoutes)
 
-// app.use(express.static(path.join(__dirname , '../client/build')))
-// app.get("*" , function (req,res) {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
+app.use(express.static(path.join(__dirname , '../client/build')))
+app.get("*" , function (req,res) {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'))
   
-// }
-// )
+}
+)
 
 
 app.use(notFound);
