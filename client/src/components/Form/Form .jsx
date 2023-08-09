@@ -95,13 +95,13 @@ const From  = (props) => {
         await axios.post(process.env.REACT_APP_SERVER_URL+"/register",{
             ...values
         }).then((res)=>{
-            navigate("/login")
-            onSubmitProps.resetForm()
             try{
                 handleToastMessage(res.data.message,"s")
             }catch(error){
                 handleToastMessage("Email is Created Successfully","s")
             }
+            navigate("/login")
+            onSubmitProps.resetForm()
         }).catch((err)=>{
             try{
                 handleToastMessage(err.response.data.message,"e")

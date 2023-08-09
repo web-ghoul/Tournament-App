@@ -11,8 +11,9 @@ import styles from "./Bracket.module.css"
 
 const Bracket = ({nodes , max,isLoading}) => {
     var pad=100
+    console.log(nodes)
     return (
-        <Box className={`${styles.match}`}>
+        <Box className={`flex-stretch ${styles.match}`}>
             {
                 isLoading ? (
                     <>

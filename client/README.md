@@ -5,7 +5,7 @@ Front-End Skills:
     4- Google Font
     5- Axios
     6- Js-Cookie
-    7- Sweet Alert
+    7- toast
 
 Back-End Skills:
     1- Node.js
@@ -24,3 +24,10 @@ Back-End Skills:
         10- Cookie Parser
         11- Bcrypt
         12- Axios 
+
+emails : 
+webGhoul mahmoudaboraya2021@gmail.com
+webGhoul1 webghouldev@gmail.com
+webGhoul2 mesharewith663@gmail.com
+magnus006
+magnus007

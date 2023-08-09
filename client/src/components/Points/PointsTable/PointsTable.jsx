@@ -4,7 +4,8 @@ import styles from "./PointsTable.module.css"
 import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage} from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 import { Link } from 'react-router-dom';
-import {useSelector} from "react-redux"
+import {useSelector} from "react-redux";
+import avatarImg from "../../../static/images/avatar.jpg"
 
 //Function to Handle and Control Pages Change
 function TablePaginationActions(props) {
@@ -62,6 +63,8 @@ function TablePaginationActions(props) {
 }
 
 const PointsTable = ({data}) => {
+    var c = -1;
+
     const {username} = useSelector((state)=>state.auth)
 
     const createData=(...args)=> {
@@ -126,36 +129,40 @@ const PointsTable = ({data}) => {
                 (rowsPerPage > 0
                   ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : rows
-                ).map((row,i) => (
-                <TableRow className={`${styles.table_cells} ${row.name === username && styles.active}`} key={row.name}>
-                    <TableCell key={i} className={`flex-start ${styles.player}`} component="th" scope="row">
-                      <Box className={`flex-center ${i+1 === 1 && styles.first} ${styles.player_number}`}>
-                        <Typography variant='h6'>{i+1}</Typography>
-                      </Box>
-                      <Link className={`${styles.player_name}`} to={`/profile/${row.name}`}>
-                        {row.name}
-                      </Link>
-                    </TableCell>
-                    {
-                      Object.keys(row).map((key,x)=>{
-                        return key.startsWith("round") && (
-                          <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
-                            {
-                              row[key] !== "-" ? (
-                                <Button onClick={()=>window.open(data[i].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
-                              ):(
-                                row[key]
-                              )
-                            }
-                          </TableCell>
-                        )
-                      })
-                    }
-                    <TableCell style={{ width: 160 }} align="center">
-                      {row.points}
-                    </TableCell>
-                </TableRow>
-                ))
+                ).map((row,i) => {
+                  c++
+                  return(
+                  <TableRow className={`${styles.table_cells} ${row.name === username && styles.active}`} key={row.name}>
+                      <TableCell key={c} className={`flex-start ${styles.player}`} component="th" scope="row">
+                        <Box className={`flex-center ${c+1 === 1 && styles.first} ${styles.player_photo}`}>
+                          {/* <Typography variant = 'h6'>{c+1}</Typography> */}
+                          <Box alt = {"avatar"} component = {"img"} src = {avatarImg}/>
+                        </Box>
+                        <Link className={`${styles.player_name}`} to={`/profile/${row.name}`}>
+                          {row.name}
+                        </Link>
+                      </TableCell>
+                      {
+                        Object.keys(row).map((key,x)=>{
+                          return key.startsWith("round") && (
+                            <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
+                              {
+                                row[key] !== "-" ? (
+                                  <Button onClick={()=>window.open(data[c].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
+                                ):(
+                                  row[key]
+                                )
+                              }
+                            </TableCell>
+                          )
+                        })
+                      }
+                      <TableCell style={{ width: 160 }} align="center">
+                        {row.points}
+                      </TableCell>
+                  </TableRow>
+                  )
+                })
               }
               {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>

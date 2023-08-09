@@ -1,7 +1,6 @@
 .match{
     overflow:auto;
     height: 100%;
-    max-height: 800px;
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
@@ -14,6 +13,6 @@
 }
 
 .match_contain{
-    width:fit-content;
     width: -moz-fit-content;
+    width:fit-content;
 }

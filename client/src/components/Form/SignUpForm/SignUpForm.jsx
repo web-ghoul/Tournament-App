@@ -10,7 +10,7 @@ const SignUpForm = ({values , touched, errors , handleBlur, handleChange}) => {
     return (
         <>
             <Typography variant='h3' className={`text-center game-font flex-center`}>Let's get started</Typography>
-            <TextField className={`grid-stretch username`} label="Username" value={values.username_reg} error={Boolean(touched.username_reg) && Boolean(errors.username_reg)} name='username_reg' type="username" onChange={handleChange} id="username_reg" helperText={touched.username_reg && errors.username_reg} onBlur={handleBlur}/>
+            <TextField className={`grid-stretch username`} label="Lichess Username" value={values.username_reg} error={Boolean(touched.username_reg) && Boolean(errors.username_reg)} name='username_reg' type="username" onChange={handleChange} id="username_reg" helperText={touched.username_reg && errors.username_reg} onBlur={handleBlur}/>
 
             <TextField className={`grid-stretch email`} label="Email" name='email' value={values.email} onChange={handleChange} id="email" error={Boolean(touched.email) && Boolean(errors.email)} helperText={touched.email && errors.email} onBlur={handleBlur}/>
 

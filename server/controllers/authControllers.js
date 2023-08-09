@@ -893,7 +893,7 @@ const resetEmail = (req, res, next) => {
 
 const resetPassword = (req, res, next) => {
   const userId = req.body.user_id;
-  //console.log(userId);
+  
   const newPassword = req.body.new_password;
 
   bcrypt.hash(newPassword, 10, (err, hashedPass) => {

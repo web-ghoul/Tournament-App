@@ -10,7 +10,7 @@ import Bracket from '../../components/Bracket/Bracket';
 import BasicLoading from "../../components/BasicLoading/BasicLoading"
 
 //MUI
-import { Container,Skeleton } from '@mui/material'
+import { Container, Skeleton } from '@mui/material'
 import {MyBox} from "../../MUIComponents/MyBox/MyBox"
 
 //Style
@@ -34,15 +34,10 @@ const Tournament = ({type}) => {
         setHeight(window.height)
     }
     useEffect(()=>{
-        if(!signed){
-            navigate("/")
-        }
-        else{
-            if(type === "Points"){
-                dispatch(getPoints(tournamentId))
-            }else{
-                dispatch(getBrackets(tournamentId))
-            }
+        if(type === "Points"){
+            dispatch(getPoints(tournamentId))
+        }else{
+            dispatch(getBrackets(tournamentId))
         }
     },[dispatch,signed,navigate, tournamentId , type])
 
@@ -51,10 +46,12 @@ const Tournament = ({type}) => {
             {
                 (type === "Points" && isPointsLoading) || (type === "Brackets" && isBracketsLoading) ?
                 (
-                    <BasicLoading>
-                        <Skeleton variant="text"/>
-                        <Skeleton variant="text"/>
-                    </BasicLoading>
+                    <Container>
+                        <BasicLoading>
+                            <Skeleton variant='text' />
+                            <Skeleton variant='text' />
+                        </BasicLoading>
+                    </Container>
                 )
                 :(
                     <>
@@ -67,7 +64,7 @@ const Tournament = ({type}) => {
                             )
                         }
                         <Container className={`grid-stretch ${styles.graph_contain}`}>
-                            <Head h={"h2"} align={"center"} title={type === "Points" ? (points && points[0].tournamentID.Name):(tournament && tournament.Name)} description={type === "Points" ? (points && points[0].tournamentID.Description):(tournament && tournament.Description)}/>
+                            <Head h={"h1"} align={"center"} title={type === "Points" ? (points && points[0].tournamentID.Name):(tournament && tournament.Name)} description={type === "Points" ? (points && points[0].tournamentID.Description):(tournament && tournament.Description)}/>
                             {
                                 type === "Points"?
                                 (

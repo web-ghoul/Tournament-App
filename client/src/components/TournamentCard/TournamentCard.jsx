@@ -126,8 +126,8 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleCopyJoinLink = ()=>{
-    navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
-    console.log(navigator.clipboard.read())
+    const copy = navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
+    //console.log(copy)
     handleToastMessage("Join Link Copied","s")
   }
 
