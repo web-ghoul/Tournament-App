@@ -113,10 +113,10 @@ const displayNodes = async (req, res, next) => {
 
               console.log("WholeData");
               console.log(WholeData);
-              return res.status(200).json({
-                data: WholeData,
-                current_round: 1,
-              });
+              // return res.status(200).json({
+              //   data: WholeData,
+              //   current_round: 1,
+              // });
             }
           })
           .catch((err) => {

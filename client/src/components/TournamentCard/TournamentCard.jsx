@@ -105,7 +105,7 @@ const TournamentCard = ({tournament,finished}) => {
       handleToastMessage("Log in First To Delete Tournament","i");
       return;
     }
-    await axios.delete(process.env.REACT_APP_SERVER_URL+`/Admin/deleteTournament/${tournament._id}`,{},{
+    await axios.delete(process.env.REACT_APP_SERVER_URL+`/Admin/deleteTournament/${tournament._id}`,{
       withCredentials:true
     }).then((res)=>{
       dispatch(getTournaments())

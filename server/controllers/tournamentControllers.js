@@ -74,9 +74,9 @@ const displayNodes = async (req, res, next) => {
                 }
               }
               data[0].tournamentID = result;
-              return res.status(200).json({
-                data: data,
-              });
+              // return res.status(200).json({
+              //   data: data,
+              // });
             }
           })
           .catch((err) => {

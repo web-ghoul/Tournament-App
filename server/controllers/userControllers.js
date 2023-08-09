@@ -19,7 +19,10 @@ const joinTournament = async (req, res, next) => {
         players_num: tournament.Players.length,
       });
     }
-    if (tournament.StartsAt < Date.now()) {
+    const fiveMinutesInMillis = 3 * 60 * 1000;
+    console.log(Date.now() - fiveMinutesInMillis)
+    console.log(tournament.StartsAt.getTime())
+    if (tournament.StartsAt.getTime() - fiveMinutesInMillis < Date.now()) {
       return res.status(403).json({
         message: "Tournament is Closed!",
         players_num: tournament.Players.length,

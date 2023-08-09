@@ -1,8 +1,12 @@
 const User = require("../models/UserSchema");
 const Tournament = require("../models/Tournament");
 const Node = require("../models/TourNode");
+const tournamentControllers = require("../controllers/tournamentControllers")
+const PointstournamentControllers = require("../controllers/pointsTournamentControllers")
+const cron = require('node-cron');
 
-const addAdmin = (req, res, nxt) => {
+
+const addAdmin = (req, res, next) => {
   if (req.role == "Admin") {
     const name = req.body.username;
 
@@ -31,14 +35,14 @@ const addAdmin = (req, res, nxt) => {
   }
 };
 
-const addTournament = async (req, res, nxt) => {
+const addTournament = async (req, res, next) => {
   if (req.role == "Admin" || req.role == "User") {
     const { name, type, game_time, max, description, startsAt } =
       req.body;
 
     try {
       const checktournament = await Tournament.find({
-        $and: [{ Name: name }, { Finished: false }],
+        $and: [{ Name: name }, { Winner: "*" }],
       });
       //console.log("asdfasdf")
       //  console.log(checktournament)
@@ -67,14 +71,46 @@ const addTournament = async (req, res, nxt) => {
     Tourn.save()
       .then((result) => {
         console.log(result)
-        res.status(200).json({
+        var targetDateTime = result.StartsAt; // Assuming result.StartsAt is a valid ISO 8601 timestamp
+        //var date = timestamp.split('.')[0];
+        
+        // Schedule a task to run once at a specific date and time
+      //  const targetDateTime = new Date(date); // Replace with your desired date and time
+
+        const minute = targetDateTime.getMinutes();
+        const hour = targetDateTime.getHours();
+        const dayOfMonth = targetDateTime.getDate();
+        const month = targetDateTime.getMonth() + 1; // Months are zero-based, so add 1
+        const year = targetDateTime.getFullYear();
+        console.log(year, month, dayOfMonth , hour , minute)
+        const cronPattern = `${minute-2} ${hour} ${dayOfMonth} ${month} *`; // Schedule for a specific date and month
+
+        cron.schedule(cronPattern, () => {
+          console.log(new Date() )
+          console.log('Scheduled task executed at the specified date and time.');
+          req.params.id = result._id;
+          if(result.Type == "Brackets")
+          {
+            tournamentControllers.displayNodes(req,res,next)
+          }
+          else
+          {
+            PointstournamentControllers.displayNodes(req,res,next)
+          }
+          
+          // Call your function or perform your task here
+        });
+  
+        return res.status(200).json({
           message: "Tournament Added!",
           //inviteLink: `http://localhost:3000/JoinTournament/${result._id}`
         });
       })
       .catch((err) => {
+        console.log(err)
         res.status(404).json({
-          message: err,
+          message: err.message,
+          
         });
       });
   } else {
@@ -87,7 +123,9 @@ const addTournament = async (req, res, nxt) => {
 const deleteTournament = async (req, res, next) => {
   
     const id = req.params.id;
-    const data = await Tournament.find({_id : req.userId})
+    //console.log(req)
+    const data = await Tournament.findOne({_id : id})
+    //console.log(data , req.role)
     if(data.Creator == req.userName || req.role == "Admin" )
     {
 
@@ -125,8 +163,7 @@ const deleteTournament = async (req, res, next) => {
           message: err,
         });
       });
-    }
-   else {
+    }else {
     res.status(401).json({
       message: "FLAG{THE_EAZY_FLAG}" ,
     });
