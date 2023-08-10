@@ -10,7 +10,7 @@ const authenticate = (req,res,next) => {
         req.userId = decode.Id
         req.userName = decode.Name
         req.role = decode.Role
-        console.log(req.role)
+        //console.log(req.role)
         next()
     }catch(error)
     {

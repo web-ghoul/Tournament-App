@@ -67,6 +67,11 @@ const AddTournament = () => {
         const date = values.date
         const time = values.time
         const startsAt = date+"T"+time+":00+03:00"
+        console.log(((new Date(startsAt).getTime()/(1000 * 60)) - (new Date().getTime()/(1000*60))))
+        if(((new Date(startsAt).getTime()/(1000 * 60)) - (new Date().getTime()/(1000*60))) <= 5){
+            handleToastMessage("Tournament Date and Time must be at least 5 min early from Now","i")
+            return;
+        }
         values = {...values,  startsAt : startsAt , creator:username}
         await axios.post(process.env.REACT_APP_SERVER_URL+"/Admin/addTournament",{
             ...values
@@ -82,7 +87,7 @@ const AddTournament = () => {
             handleToastMessage(err.response.data.message,"e")
         })
     }
-    
+
     return (
         <Modal
         open={openTournamentModal}

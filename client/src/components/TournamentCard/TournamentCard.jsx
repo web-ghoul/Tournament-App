@@ -10,7 +10,7 @@ import kingImg from "../../static/images/king.png"
 
 //MUI
 import { Box, Divider, IconButton, Typography } from '@mui/material'
-import {ContentCopyRounded, DeleteForeverRounded, HourglassBottomRounded, HourglassTopRounded} from '@mui/icons-material';
+import {ContentCopyRounded, DeleteForeverRounded, HourglassBottomRounded, HourglassEmptyRounded, HourglassTopRounded} from '@mui/icons-material';
 import {MyButton} from "../../MUIComponents/MyButton/MyButton"
 
 //Style
@@ -35,6 +35,11 @@ const TournamentCard = ({tournament,finished}) => {
     const date = calender[0] 
     return {date, time}
   }
+
+  const joinEndDate = tournament && handleTournamentDateAndTime(new Date(new Date(tournament.StartsAt).getTime()-(5*1000*60))).date
+
+
+  const joinEndTime = tournament && handleTournamentDateAndTime(new Date(new Date(tournament.StartsAt).getTime()-(5*1000*60))).time
 
   const startDate = tournament && handleTournamentDateAndTime(tournament.StartsAt).date
 
@@ -126,8 +131,7 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleCopyJoinLink = ()=>{
-    const copy = navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
-    //console.log(copy)
+    navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
     handleToastMessage("Join Link Copied","s")
   }
 
@@ -173,15 +177,25 @@ const TournamentCard = ({tournament,finished}) => {
         }
         <Box className={`grid-stretch ${styles.title}`}>
           <Typography variant='h3' className='game-font text-upper'>{tournament.Name}</Typography>
-          <Box className={`grid-start ${styles.timing}`}>
+          <Box className={`grid-start ${styles.timing_box}`}>
             <Box className={`flex-start ${styles.timing}`}>
-              <Box className="flex-center">
+              <Box className="flex-start">
                 <HourglassTopRounded fontSize='small' className={styles.icon}/>
-                <Typography variant='h5'>Starts in</Typography>
+                <Typography variant='h5'>Starts At</Typography>
                 <Typography variant='h5' className={styles.time}>{startTime}</Typography>
               </Box>
               <Box className="flex-center">
                 <Typography className={styles.date} variant='h5'>{startDate}</Typography>
+              </Box>
+            </Box>
+            <Box className={`flex-start ${styles.timing}`}>
+              <Box className="flex-center">
+                <HourglassEmptyRounded fontSize='small' className={styles.icon}/>
+                <Typography variant='h5'>Join Ends At</Typography>
+                <Typography variant='h5' className={styles.time}>{joinEndTime}</Typography>
+              </Box>
+              <Box className="flex-center">
+                <Typography className={styles.date} variant='h5'>{joinEndDate}</Typography>
               </Box>
             </Box>
             {
@@ -190,7 +204,7 @@ const TournamentCard = ({tournament,finished}) => {
                 <Box className={`flex-start ${styles.timing}`}>
                   <Box className="flex-center">
                     <HourglassBottomRounded fontSize='small' className={styles.icon}/>
-                    <Typography variant='h5'>Ended in</Typography>
+                    <Typography variant='h5'>Finished At</Typography>
                     <Typography variant='h5' className={styles.time}>{endTime}</Typography>
                   </Box>
                   <Box className="flex-center">
@@ -201,7 +215,7 @@ const TournamentCard = ({tournament,finished}) => {
             }
           </Box>  
           <Divider/>
-          <Box className={`flex-center ${styles.info}`}>
+          <Box className={`flex-start ${styles.info}`}>
             <Box className={`grid-center text-center  ${styles.border}`}>
               <Typography variant="subtitle2" className='text-upper'>Creator</Typography>
               <Link to={`/profile/${tournament.Creator}`}>

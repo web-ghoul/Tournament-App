@@ -21,17 +21,23 @@
     align-self: stretch;
 }
 
-.timing {
+.dates{
+    gap: 10px;
+}
+
+.timing_box {
     gap: 20px;
 }
 
-.timing > div{
+.timing_box > div{
     background-color: #21156E;
-    gap: 5px;
+    gap: 30px;
     padding: 12px;
     border-radius: 8px;
 }
-
+.timing > div{
+    gap: 5px;
+}
 .timing > div > h5:nth-child(3){
     color: var(--para-alt-color);
 }
@@ -158,13 +164,13 @@ button.border svg{
         text-align: center;
     }
     
-    .timing {
+    .timing_box {
         gap: 20px;
         justify-content: center;
     }
     
     .timing > div{
-        padding: 10px;
+        padding: 5px;
         border-radius: 7px;
     }
     
@@ -208,8 +214,8 @@ button.border svg{
         gap: 15px;
     }
     
-    .timing {
-        gap: 15px;
+    .timing_box {
+        gap: 10px;
         justify-content: center !important;
     }
     
@@ -245,13 +251,20 @@ button.border svg{
         gap: 10px;
     }
     
-    .timing {
+    .timing_box {
         gap: 10px;
-        display: grid;
+    }
+
+    .timing_box > div{
+        gap: 2px;
+        justify-content: center !important;
     }
     
-    .timing > div{
+    .timing{
         border-radius: 5px;
+        gap: 0px;
+        display: grid  !important;
+        justify-content: center;
     }
     
     .info{

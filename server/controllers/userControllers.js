@@ -51,7 +51,7 @@ const joinTournament = async (req, res, next) => {
     });
 };
 
-const EnterTournament = (req, res, next) => {
+const EnterTournament = async(req, res, next) => {
   const tournamentId = req.params.id;
 
   Tournament.findOne({ _id: tournamentId })
@@ -69,6 +69,9 @@ const EnterTournament = (req, res, next) => {
           req.role = "Admin"
           req.message  = true ;
           await adminControllers.deleteTournament(req,res)
+          return res.status(404).json({
+            message: "there is no players",
+          });
         }
 
         if (result.Type == "Points") {
@@ -78,7 +81,7 @@ const EnterTournament = (req, res, next) => {
             req.role = "Admin"
             req.message  = true ;
             await adminControllers.deleteTournament(req,res)
-            res.status(404).json({
+            return res.status(404).json({
               message: "Number of Players is not allowed",
             });
 
@@ -92,19 +95,19 @@ const EnterTournament = (req, res, next) => {
           req.role = "Admin"
           req.message  = true ;
           adminControllers.deleteTournament(req,res)
-          res.status(404).json({
+          return res.status(404).json({
             message: "Number of Players is not allowed",
           });
         }}
       } else {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Tournament is not started yet`,
         });
       }
     })
     .catch((err) => {
       console.log(err)
-      res.status(404).json({
+      return res.status(404).json({
         message: err,
       });
     });
