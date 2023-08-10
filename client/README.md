@@ -3,8 +3,7 @@
 
 
 ## <img align="left" alt="Coding" width="20" src="https://media0.giphy.com/media/3o85xvnSxCKJZaSYmI/giphy.webp?cid=ecf05e47fg31vxa0zgaovhivquofwybir90x72kgvb9iga47&ep=v1_gifs_search&rid=giphy.webp&ct=g" alt=""/>Story Behind Project:
-> The Idea 💡 come when I and My Friends Play chess , so I and My Friend asked why not build Website help us to organize Tournament to Our Friends and build Our Features , so We did it.     
-
+>Ever had that 💡 moment during a riveting game of chess with friends? We did too! Picture this: a user-friendly website that takes chess tournaments to the next level. That's exactly what we've created. Inspired by our love for the game, we've developed a platform that effortlessly organizes tournaments and brings the chess community together. Join us in celebrating the marriage of innovation and fun!
 ## 🎯Project Description:
 > The Website is so simple to use , It's Functionality is organizing a Chess Tournament to any number of Players ,there is Amazing Feature is a Bracket Tournament ,The Player should register with Lichess Username Because The Website Build on Lichess API and The Chess Matches is on Lichess.com ,
 
@@ -33,18 +32,22 @@
 📌 Express.js <br/>
 📌 MongoDB <br/>
 📌 Packages: <br/>
-  - Dotenv <br/>
-  - Cors <br/>
+  - Bcrypt  <br/>
+  - express-session <br/>
   - Helmet <br/>
-  - Body-Parser <br/>
-  - Nodemon <br/>
-  - NodeMailer <br/>
-  - Json Web Token <br/>
-  - Validator <br/>
-  - Passport <br/>
-  - Cookie Parser <br/>
-  - Bcrypt <br/>
-  - Axios  <br/>
+  - axios  <br/>
+  - cors <br/>
+  - bodyParser <br/>
+  - validator <br/>
+  - jsonwebtoken <br/>
+  - lodash  <br/>
+  - roundrobin-tournament-js <br/>
+  - nodemailer  <br/>
+  - uuid   <br/>
+  - dotenv <br/>
+  - node-cron <br />
+
+📌 Api's : lichess 
 </p>
 </p>
 

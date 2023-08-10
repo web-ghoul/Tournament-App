@@ -19,7 +19,7 @@ const joinTournament = async (req, res, next) => {
         players_num: tournament.Players.length,
       });
     }
-    const fiveMinutesInMillis = 3 * 60 * 1000;
+    const fiveMinutesInMillis = 5 * 60 * 1000;
     console.log(Date.now() - fiveMinutesInMillis)
     console.log(tournament.StartsAt.getTime())
     if (tournament.StartsAt.getTime() - fiveMinutesInMillis < Date.now()) {

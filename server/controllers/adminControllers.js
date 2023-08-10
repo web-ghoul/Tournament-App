@@ -80,7 +80,7 @@ const addTournament = async (req, res, next) => {
         const month = targetDateTime.getMonth() + 1; // Months are zero-based, so add 1
         const year = targetDateTime.getFullYear();
         console.log(year, month, dayOfMonth, hour, minute);
-        const cronPattern = `${minute - 2} ${hour} ${dayOfMonth} ${month} *`; // Schedule for a specific date and month
+        const cronPattern = `${minute - 3} ${hour} ${dayOfMonth} ${month} *`; // Schedule for a specific date and month
 
         cron.schedule(cronPattern, () => {
           console.log(new Date());
