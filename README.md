@@ -20,6 +20,7 @@
   📌 Axios <br/> 
   📌 Js-Cookie <br/>
   📌 toast <br/>
+  📌 webghoul-react-bracket-tournaments Package <br/>
 </p>
 </p>
 
