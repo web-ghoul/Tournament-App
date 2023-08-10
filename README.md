@@ -52,15 +52,3 @@
 </p>
 
 
-
-
-emails : 
-webGhoul mahmoudaboraya2021@gmail.com
-webGhoul1 webghouldev@gmail.com
-webGhoul2 mesharewith663@gmail.com
-magnus006
-magnus007
-
-
-firebase deploy email:
-chesstournament200@gmail.com chesstournament2005$
