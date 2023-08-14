@@ -1,0 +1,73 @@
+.match_box{
+    margin-right: 150px;
+    position: relative;
+}
+
+.last{
+    margin: 0 !important;
+}
+
+/* .wait_match_box{
+    opacity: 0.5;
+} */
+
+.match{
+    background-color: #777;
+    width: 220px;
+    height: 110px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.match .divider{
+    height: 4px;
+    background-color: var(--blue);
+    border: none;
+}
+
+.match .noDivider{
+    height: 4px;
+    background-color: #777;
+    border: none;
+}
+
+.player{
+    gap: 10px;
+    height: 53px;
+    padding: 0 2px;
+    transition: var(--trans);
+
+}
+
+.me{
+    background-color: var(--indigo);
+}
+
+.player:hover{
+    background-color: var(--blue);
+    cursor: pointer;
+}
+
+.buttons{
+    padding: 5px;
+    position: absolute;
+    right: 0;
+    gap: 5px;
+}
+
+.buttons button{
+    border-radius: 0px !important;
+}
+
+.buttons  .match_button{
+    background-color: var(--blue) !important;
+}
+
+.buttons .abort_button{
+    background-color: var(--orange) !important;
+}
+
+.buttons .finish_button{
+    background-color: var(--red) !important;
+}

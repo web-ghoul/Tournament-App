@@ -1,0 +1,21 @@
+.form_section{
+    min-height: 100vh;
+    background-image: url("../../static/images/login-reg-cover.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    align-items: flex-start !important;
+}
+
+.form_contain{
+    gap: 50px;
+}
+
+.back_button{
+    gap: 10px;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+

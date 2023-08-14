@@ -1,0 +1,124 @@
+thead tr{
+    background-color: var(--indigo);
+}
+
+thead tr th{
+    font-weight: 800 !important;
+    border: none !important;
+    color: var(--white) !important;
+}
+
+.points_body td:not(:last-child){
+    border: none !important;
+    border-right: 4px solid var(--indigo) !important;
+}
+
+.info_player{
+    gap:20px;
+}
+
+tbody tr{
+    overflow: visible;
+}
+
+.tbody_cell{
+    gap: 20px;
+}
+
+.disabled_cell{
+    opacity: 0.5;
+}
+
+.able_cell{
+    opacity: 1;
+}
+
+.win{
+    background-color:#2dde98!important;
+    color: var(--white) !important;
+}
+
+.loss{
+   background-color: #fc636b !important; 
+   color: var(--white) !important;
+}
+
+.draw{
+    background-color: #caccd1 !important; 
+ }
+
+.status_img{
+    width: 50px;
+}
+
+.status_img img{
+    width: 100%;
+}
+
+.tbody_cell h6{
+    font-weight: normal;
+}
+
+.tbody_cell span{
+    color: var(--blue);
+    font-weight: 800;
+}
+
+.tbody_cell .buttons{
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tbody_cell .buttons button{
+    background-color: var(--blue);
+    padding: 5px 10px !important;
+}
+
+.tbody_cell .buttons button.abort{
+    background-color: var(--orange);
+}
+
+.tbody_cell .buttons button.finish{
+    background-color: var(--red);
+}
+
+@media (max-width:992px) {
+    .tbody_cell{
+        gap: 10px;
+    }
+    
+    .tbody_cell .buttons{
+        gap: 8px;
+    }
+    
+    .tbody_cell .buttons button{
+        padding: 4px 8px !important;
+    }
+}
+
+@media (max-width:768px) {
+    .tbody_cell{
+        gap: 10px;
+        display: grid !important;
+    }
+
+    .info_player{
+        gap: 10px;
+    }
+
+    .status_img{
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+    }
+    
+    .tbody_cell .buttons{
+        gap: 6px;
+        justify-content: center;
+    }
+    
+    .tbody_cell .buttons button{
+        padding: 2px 6px !important;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,44 @@
+.refresh_button{
+    padding: 5px !important;
+    position: fixed !important;
+    right: 50px;
+    bottom: 120px;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px  !important;
+    z-index: 100 !important;
+    min-width: 0px !important;
+}
+
+.refresh_button svg{
+    font-size: 30px;
+}
+
+@media (max-width:1200px) {
+    .refresh_button{
+        padding: 5px !important;
+        right: 40px;
+        bottom: 100px;
+        width: 45px !important;
+        height: 45px  !important;
+    }
+}
+
+@media (max-width:992px) {
+    .refresh_button{
+        padding: 4px !important;
+        right: 35px;
+        bottom: 90px;
+        width: 40px !important;
+        height: 40px  !important;
+    }
+}
+
+@media (max-width:768px) {
+    .refresh_button{
+        right: 30px;
+        bottom: 80px;
+        width: 37.5px !important;
+        height: 37.5px  !important;
+    }
+}

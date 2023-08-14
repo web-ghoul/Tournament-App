@@ -1,0 +1,73 @@
+.match{
+    overflow:auto;
+    height: max-content;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    font-family: var(--body-alt-font) !important;
+    gap: 30px;
+}
+
+.toggle_buttons{
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.toggle_buttons button{
+    border: 2px solid var(--blue);
+    gap: 10px;
+    border-radius: 10px;
+    padding: 10px !important;
+}
+
+.toggle_buttons button.active , .toggle_buttons button:hover{
+    background-color:var(--blue) ;
+}
+
+.points_loading span{
+    height: 300px !important;
+    border-radius: 10px !important;
+    background-color: var(--blue) !important;
+    opacity: 0.5 !important;
+}
+
+@media (max-width:992px) {
+    .match{
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .toggle_buttons{
+        grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+        gap: 20px;
+    }
+    
+    .toggle_buttons button{
+        gap: 8px;
+        border-radius: 8px;
+        padding: 8px !important;
+    }
+}
+
+@media (max-width:768px) {
+    .match{
+        padding: 10px;
+        border-radius: 6px;
+    }
+    
+    .toggle_buttons{
+        gap: 10px;
+    }
+    
+    .toggle_buttons button{
+        gap: 6px;
+        border-radius: 6px;
+        padding: 5px !important;
+    }
+}

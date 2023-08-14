@@ -1,0 +1,163 @@
+.modal{
+    background-color: var(--white);
+    width: 50%;
+    padding: 40px;
+    border-radius: 10px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    position: relative;
+    color:var(--primary) !important;
+    gap: 50px;
+    max-height: 80vh;
+    width: 50vw;
+}
+.close_btn{
+    position: absolute !important;
+    width: 40px;
+    height: 40px;
+    padding: 10px !important;
+    left: 20px;
+    top:20px;
+}
+
+.close_btn svg{
+    font-size: 30px !important;
+    color: var(--dark);
+}
+
+.title{
+    gap: 10px;
+}
+
+.btns{
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+
+.form{
+    gap: 20px;
+}
+
+.form input{
+    color: var(--primary);
+}
+
+.form .btns button{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal button{
+    color:var(--primary) !important;
+    border: 4px solid var(--primary);
+    border-radius: 5px;
+    padding: 10px !important;
+    transition: var(--trans);
+    gap: 10px;
+}
+
+.modal button:hover{
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--white) !important;
+}
+
+.modal button svg{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.starts_at{
+    gap: 20px;
+}
+
+@media (max-width:1200px) {
+    .options_buttons{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .modal{
+        padding: 35px;
+        border-radius: 9px;
+        gap: 45px;
+        width: 60vw;
+    }
+    .modal .btns button{
+        border: 3px solid var(--primary);
+        border-radius: 5px;
+        padding: 8px !important;
+        gap: 8px;
+    }
+    .form input{
+        padding: 10px 12px !important;
+    }
+    .close_btn{
+        width: 35px;
+        height: 35px;
+        padding: 10px !important;
+        left: 18px;
+        top: 18px;
+    }
+    
+    .close_btn svg{
+        font-size: 28px !important;
+    }
+}
+
+@media (max-width:992px) {
+    .modal{
+        padding: 30px;
+        border-radius: 8px;
+        gap: 40px;
+        width: 70vw;
+    }
+    .form input{
+        padding: 10px !important;
+    }  
+    .modal .btns button{
+        border-radius: 4px;
+        padding: 6px !important;
+        gap: 6px;
+    }
+    .close_btn{
+        width: 30px;
+        height: 30px;
+        padding: 8px !important;
+        left: 15px;
+        top: 15px;
+    }
+    
+    .close_btn svg{
+        font-size: 25px !important;
+    }
+}
+
+@media (max-width:768px) {
+    .modal{
+        padding: 25px;
+        border-radius: 6px;
+        gap: 30px;
+        width: 80vw;
+    }
+    .btns{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .modal .btns button{
+        border-radius: 4px;
+        padding: 2px !important;
+        gap: 5px;
+        font-size: 14px !important;
+    }
+    .close_btn{
+        width: 25px;
+        height: 25px;
+        padding: 6px !important;
+        left: 12px;
+        top: 12px;
+    }
+    
+    .close_btn svg{
+        font-size: 20px !important;
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "tournament-app",
+  "version": "1.0.0",
+  "description": "Manages Chess Tournaments using lichess.org API's",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd server && npm install && cd ../client && npm install && npm run build",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amr006/Tournament-App.git#main"
+  },
+  "keywords": [
+    "Chess",
+    "Tournaments",
+    "Lichess"
+  ],
+  "author": "Amr006 , WebGhoul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amr006/Tournament-App/issues"
+  },
+  "homepage": "https://github.com/Amr006/Tournament-App/tree/main#readme"
+}

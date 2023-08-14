@@ -1,0 +1,45 @@
+.logo{
+    gap: 10px;
+}
+
+.logo svg{
+    font-size: 40px;
+}
+
+button{
+    color: var(--white) !important;
+    padding: 0 !important;
+}
+
+.title{
+    font-family:var(--body-alt-font) !important;
+    font-weight: 800 !important;
+}
+
+
+@media (max-width:1200px) {
+    .logo{
+        gap: 8px;
+    }
+    .logo svg{
+        font-size: 35px;
+    }
+}
+
+@media (max-width:992px) {
+    .logo{
+        gap: 5px;
+    }
+    .logo svg{
+        font-size: 30px;
+    }
+}
+
+@media (max-width:762px) {
+    .logo{
+        gap: 2px;
+    }
+    .logo svg{
+        font-size: 25px;
+    }
+}
